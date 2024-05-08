@@ -10,6 +10,7 @@ _run.bat
 _migrate.bat
 _collectstatic.bat
 _activate.bat
+_check.bat
 
 
 
