@@ -3,6 +3,16 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+
+########################################
+#by leo
+_run.bat
+_migrate.bat
+_collectstatic.bat
+_activate.bat
+
+
+
 # C extensions
 *.so
 
