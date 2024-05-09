@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render,reverse
 from django.views import View
 from .apps import APP_NAME
 from .repo import PageRepo
+from .forms import *
 
 from django.http import Http404
 TEMPLATE_ROOT = "core/"
@@ -15,7 +16,7 @@ def SearchContext(request,search_for, *args, **kwargs):
     
     ########################################################
     # tags
-    if True:
+    if False:
         tags = TagRepo(request=request).list(
             search_for=search_for)
         if len(tags)>0:
@@ -27,7 +28,7 @@ def SearchContext(request,search_for, *args, **kwargs):
 
     ########################################################
     # pages
-    if True:
+    if False:
         pages = PageRepo(request=request).list(search_for=search_for)
         if len(pages)>0:
             context['pages'] = pages
@@ -36,7 +37,7 @@ def SearchContext(request,search_for, *args, **kwargs):
             context['pages_s'] = pages_s
     ########################################################
     # links
-    if True:
+    if False:
         links = PageLinkRepo(request=request).list(
             search_for=search_for).order_by('priority')
         if len(links)>0:
@@ -47,7 +48,7 @@ def SearchContext(request,search_for, *args, **kwargs):
 
     ########################################################
     # downloads
-    if True:
+    if False:
         downloads = PageDownloadRepo(request=request).list(search_for=search_for).order_by('priority')
         if len(downloads)>0:
             context['downloads'] = downloads
@@ -60,7 +61,8 @@ def CoreContext(request, *args, **kwargs):
     context = {}
     context['BASE_LAYOUT'] = BASE_LAYOUT
     context['WIDE_BASE_LAYOUT'] = WIDE_BASE_LAYOUT
-  
+    if 'app_name' in kwargs:
+        context['app_name']=kwargs['app_name']
 
     return context
 
@@ -85,6 +87,9 @@ def PageContext(request, *args, **kwargs):
 
 def getContext(request,*args, **kwargs):
     context=CoreContext(app_name=APP_NAME,request=request)
+    context['app_name']=APP_NAME
+    context['search_form']=SearchForm()
+    context['search_action']=reverse(APP_NAME+":search")
     return context
 
 class HomeView(View):
