@@ -1,4 +1,5 @@
 from pathlib import Path
+
 import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -7,8 +8,7 @@ SECRET_KEY = 'django-insecure-e=r6(=1-$v62u+!!y@45c2s6w)=^20(r1eq*z_k2b2brp7x6#)
 
  
 DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 ##########################################################
 #  installed apps
@@ -22,8 +22,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-# INSTALLED_APPS.append("core")
+INSTALLED_APPS.append("core")
 
+INSTALLED_APPS.append("authentication")
 
 ##########################################################
 #  databases
@@ -34,7 +35,7 @@ DATABASES = {
     }
 }
 ##########################################################
-#  url
+#  urls
 SITE_URL="/"
 STATIC_URL = SITE_URL+'static/'
 MEDIA_URL = SITE_URL+'media/'
@@ -42,10 +43,20 @@ QRCODE_URL = SITE_URL+'qrcode/'
 FILE_URL = SITE_URL+'file/'
 
 ##########################################################
-#  root
-PUBLIC_ROOT="/"
+#  roots
+PUBLIC_ROOT="d:\\public\\phoenix7\\"
 PRIVATE_ROOT="/"
 MEDIA_ROOT =os.path.join(PUBLIC_ROOT,"media")
 STATIC_ROOT =os.path.join(PUBLIC_ROOT,"static")
 QRCODE_ROOT =os.path.join(PUBLIC_ROOT,"qrcode")
 FILE_ROOT =os.path.join(PRIVATE_ROOT,"file")
+STATICFILES_DIRS=[os.path.join(BASE_DIR,'static')]
+
+##########################################################
+
+
+##########################################################
+
+##########################################################
+
+##########################################################

@@ -17,6 +17,7 @@ STATIC_URL = settings_server.STATIC_URL
 MEDIA_URL = settings_server.MEDIA_URL
 QRCODE_URL = settings_server.QRCODE_URL
 FILE_URL = settings_server.FILE_URL
+STATICFILES_DIRS = settings_server.STATICFILES_DIRS
 
 PUBLIC_ROOT = settings_server.PUBLIC_ROOT
 PRIVATE_ROOT = settings_server.PRIVATE_ROOT
