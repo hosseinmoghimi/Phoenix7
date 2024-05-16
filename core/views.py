@@ -131,3 +131,10 @@ class PagesView(View):
 
         return render(request, TEMPLATE_ROOT+"page.html", context)
  
+
+class MessageView(View):
+    def get(self, request, *args, **kwargs):
+        context = getContext(request=request)
+
+        return render(request, TEMPLATE_ROOT+"message.html", context)
+ 

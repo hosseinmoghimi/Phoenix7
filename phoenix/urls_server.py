@@ -10,6 +10,7 @@ urlpatterns = [
     path('', include('core.urls')),
     path('admin/', admin.site.urls),
     path('authentication/', include('authentication.urls')),
+    path('utility/', include('utility.urls')),
     
     
     re_path(r'^qrcode/(?P<path>.*)$', serve, {'document_root': QRCODE_ROOT}),
