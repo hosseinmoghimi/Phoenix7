@@ -61,6 +61,17 @@ def CoreContext(request, *args, **kwargs):
     context = {}
     context['ADMIN_URL'] = ADMIN_URL
     context['BASE_LAYOUT'] = BASE_LAYOUT
+    if request.user.is_authenticated:
+        context['user']=request.user
+        from authentication.repo import ProfileRepo
+        profile=ProfileRepo(request=request).me
+        if profile is not None:
+            context['profile']=profile
+            print(profile.name)
+            print(100*"#")
+            print(100*"#")
+            print(100*"#")
+            print(100*"#")
     context['WIDE_BASE_LAYOUT'] = WIDE_BASE_LAYOUT
     if 'app_name' in kwargs:
         context['app_name']=kwargs['app_name']

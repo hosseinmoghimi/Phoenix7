@@ -3,6 +3,7 @@ from django.utils.translation import gettext as _
 from .apps import APP_NAME
 from .enums import *
 from django.conf import settings
+from phoenix.settings import MEDIA_URL
 IMAGE_FOLDER=APP_NAME+"/images/"
 from utility.models import LinkHelper,ImageHelper
 from phoenix.settings_server import CREATE_PROFILE_ON_USER_ADD
@@ -64,3 +65,10 @@ class Profile(models.Model,LinkHelper):
 
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"
+    @property
+    def name(self):
+        return f"{self.user.first_name} {self.user.last_name}"
+
+    @property
+    def image(self):
+        return f"{MEDIA_URL}{self.image_origin}"

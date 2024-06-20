@@ -30,3 +30,12 @@ class LoginView(View):
         return render(request,TEMPLATE_ROOT+"index.html",context) 
 
  
+class ProfileView(View):
+    def get(self, request, *args, **kwargs):
+        context=getContext(request=request)
+        return render(request,TEMPLATE_ROOT+"profile.html",context) 
+
+class ChangePasswordView(View):
+    def get(self, request, *args, **kwargs):
+        context=getContext(request=request)
+        return render(request,TEMPLATE_ROOT+"change-password.html",context) 
