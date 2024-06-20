@@ -63,4 +63,4 @@ class Profile(models.Model,LinkHelper):
         verbose_name_plural = _("Profiles")
 
     def __str__(self):
-        return self.name 
+        return f"{self.user.first_name} {self.user.last_name}"

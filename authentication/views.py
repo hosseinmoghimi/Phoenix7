@@ -19,3 +19,14 @@ class HomeView(View):
         return render(request,TEMPLATE_ROOT+"index.html",context) 
 
  
+class LoginView(View):
+    def get(self, request, *args, **kwargs):
+        context=getContext(request=request)
+        return render(request,TEMPLATE_ROOT+"index.html",context) 
+
+ 
+    def post(self, request, *args, **kwargs):
+        context=getContext(request=request)
+        return render(request,TEMPLATE_ROOT+"index.html",context) 
+
+ 

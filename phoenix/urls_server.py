@@ -9,6 +9,7 @@ print(MEDIA_ROOT)
 urlpatterns = [
     path('', include('core.urls')),
     path('admin/', admin.site.urls),
+    path('market/', include('market.urls')),
     path('authentication/', include('authentication.urls')),
     path('utility/', include('utility.urls')),
     

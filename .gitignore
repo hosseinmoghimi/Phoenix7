@@ -12,6 +12,7 @@ _collectstatic.bat
 _activate.bat
 _check.bat
 
+settings_server.py
 settings_server_apps.py
 settings_server.py
 urls_server.py

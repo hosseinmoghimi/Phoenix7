@@ -96,6 +96,8 @@ def getContext(request,*args, **kwargs):
 class HomeView(View):
     def get(self, request, *args, **kwargs):
         context=getContext(request=request)
+        from phoenix.settings_server_apps import phoenix_apps
+        context['phoenix_apps']=phoenix_apps
         return render(request,TEMPLATE_ROOT+"index.html",context) 
 
 

@@ -22,9 +22,9 @@ INSTALLED_APPS = [
 ]
 
 INSTALLED_APPS.append("core")
-
 INSTALLED_APPS.append("utility")
 INSTALLED_APPS.append("authentication")
+INSTALLED_APPS.append("market")
 
 ##########################################################
 #  databases

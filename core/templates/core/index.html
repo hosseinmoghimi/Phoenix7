@@ -1,24 +1,26 @@
 {% extends "core/layout.html" %}
 
 {% block content %}
-  <div class="row">
-    <div class="col-md-4">
+  <div class="row rtl">
+    {% for phoenix_app in phoenix_apps %}
+      <div class="col-lg-2 col-md-3 col-sm-4">
         <div class="text-center">
-            sadsda
-        </div>
-    </div>
+            <div>
+                <a href="{{phoenix_app.home_url}}">
 
-    <div class="col-md-4">
-        <div class="text-center">
-            sadsda
-        </div>
-    </div>
+                    <img src="{{phoenix_app.icon}}" alt="">
+                </a>
+            </div>
+            <div>
+                <a class="farsi" href="{{phoenix_app.home_url}}">
 
-    <div class="col-md-4">
-        <div class="text-center">
-            sadsda
+                    {{phoenix_app.title}}
+                </a>
+            </div> 
         </div>
     </div>
+    {% endfor %}
+     
   </div>
 {% endblock content %}
 
