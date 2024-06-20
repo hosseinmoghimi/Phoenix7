@@ -3,7 +3,7 @@ from django.views import View
 from .apps import APP_NAME
 from .repo import PageRepo
 from .forms import *
-
+from phoenix.settings import ADMIN_URL
 from django.http import Http404
 TEMPLATE_ROOT = "core/"
 BASE_LAYOUT='phoenix/layout.html'
@@ -59,6 +59,7 @@ def SearchContext(request,search_for, *args, **kwargs):
 
 def CoreContext(request, *args, **kwargs):
     context = {}
+    context['ADMIN_URL'] = ADMIN_URL
     context['BASE_LAYOUT'] = BASE_LAYOUT
     context['WIDE_BASE_LAYOUT'] = WIDE_BASE_LAYOUT
     if 'app_name' in kwargs:
@@ -114,6 +115,13 @@ class SearchView(View):
 
         return render(request, TEMPLATE_ROOT+"search.html", context)
 
+
+class SettingView(View):
+    def get(self, request, *args, **kwargs):
+        context = getContext(request=request)
+
+        return render(request, TEMPLATE_ROOT+"setting.html", context)
+ 
 
 class PageView(View):
     def get(self, request, *args, **kwargs):

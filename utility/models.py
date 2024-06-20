@@ -1,14 +1,10 @@
 from django.db import models
-
-# Create your models here.
 from phoenix.settings import ADMIN_URL,STATIC_URL,MEDIA_URL
 from django.shortcuts import reverse
 from .calendar import DateHelper
 
 
-class ImageHelper():
-    def thumbnail(self):
-        return None
+
 
 class DateHelper():
     def persian_start_date(self):

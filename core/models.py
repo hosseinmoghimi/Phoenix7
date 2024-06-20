@@ -1,11 +1,8 @@
 from django.db import models
 from .apps import APP_NAME
 from django.utils.translation import gettext as _
-
-class LinkHelper():
-    def get_absolute_url(self):
-        from phoenix.settings_server import SITE_URL
-        return f"{SITE_URL}{self.app_name}{self.class_name}"
+from utility.models import LinkHelper,ImageHelper
+ 
 
 class Page(models.Model,LinkHelper):
     class_name="page"
