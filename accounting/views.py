@@ -31,6 +31,9 @@ class AccountsView(View):
         context['accounts']=accounts
         accounts_s=json.dumps(AccountSerializer(accounts,many=True).data)
         context['accounts_s']=accounts_s
+        
+        if request.user.has_perm(APP_NAME+".add_account"):
+            context['add_account_form']=AddAccountForm()
         return render(request,TEMPLATE_ROOT+"accounts.html",context)
 class AccountView(View):
     def get(self,request,*args, **kwargs):

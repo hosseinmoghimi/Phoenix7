@@ -9,5 +9,6 @@ urlpatterns = [
     path("accounts/",login_required(views.AccountsView.as_view()),name="accounts"),
     path("accounts/<int:sv>/",login_required(views.AccountsView.as_view()),name="accounts_simple_view"),
     path("account/<int:pk>/",login_required(views.AccountView.as_view()),name="account"),
+    path("add_account/",login_required(apis.AddAccountApi.as_view()),name="add_account"),
     path("search/",login_required(views.SearchView.as_view()),name="search"),
 ]

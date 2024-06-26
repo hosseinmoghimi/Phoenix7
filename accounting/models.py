@@ -4,10 +4,13 @@ from .apps import APP_NAME
 from django.utils.translation import gettext as _
 from .enums import *
 IMAGE_FOLDER=APP_NAME+"/images/"
-from phoenix.server_settings import MEDIA_URL
+from phoenix.server_settings import MEDIA_URL,STATIC_URL
 # Create your models here.
 class Account(models.Model,LinkHelper):
     title=models.CharField(_("title"), max_length=500)
+    mobile=models.CharField(_("mobile"),null=True,blank=True, max_length=50)
+    tel=models.CharField(_("tel"),null=True,blank=True, max_length=50)
+    description=models.CharField(_("description"),null=True,blank=True, max_length=500)
     profile=models.ForeignKey("authentication.profile",null=True,blank=True, verbose_name=_("profile"), on_delete=models.SET_NULL)
     balance=models.IntegerField("balance",default=0)
     logo_origin=models.ImageField(_("logo"), upload_to=IMAGE_FOLDER+"account", height_field=None, width_field=None, max_length=None)
@@ -15,8 +18,15 @@ class Account(models.Model,LinkHelper):
     app_name=APP_NAME
     @property
     def logo(self):
+        if not self.logo_origin :
+            return f"{STATIC_URL}{APP_NAME}/img/pages/thumbnail/account.png"
         return f"{MEDIA_URL}{self.logo_origin}"
 
+        # if self.logo_origin:
+        #     return MEDIA_URL+str(self.logo_origin)
+        # if self.profile is not None:
+        #     return self.profile.image
+        # return f"{STATIC_URL}{self.app_name}/img/{self.class_name}.png"
     class Meta:
         verbose_name = _("Account")
         verbose_name_plural = _("Accounts")
@@ -79,3 +89,6 @@ class TransactionPrint(models.Model):
     def __str__(self):
         print_datetime=PersianCalendar().from_gregorian(self.print_datetime)
         return f"{self.transaction}   @  {print_datetime} "
+
+
+
