@@ -1,0 +1,76 @@
+{% extends "accounting/layout.html" %}
+
+{% load to_price %}
+{% block content %}
+<div class="row rtl">
+    <div class="col-md-12">
+
+        <div class="text-center farsi">
+            حساب ها
+        </div>
+
+    </div>
+    {% if SIMPLE_VIEW %}
+      
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped farsi">
+                        <thead>
+                            <th>
+                                نام
+                            </th>
+
+                            <th>
+                                مانده
+                            </th>
+                            <th>
+
+                            </th>
+
+                        </thead>
+                        <tbody>
+                            {% for account in accounts %}
+                              
+                            <tr>
+                                <td>
+                                    <div class="media">
+                                        <img class="" src="{{account.logo}}" width="32" alt="">
+                                        <div class="media-body mr-2">
+                                            <div>
+                                                {{account.title}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    {{account.balance|to_price}}
+
+                                </td>
+                                <td>
+
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-md-12">
+        {% include "accounting/includes/accounts-app/template.html" %}
+
+    </div>
+    {% endif %}
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+{% include "accounting/includes/accounts-app/script.html" %}
+
+{% endblock script %}

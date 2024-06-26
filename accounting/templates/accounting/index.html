@@ -1,0 +1,30 @@
+{% extends "accounting/layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row rtl">
+    <div class="col-md-2">
+        <a href="{% url 'accounting:accounts' %}">
+            <div class="text-center">
+                <img src="{% static 'accounting/img/accounts.png' %}" width="48" alt="">
+
+            </div>
+            <div class="text-center farsi">
+                حساب ها
+            </div>
+        </a>
+    </div>
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-2">
+
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block script %}
+
+{% endblock script %}
+

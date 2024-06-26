@@ -3,15 +3,19 @@ from core.models import LinkHelper,Page
 from .apps import APP_NAME
 from django.utils.translation import gettext as _
 from .enums import *
-
-
+IMAGE_FOLDER=APP_NAME+"/images/"
+from phoenix.server_settings import MEDIA_URL
 # Create your models here.
 class Account(models.Model,LinkHelper):
     title=models.CharField(_("title"), max_length=500)
-    
+    profile=models.ForeignKey("authentication.profile",null=True,blank=True, verbose_name=_("profile"), on_delete=models.SET_NULL)
+    balance=models.IntegerField("balance",default=0)
+    logo_origin=models.ImageField(_("logo"), upload_to=IMAGE_FOLDER+"account", height_field=None, width_field=None, max_length=None)
     class_name="account"
     app_name=APP_NAME
-    
+    @property
+    def logo(self):
+        return f"{MEDIA_URL}{self.logo_origin}"
 
     class Meta:
         verbose_name = _("Account")
