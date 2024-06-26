@@ -6,7 +6,7 @@ from django.conf import settings
 from phoenix.settings import MEDIA_URL
 IMAGE_FOLDER=APP_NAME+"/images/"
 from utility.models import LinkHelper,ImageHelper
-from phoenix.settings_server import CREATE_PROFILE_ON_USER_ADD
+from phoenix.server_settings import CREATE_PROFILE_ON_USER_ADD
 
 
 

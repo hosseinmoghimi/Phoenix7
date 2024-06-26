@@ -9,7 +9,7 @@ from django.views import View
 from utility.calendar import PersianCalendar
 from utility.forms import *
 import json
-from phoenix.settings_server_apps import phoenix_apps
+from phoenix.apps import phoenix_apps
 LAYOUT_PARENT = "phoenix/layout.html"
 TEMPLATE_ROOT = "utility/"
 

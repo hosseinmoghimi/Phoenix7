@@ -1,4 +1,4 @@
-from phoenix.settings_server import CURRENCY
+from phoenix.server_settings import CURRENCY
 from django import template
 from utility.constants import TUMAN,RIAL
 register = template.Library()

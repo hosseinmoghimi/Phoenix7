@@ -1,4 +1,4 @@
-from . import settings_server
+from . import server_settings
 
 from pathlib import Path
 
@@ -6,28 +6,28 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
  
-SECRET_KEY = settings_server.SECRET_KEY
-ALLOWED_HOSTS = settings_server.ALLOWED_HOSTS
-INSTALLED_APPS = settings_server.INSTALLED_APPS
-DEBUG = settings_server.DEBUG
-DATABASES = settings_server.DATABASES
+SECRET_KEY = server_settings.SECRET_KEY
+ALLOWED_HOSTS = server_settings.ALLOWED_HOSTS
+INSTALLED_APPS = server_settings.INSTALLED_APPS
+DEBUG = server_settings.DEBUG
+DATABASES = server_settings.DATABASES
 
-SITE_URL = settings_server.SITE_URL
-STATIC_URL = settings_server.STATIC_URL
-MEDIA_URL = settings_server.MEDIA_URL
-QRCODE_URL = settings_server.QRCODE_URL
-FILE_URL = settings_server.FILE_URL
-STATICFILES_DIRS = settings_server.STATICFILES_DIRS
-ADMIN_URL = settings_server.ADMIN_URL
-FULL_SITE_URL = settings_server.FULL_SITE_URL
+SITE_URL = server_settings.SITE_URL
+STATIC_URL = server_settings.STATIC_URL
+MEDIA_URL = server_settings.MEDIA_URL
+QRCODE_URL = server_settings.QRCODE_URL
+FILE_URL = server_settings.FILE_URL
+STATICFILES_DIRS = server_settings.STATICFILES_DIRS
+ADMIN_URL = server_settings.ADMIN_URL
+FULL_SITE_URL = server_settings.FULL_SITE_URL
 
 
-PUBLIC_ROOT = settings_server.PUBLIC_ROOT
-PRIVATE_ROOT = settings_server.PRIVATE_ROOT
-MEDIA_ROOT = settings_server.MEDIA_ROOT
-STATIC_ROOT = settings_server.STATIC_ROOT
-QRCODE_ROOT = settings_server.QRCODE_ROOT
-FILE_ROOT = settings_server.FILE_ROOT
+PUBLIC_ROOT = server_settings.PUBLIC_ROOT
+PRIVATE_ROOT = server_settings.PRIVATE_ROOT
+MEDIA_ROOT = server_settings.MEDIA_ROOT
+STATIC_ROOT = server_settings.STATIC_ROOT
+QRCODE_ROOT = server_settings.QRCODE_ROOT
+FILE_ROOT = server_settings.FILE_ROOT
  
  
 # SECURITY WARNING: don't run with debug turned on in production!

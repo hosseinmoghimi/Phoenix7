@@ -1,4 +1,4 @@
-from phoenix.settings_server import DEBUG
+from phoenix.server_settings import DEBUG
 def leolog(*args, **kwargs):
     if not DEBUG:
         return

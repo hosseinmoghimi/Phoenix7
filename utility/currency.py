@@ -1,5 +1,5 @@
 from .constants import TUMAN,RIAL
-from phoenix.settings_server import CURRENCY
+from phoenix.server_settings import CURRENCY
 
 
 def to_price(value,unit=CURRENCY):

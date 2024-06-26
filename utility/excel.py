@@ -1,7 +1,7 @@
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 
-from phoenix.settings_server import STATIC_ROOT
+from phoenix.server_settings import STATIC_ROOT
 
 
 def get_excel_report():

@@ -12,10 +12,11 @@ _collectstatic.bat
 _activate.bat
 _check.bat
 
-settings_server.py
 settings_server_apps.py
 settings_server.py
+server_settings.py
 urls_server.py
+server_urls.py
 secret/
 
 # C extensions

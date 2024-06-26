@@ -1,6 +1,6 @@
 from django import template
 register = template.Library()
-from phoenix.settings_server import FULL_SITE_URL
+from phoenix.server_settings import FULL_SITE_URL
 @register.filter
 def to_absolute_link(url):
     absolute_link=""
