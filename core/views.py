@@ -67,11 +67,6 @@ def CoreContext(request, *args, **kwargs):
         profile=ProfileRepo(request=request).me
         if profile is not None:
             context['profile']=profile
-            print(profile.name)
-            print(100*"#")
-            print(100*"#")
-            print(100*"#")
-            print(100*"#")
     context['WIDE_BASE_LAYOUT'] = WIDE_BASE_LAYOUT
     if 'app_name' in kwargs:
         context['app_name']=kwargs['app_name']

@@ -18,3 +18,5 @@ class Customer(models.Model,LinkHelper):
 
     def get_absolute_url(self):
         return reverse("Customer_detail", kwargs={"pk": self.pk})
+
+
