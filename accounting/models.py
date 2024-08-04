@@ -90,5 +90,35 @@ class TransactionPrint(models.Model):
         print_datetime=PersianCalendar().from_gregorian(self.print_datetime)
         return f"{self.transaction}   @  {print_datetime} "
 
+class ProductOrService(Page):
+    barcode=models.CharField(_("بارکد"),null=True,blank=True, max_length=100)
+
+    
+
+    class Meta:
+        verbose_name = _("ProductOrService")
+        verbose_name_plural = _("ProductOrServices")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("ProductOrService_detail", kwargs={"pk": self.pk})
 
 
+
+class Product(ProductOrService):
+
+    class Meta:
+        verbose_name = _("Product")
+        verbose_name_plural = _("Products")
+ 
+        
+    def save(self,*args, **kwargs):
+        if self.class_name is None or self.class_name=="":
+            self.class_name='product'
+        if self.app_name is None or self.app_name=="":
+            self.app_name=APP_NAME
+        return super(Product,self).save(*args, **kwargs)
+   
+ 
