@@ -36,8 +36,8 @@ class Account(models.Model,LinkHelper):
  
 
  
-class TransactionCategory(models.Model,LinkHelper):
-    class_name="transactioncategory"
+class EventCategory(models.Model,LinkHelper):
+    class_name="eventcategory"
     app_name=APP_NAME
     title=models.CharField(_("title"), max_length=50)
     color_origin=models.CharField(_("color"),choices=ColorEnum.choices,null=True,blank=True, max_length=50)
@@ -49,46 +49,46 @@ class TransactionCategory(models.Model,LinkHelper):
             return "danger"
         return 'primary'
     class Meta:
-        verbose_name = 'TransactionCategory'
-        verbose_name_plural = 'TransactionCategories' 
+        verbose_name = 'EventCategory'
+        verbose_name_plural = 'EventCategories' 
     def __str__(self):
         return self.title
  
-class Transaction(Page):
-    class_name="transaction"
+class Event(Page):
+    class_name="event"
     app_name=APP_NAME
-    pay_from=models.ForeignKey("account",related_name="transactions_from", verbose_name=_("پرداخت کننده"), on_delete=models.PROTECT)
-    pay_to=models.ForeignKey("account", related_name="transactions_to",verbose_name=_("دریافت کننده"), on_delete=models.PROTECT)
+    pay_from=models.ForeignKey("account",related_name="events_from", verbose_name=_("پرداخت کننده"), on_delete=models.PROTECT)
+    pay_to=models.ForeignKey("account", related_name="events_to",verbose_name=_("دریافت کننده"), on_delete=models.PROTECT)
     creator=models.ForeignKey("authentication.profile",null=True,blank=True, verbose_name=_("ثبت شده توسط"), on_delete=models.SET_NULL)
-    status=models.CharField(_("وضعیت"),choices=TransactionStatusEnum.choices,default=TransactionStatusEnum.DRAFT, max_length=50)
-    category=models.ForeignKey("transactioncategory",null=True,blank=True, verbose_name=_("دسته بندی"), on_delete=models.SET_NULL)
+    status=models.CharField(_("وضعیت"),choices=EventStatusEnum.choices,default=EventStatusEnum.DRAFT, max_length=50)
+    category=models.ForeignKey("eventcategory",null=True,blank=True, verbose_name=_("دسته بندی"), on_delete=models.SET_NULL)
     amount=models.IntegerField(_("مبلغ"),default=0)
     payment_method=models.CharField(_("نوع پرداخت"),choices=PaymentMethodEnum.choices,default=PaymentMethodEnum.DRAFT, max_length=50)
-    transaction_datetime=models.DateTimeField(_("تاریخ تراکنش"), auto_now=False, auto_now_add=False)
+    event_datetime=models.DateTimeField(_("تاریخ تراکنش"), auto_now=False, auto_now_add=False)
     
 
     
 
     class Meta:
-        verbose_name = _("Transaction")
-        verbose_name_plural = _("Transactions")
+        verbose_name = _("Event")
+        verbose_name_plural = _("Events")
 
     def __str__(self):
         return self.title
  
 
 
-class TransactionPrint(models.Model):
-    transaction=models.ForeignKey("transaction", verbose_name=_("تراکنش"), on_delete=models.CASCADE)
+class EventPrint(models.Model):
+    event=models.ForeignKey("event", verbose_name=_("تراکنش"), on_delete=models.CASCADE)
     print_datetime=models.DateTimeField(_("تاریخ چاپ"),null=True,blank=True, auto_now=False, auto_now_add=True)
 
     class Meta:
-        verbose_name = _("TransactionPrint")
-        verbose_name_plural = _("TransactionPrints")
+        verbose_name = _("EventPrint")
+        verbose_name_plural = _("EventPrints")
 
     def __str__(self):
         print_datetime=PersianCalendar().from_gregorian(self.print_datetime)
-        return f"{self.transaction}   @  {print_datetime} "
+        return f"{self.event}   @  {print_datetime} "
 
 class ProductOrService(Page):
     barcode=models.CharField(_("بارکد"),null=True,blank=True, max_length=100)

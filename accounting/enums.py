@@ -107,7 +107,7 @@ class PaymentMethodEnum(TextChoices):
     CARD="کارت به کارت",_("کارت به کارت")
     # FROM_PAST="مانده حساب از قبل",_("مانده حساب از قبل")
 
-class TransactionStatusEnum(TextChoices):
+class EventStatusEnum(TextChoices):
     DRAFT="پیش نویس",_("پیش نویس")
     IN_PROGRESS="در جریان",_("در جریان")
     READY="آماده تحویل",_("آماده تحویل")
