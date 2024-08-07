@@ -7,6 +7,8 @@ IMAGE_FOLDER=APP_NAME+"/images/"
 from phoenix.server_settings import MEDIA_URL,STATIC_URL
 # Create your models here.
 class Account(models.Model,LinkHelper):
+    moeinaccount=models.ForeignKey("moeinaccount", verbose_name=_("moein account"), on_delete=models.CASCADE)
+    
     title=models.CharField(_("title"), max_length=500)
     mobile=models.CharField(_("mobile"),null=True,blank=True, max_length=50)
     tel=models.CharField(_("tel"),null=True,blank=True, max_length=50)
@@ -34,6 +36,90 @@ class Account(models.Model,LinkHelper):
     def __str__(self):
         return self.title
  
+
+class AccountGroup(models.Model,LinkHelper):
+    name=models.CharField(_("name"), max_length=200)
+    # basic_accounts=models.ManyToManyField("basicaccount",blank=True, verbose_name=_("حساب های کل"))
+    class_name="accountgroup"
+    app_name=APP_NAME  
+
+    class Meta:
+        verbose_name = _("AccountGroup")
+        verbose_name_plural = _("AccountGroups")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("AccountGroup_detail", kwargs={"pk": self.pk})
+class BasicAccount(models.Model,LinkHelper):
+    name=models.CharField(_("name"), max_length=200)
+    accountgroup=models.ForeignKey("accountgroup", verbose_name=_("account group"), on_delete=models.CASCADE)
+    # moein_accounts=models.ManyToManyField("moeinaccount",blank=True, verbose_name=_("حساب های معین"))
+  
+
+    class_name="basicaccount"
+    app_name=APP_NAME
+
+    class Meta:
+        verbose_name = _("BasicAccount")
+        verbose_name_plural = _("BasicAccounts")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("BasicAccount_detail", kwargs={"pk": self.pk})
+class MoeinAccount(models.Model,LinkHelper):
+
+    name=models.CharField(_("name"), max_length=200)
+    # accounts=models.ManyToManyField("account", verbose_name=_("حساب ها"))
+    basicaccount=models.ForeignKey("basicaccount", verbose_name=_("basicaccount"), on_delete=models.CASCADE)
+  
+    
+    class_name="moeinaccount"
+    app_name=APP_NAME
+
+    class Meta:
+        verbose_name = _("MoeinAccount")
+        verbose_name_plural = _("MoeinAccounts")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("MoeinAccount_detail", kwargs={"pk": self.pk})
+
+class FinancialDocument(LinkHelper,models.Model):
+    account=models.ForeignKey("account", verbose_name=_("account"), on_delete=models.PROTECT)
+    event=models.ForeignKey("event", verbose_name=_("event"), on_delete=models.PROTECT)
+    
+    
+    
+
+    class_name="financialdocument"
+    app_name=APP_NAME    
+
+    @property
+    def amount(self):
+        return self.event.amount
+
+    @property
+    def event_datetime(self):
+        return self.event.event_datetime
+
+    @property
+    def status(self):
+        return self.event.status
+    class Meta:
+        verbose_name = _("FinancialDocument")
+        verbose_name_plural = _("FinancialDocuments")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("FinancialDocument_detail", kwargs={"pk": self.pk})
 
  
 class EventCategory(models.Model,LinkHelper):
@@ -76,6 +162,8 @@ class Event(Page):
     def __str__(self):
         return self.title
  
+    def save(self,*args, **kwargs):
+        super(Event,self).save()
 
 
 class EventPrint(models.Model):
