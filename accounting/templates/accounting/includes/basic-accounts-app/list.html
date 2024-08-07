@@ -37,11 +37,11 @@
                             </a>
                         </td>
                         <td>
-                            {{basic_account.total.bedehkar|to_price}}
+                            {{basic_account.total.bedehkar|to_price_or_blank|safe}}
                             
                         </td>
                         <td>
-                            {{basic_account.total.bestankar|to_price}}
+                            {{basic_account.total.bestankar|to_price_or_blank|safe}}
                            
                             
                         </td>
