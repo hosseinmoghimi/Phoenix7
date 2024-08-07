@@ -1,9 +1,10 @@
 {% extends "accounting/layout.html" %}
 {% load static %}
+{% load to_price %}
 {% load to_amount_color %}
 
-{% load to_price %}
 {% load to_persian_date %}
+
 {% block content %}
 <div class="row rtl">
     <div class="col-md-12"> 
@@ -14,10 +15,6 @@
             <div class="text-center farsi">
             
                 {{account.title}}
-            </div> 
-            <div class="text-center text-{{account.balance|to_amount_color}} farsi">
-            
-                {{account.balance|to_price}}
             </div>
          
     </div>
@@ -29,12 +26,18 @@
                        شرح 
                     </th>
                     <th>
+                        حساب
+                    </th>
+
+                    
+                    <th>
                         مبلغ
                     </th>
                     
                     <th>
                         تاریخ
                     </th>
+
                     <th>
                         بدهکار
                     </th>
@@ -48,25 +51,30 @@
                     </th>
                 </thead>
                 <tbody>
-                    {% for accounting_document_line in accounting_document_lines %}
+                    {% for accounting_document_line in accounting_document.lines %}
                       
                     <tr>
                         <td>
                             <a href=" {{accounting_document_line.get_absolute_url}}">
-                                {{accounting_document_line.title}}
+
+                            {{accounting_document_line.title}}
                             </a>
-                           
+                        </td>
+                        
+                        <td>
+                            <a href=" {{accounting_document_line.account.get_absolute_url}}">
+
+                            {{accounting_document_line.account}}
+                            </a>
                         </td>
                         <td>
                             {{accounting_document_line.balance|to_price}}
                             
                         </td>
-                        
                         <td>
                             {{accounting_document_line.event.event_datetime|to_persian_datetime|safe}}
                             
                         </td>
-
                         <td>
                             {{accounting_document_line.bedehkar|to_price}}
                             

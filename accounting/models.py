@@ -16,7 +16,7 @@ class Account(models.Model,LinkHelper):
     description=models.CharField(_("description"),null=True,blank=True, max_length=500)
     profile=models.ForeignKey("authentication.profile",null=True,blank=True, verbose_name=_("profile"), on_delete=models.SET_NULL)
     balance=models.IntegerField("balance",default=0)
-    logo_origin=models.ImageField(_("logo"), upload_to=IMAGE_FOLDER+"account", height_field=None, width_field=None, max_length=None)
+    logo_origin=models.ImageField(_("logo"),blank=True,null=True, upload_to=IMAGE_FOLDER+"account", height_field=None, width_field=None, max_length=None)
     class_name="account"
     app_name=APP_NAME
     @property
@@ -33,10 +33,25 @@ class Account(models.Model,LinkHelper):
     class Meta:
         verbose_name = _("Account")
         verbose_name_plural = _("Accounts")
-
+    @property
+    def total(self):
+        bedehkar=0
+        bestankar=0
+        balance=0
+        for accounting_doc_line in AccountingDocumentLine.objects.filter(account=self).all():
+            bedehkar+=accounting_doc_line.bedehkar
+            bestankar+=accounting_doc_line.bestankar
+        balance=bestankar-bedehkar
+        total={"bedehkar":bedehkar,"bestankar":bestankar,"balance":balance}
+        return total
     def __str__(self):
-        return self.title
-
+        return self.moeinaccount.title+" " +self.title
+    def normalize_balance(self):
+        balance=0
+        for ac_doc_line in AccountingDocumentLine.objects.filter(account=self):
+            balance+=ac_doc_line.balance
+        self.balance=balance
+        super(Account,self).save()
     @property
     def dynamic_balance(self):
         dynamic_balance=0
@@ -49,6 +64,11 @@ class AccountGroup(models.Model,LinkHelper):
     # basic_accounts=models.ManyToManyField("basicaccount",blank=True, verbose_name=_("حساب های کل"))
     class_name="accountgroup"
     app_name=APP_NAME  
+    
+    @property
+    def balance(self):
+        return self.total['balance']
+
     @property
     def basic_accounts(self):
         return self.basicaccount_set.all()
@@ -80,23 +100,35 @@ class BasicAccount(models.Model,LinkHelper):
     app_name=APP_NAME
 
     @property
+    def balance(self):
+        return self.total['balance']
+    @property
     def title(self):
         return self.name
     @property
     def moein_accounts(self):
         return self.moeinaccount_set.all()
+   
+
+        
     @property
-    def balance(self):
+    def total(self):
+        bedehkar=0
+        bestankar=0
         balance=0
-        for moein_account in self.moein_account_set.all():
-            balance+=moein_account.balance
-        return balance
+        for moein_account in self.moeinaccount_set.all():
+            bedehkar+=moein_account.total['bedehkar']
+            bestankar+=moein_account.total['bestankar']
+        balance=bestankar-bedehkar
+        total={"bedehkar":bedehkar,"bestankar":bestankar,"balance":balance}
+        return total
+
     class Meta:
         verbose_name = _("BasicAccount")
         verbose_name_plural = _("BasicAccounts")
 
     def __str__(self):
-        return self.name
+        return self.accountgroup.title+" " +self.name
 
      
 class MoeinAccount(models.Model,LinkHelper):
@@ -105,7 +137,23 @@ class MoeinAccount(models.Model,LinkHelper):
     # accounts=models.ManyToManyField("account", verbose_name=_("حساب ها"))
     basicaccount=models.ForeignKey("basicaccount", verbose_name=_("basicaccount"), on_delete=models.CASCADE)
   
-    
+        
+    @property
+    def balance(self):
+        return self.total['balance']  
+    @property
+    def total(self):
+        bedehkar=0
+        bestankar=0
+        balance=0
+        for account in self.account_set.all():
+            bedehkar+=account.total['bedehkar']
+            bestankar+=account.total['bestankar']
+        balance=bestankar-bedehkar
+        total={"bedehkar":bedehkar,"bestankar":bestankar,"balance":balance}
+        return total
+
+
     class_name="moeinaccount"
     app_name=APP_NAME
  
@@ -117,18 +165,13 @@ class MoeinAccount(models.Model,LinkHelper):
     def accounts(self):
         return self.account_set.all()
 
-    @property
-    def balance(self):
-        balance=0
-        for account in self.account_set.all():
-            balance+=account.balance
-        return balance
+    
     class Meta:
         verbose_name = _("MoeinAccount")
         verbose_name_plural = _("MoeinAccounts")
 
     def __str__(self):
-        return self.name
+        return self.basicaccount.title+" " +self.name
  
 class FinancialDocument(LinkHelper,models.Model):
     account=models.ForeignKey("account", verbose_name=_("account"), on_delete=models.PROTECT)
@@ -183,14 +226,11 @@ class AccountingDocument(models.Model,LinkHelper):
 
     def __str__(self):
         return self.title
-
-    def get_absolute_url(self):
-        return reverse("AccountingDocument_detail", kwargs={"pk": self.pk})
-
+ 
 class AccountingDocumentLine(models.Model,LinkHelper):
     accounting_document=models.ForeignKey("accountingdocument", verbose_name=_("accountingdocument"), on_delete=models.CASCADE)
-    account=models.ForeignKey("account", verbose_name=_("account"), on_delete=models.CASCADE)
-    event=models.ForeignKey("event", verbose_name=_("event"), on_delete=models.CASCADE)
+    account=models.ForeignKey("account", verbose_name=_("account"), on_delete=models.PROTECT)
+    event=models.ForeignKey("event", verbose_name=_("event"), on_delete=models.PROTECT)
     bedehkar=models.IntegerField(_("بدهکار"),default=0)
     bestankar=models.IntegerField(_("بستانکار"),default=0)
     balance=models.IntegerField(_("بالانس"),default=0)
@@ -208,6 +248,9 @@ class AccountingDocumentLine(models.Model,LinkHelper):
     def title(self):
         return self.event.title 
     @property
+    def rest(self):
+        return 0
+    @property
     def amount(self):
         return self.event.amount
     class_name="accountingdocumentline"
@@ -219,10 +262,7 @@ class AccountingDocumentLine(models.Model,LinkHelper):
 
     def __str__(self):
         return f"{self.account.id} , {self.event.title} , {self.balance}"
-
-    def get_absolute_url(self):
-        return reverse("AccountingDocumentLine_detail", kwargs={"pk": self.pk})
-
+ 
 class EventCategory(models.Model,LinkHelper):
     class_name="eventcategory"
     app_name=APP_NAME
@@ -275,13 +315,15 @@ class Event(Page):
             AccountingDocumentLineBestankar.accounting_document=self.accounting_document
             AccountingDocumentLineBestankar.event=self
             AccountingDocumentLineBestankar.save()
+            AccountingDocumentLineBestankar.account.normalize_balance()
+
             
             AccountingDocumentLineBedehkar=AccountingDocumentLine()
             AccountingDocumentLineBedehkar.account=self.pay_to
             AccountingDocumentLineBedehkar.accounting_document=self.accounting_document
             AccountingDocumentLineBedehkar.event=self
             AccountingDocumentLineBedehkar.save()
- 
+            AccountingDocumentLineBedehkar.account.normalize_balance()
 
 
 class EventPrint(models.Model):

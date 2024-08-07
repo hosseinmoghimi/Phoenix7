@@ -1,9 +1,19 @@
+{% load to_price %}
+
 <div class="mr-2">
 <a href="{{basic_account.get_absolute_url}}">
      
         <h2 class="farsi basic-account">
 
         {{basic_account.title}}
+        <small>
+            (
+
+                {{basic_account.balance|to_price}}
+                )
+
+        </small>
+
     </h2>
 </a>
 {% for moein_account in basic_account.moeinaccount_set.all %}

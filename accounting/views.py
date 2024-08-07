@@ -1,8 +1,8 @@
 from django.shortcuts import render,reverse
 from .apps import APP_NAME
 from django.views import View
-from .repo import AccountRepo,AccountGroupRepo
-from .serializers import AccountSerializer,AccountGroupSerializer
+from .repo import AccountRepo,AccountGroupRepo,AccountingDocumentRepo,BasicAccountRepo
+from .serializers import AccountSerializer,AccountGroupSerializer,BasicAccountSerializer
 from .forms import *
 from core.views import CoreContext
 import json
@@ -35,14 +35,67 @@ class AccountsView(View):
         if request.user.has_perm(APP_NAME+".add_account"):
             context['add_account_form']=AddAccountForm()
         return render(request,TEMPLATE_ROOT+"accounts.html",context)
+class AccountingDocumentsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        context['expand_accounts']=True
+        if 'sv' in kwargs:
+            context['SIMPLE_VIEW']=True
+        accounting_documents=AccountingDocumentRepo(request=request).list()
+        context['accounting_documents']=accounting_documents
+         
+        
+        if request.user.has_perm(APP_NAME+".add_account"):
+            context['add_account_form']=AddAccountingDocumentForm()
+        return render(request,TEMPLATE_ROOT+"accounting-documents.html",context)
+class AccountingDocumentLineView(View):
+    def get(self,requets,*args, **kwargs):
+        pass
+class AccountingDocumentView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        context['expand_accounts']=True
+        if 'sv' in kwargs:
+            context['SIMPLE_VIEW']=True
+        accounting_document=AccountingDocumentRepo(request=request).accounting_document(*args, **kwargs)
+        context['accounting_document']=accounting_document
+         
+        
+        if request.user.has_perm(APP_NAME+".add_account"):
+            context['add_account_form']=AddAccountingDocumentForm()
+        return render(request,TEMPLATE_ROOT+"accounting-document.html",context)
 class AccountView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
         account=AccountRepo(request=request).account(*args, **kwargs)
         context['account']=account
+        
+        accounting_document_lines=account.accountingdocumentline_set.all()
+        context['accounting_document_lines']=accounting_document_lines
+
         account_s=json.dumps(AccountSerializer(account).data)
         context['account_s']=account_s
         return render(request,TEMPLATE_ROOT+"account.html",context)
+
+class BasicAccountsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        basic_accounts=BasicAccountRepo(request=request).list(*args, **kwargs)
+        context['basic_accounts']=basic_accounts
+         
+        basic_accounts_s=json.dumps(BasicAccountSerializer(basic_accounts,many=True).data)
+        context['basic_accounts_s']=basic_accounts_s
+        return render(request,TEMPLATE_ROOT+"basic-accounts.html",context)
+
+class BalanceView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        basic_accounts=BasicAccountRepo(request=request).list(*args, **kwargs)
+        context['basic_accounts']=basic_accounts
+         
+        basic_accounts_s=json.dumps(BasicAccountSerializer(basic_accounts,many=True).data)
+        context['basic_accounts_s']=basic_accounts_s
+        return render(request,TEMPLATE_ROOT+"balance.html",context)
 class BasicAccountView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)

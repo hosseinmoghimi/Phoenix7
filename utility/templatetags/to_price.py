@@ -11,7 +11,16 @@ def to_price(value,*args, **kwargs):
     return to_price_origin(value=value)
 @register.filter
 def to_price_color(value,*args, **kwargs):
-    return to_price_origin(value=value,color=True,*args, **kwargs)
+    if value>0:
+        color="success"
+    if value<0:
+        color="danger"
+    if value==0:
+        color="primary"
+    return f"""
+    <span class="text-{color}">{to_price_origin(value=value,color=True,*args, **kwargs)}</span>
+    """
+ 
 
 @register.filter
 def to_price_rial(value,*args, **kwargs):

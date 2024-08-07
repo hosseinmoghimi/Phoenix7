@@ -5,6 +5,9 @@ class SearchForm(forms.Form):
     end_date=forms.CharField(max_length=20, required=False)
     account_id=forms.IntegerField(required=False)
     profile_id=forms.IntegerField(required=False)
+class AddAccountingDocumentForm(forms.Form):
+    title=forms.CharField(max_length=100, required=False)
+
 
 
 class AddAccountTagForm(forms.Form):
