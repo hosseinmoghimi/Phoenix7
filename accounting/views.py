@@ -69,7 +69,7 @@ class AccountView(View):
         context=getContext(request=request)
         account=AccountRepo(request=request).account(*args, **kwargs)
         context['account']=account
-        
+        account.normalize_total()
         accounting_document_lines=account.accountingdocumentline_set.all()
         context['accounting_document_lines']=accounting_document_lines
 
@@ -81,6 +81,8 @@ class BasicAccountsView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
         basic_accounts=BasicAccountRepo(request=request).list(*args, **kwargs)
+        for basic_account in basic_accounts:
+            basic_account.normalize_total()
         context['basic_accounts']=basic_accounts
          
         basic_accounts_s=json.dumps(BasicAccountSerializer(basic_accounts,many=True).data)
@@ -128,6 +130,8 @@ class AccountGroupsView(View):
         context=getContext(request=request)
         account_groups=AccountGroupRepo(request=request).list(*args, **kwargs)
         context['account_groups']=account_groups
+        for account_group in account_groups:
+            account_group.normalize_total()
         account_groups_s=json.dumps(AccountGroupSerializer(account_groups,many=True).data)
         context['account_groups_s']=account_groups_s
         return render(request,TEMPLATE_ROOT+"account-groups.html",context)

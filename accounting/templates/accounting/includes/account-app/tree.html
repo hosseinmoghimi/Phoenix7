@@ -4,14 +4,14 @@
 <div class="row mr-5">
     <div class="col-md-6">
         <a href="{{account.get_absolute_url}}">
-            <h5 class="text-{{account.dynamic_balance|to_amount_color}}">
+            <h5 class="text-{{account.balance|to_amount_color}}">
 
                 {{account.title}} 
                 <small  >
 (
 
     
-    {{account.dynamic_balance|to_price_color|safe}} 
+    {{account.balance|to_price_color|safe}} 
     )
     
                 </small>
@@ -27,7 +27,7 @@
     <div class="col-md-3">
         <h6 class="  ">
 
-            {{account.dynamic_balance|to_price_color|safe}} 
+            {{account.balance|to_price_color|safe}} 
         </h6>
     </div>
 </div>

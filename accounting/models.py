@@ -7,77 +7,39 @@ from utility.calendar import PersianCalendar
 IMAGE_FOLDER=APP_NAME+"/images/"
 from phoenix.server_settings import MEDIA_URL,STATIC_URL
 # Create your models here.
-class Account(models.Model,LinkHelper):
-    moeinaccount=models.ForeignKey("moeinaccount", verbose_name=_("moein account"), on_delete=models.CASCADE)
-    
-    title=models.CharField(_("title"), max_length=500)
-    mobile=models.CharField(_("mobile"),null=True,blank=True, max_length=50)
-    tel=models.CharField(_("tel"),null=True,blank=True, max_length=50)
-    description=models.CharField(_("description"),null=True,blank=True, max_length=500)
-    profile=models.ForeignKey("authentication.profile",null=True,blank=True, verbose_name=_("profile"), on_delete=models.SET_NULL)
-    balance=models.IntegerField("balance",default=0)
-    logo_origin=models.ImageField(_("logo"),blank=True,null=True, upload_to=IMAGE_FOLDER+"account", height_field=None, width_field=None, max_length=None)
-    class_name="account"
-    app_name=APP_NAME
-    @property
-    def logo(self):
-        if not self.logo_origin :
-            return f"{STATIC_URL}{APP_NAME}/img/pages/thumbnail/account.png"
-        return f"{MEDIA_URL}{self.logo_origin}"
-
-        # if self.logo_origin:
-        #     return MEDIA_URL+str(self.logo_origin)
-        # if self.profile is not None:
-        #     return self.profile.image
-        # return f"{STATIC_URL}{self.app_name}/img/{self.class_name}.png"
-    class Meta:
-        verbose_name = _("Account")
-        verbose_name_plural = _("Accounts")
-    @property
-    def total(self):
-        bedehkar=0
-        bestankar=0
-        balance=0
-        for accounting_doc_line in AccountingDocumentLine.objects.filter(account=self).all():
-            bedehkar+=accounting_doc_line.bedehkar
-            bestankar+=accounting_doc_line.bestankar
-        balance=bestankar-bedehkar
-        total={"bedehkar":bedehkar,"bestankar":bestankar,"balance":balance}
-        return total
-    def __str__(self):
-        return self.moeinaccount.title+" " +self.title
-    def normalize_balance(self):
-        balance=0
-        for ac_doc_line in AccountingDocumentLine.objects.filter(account=self):
-            balance+=ac_doc_line.balance
-        self.balance=balance
-        super(Account,self).save()
-    @property
-    def dynamic_balance(self):
-        dynamic_balance=0
-        for accountingdocumentline in self.accountingdocumentline_set.all():
-            dynamic_balance+=accountingdocumentline.balance
-        return dynamic_balance
-
 class AccountGroup(models.Model,LinkHelper):
     name=models.CharField(_("name"), max_length=200)
+    bedehkar=models.IntegerField(_("bedehkar"),default=0)
+    bestankar=models.IntegerField(_("bestankar"),default=0)
+    balance=models.IntegerField("balance",default=0)
+    
     # basic_accounts=models.ManyToManyField("basicaccount",blank=True, verbose_name=_("حساب های کل"))
     class_name="accountgroup"
     app_name=APP_NAME  
     
-    @property
-    def balance(self):
-        return self.total['balance']
 
+    
+    def normalize_total(self):
+        bedehkar=0
+        bestankar=0
+        balance=0
+        for basic_account in self.basicaccount_set.all(): 
+            basic_account.normalize_total()
+           
+
+            bedehkar+=basic_account.bedehkar
+            bestankar+=basic_account.bestankar
+        balance=bestankar-bedehkar
+        self.bedehkar=bedehkar
+        self.bestankar=bestankar
+        self.balance=balance
+        self.save() 
+
+  
     @property
     def basic_accounts(self):
         return self.basicaccount_set.all()
-    @property
-    def balance(self):
-        balance=0
-        for basic_account in self.basicaccount_set.all():
-            balance+=basic_account.balance
-        return balance
+    
     @property
     def title(self):
         return self.name
@@ -94,14 +56,13 @@ class BasicAccount(models.Model,LinkHelper):
     accountgroup=models.ForeignKey("accountgroup", verbose_name=_("account group"), on_delete=models.CASCADE)
     # moein_accounts=models.ManyToManyField("moeinaccount",blank=True, verbose_name=_("حساب های معین"))
   
-
+    bedehkar=models.IntegerField(_("bedehkar"),default=0)
+    bestankar=models.IntegerField(_("bestankar"),default=0)
+    balance=models.IntegerField("balance",default=0)
    
     class_name="basicaccount"
     app_name=APP_NAME
-
-    @property
-    def balance(self):
-        return self.total['balance']
+ 
     @property
     def title(self):
         return self.name
@@ -110,19 +71,22 @@ class BasicAccount(models.Model,LinkHelper):
         return self.moeinaccount_set.all()
    
 
-        
-    @property
-    def total(self):
+         
+ 
+    def normalize_total(self):
         bedehkar=0
         bestankar=0
         balance=0
         for moein_account in self.moeinaccount_set.all():
-            bedehkar+=moein_account.total['bedehkar']
-            bestankar+=moein_account.total['bestankar']
+            moein_account.normalize_total()
+           
+            bedehkar+=moein_account.bedehkar
+            bestankar+=moein_account.bestankar
         balance=bestankar-bedehkar
-        total={"bedehkar":bedehkar,"bestankar":bestankar,"balance":balance}
-        return total
-
+        self.bedehkar=bedehkar
+        self.bestankar=bestankar
+        self.balance=balance
+        self.save() 
     class Meta:
         verbose_name = _("BasicAccount")
         verbose_name_plural = _("BasicAccounts")
@@ -136,22 +100,25 @@ class MoeinAccount(models.Model,LinkHelper):
     name=models.CharField(_("name"), max_length=200)
     # accounts=models.ManyToManyField("account", verbose_name=_("حساب ها"))
     basicaccount=models.ForeignKey("basicaccount", verbose_name=_("basicaccount"), on_delete=models.CASCADE)
-  
-        
-    @property
-    def balance(self):
-        return self.total['balance']  
-    @property
-    def total(self):
+    bedehkar=models.IntegerField(_("bedehkar"),default=0)
+    bestankar=models.IntegerField(_("bestankar"),default=0)
+    balance=models.IntegerField("balance",default=0)
+         
+    
+    def normalize_total(self):
         bedehkar=0
         bestankar=0
         balance=0
         for account in self.account_set.all():
-            bedehkar+=account.total['bedehkar']
-            bestankar+=account.total['bestankar']
+            account.normalize_total()
+            
+            bedehkar+=account.bedehkar
+            bestankar+=account.bestankar
         balance=bestankar-bedehkar
-        total={"bedehkar":bedehkar,"bestankar":bestankar,"balance":balance}
-        return total
+        self.bedehkar=bedehkar
+        self.bestankar=bestankar
+        self.balance=balance
+        self.save() 
 
 
     class_name="moeinaccount"
@@ -165,7 +132,8 @@ class MoeinAccount(models.Model,LinkHelper):
     def accounts(self):
         return self.account_set.all()
 
-    
+    def save(self):
+        super(MoeinAccount,self).save()
     class Meta:
         verbose_name = _("MoeinAccount")
         verbose_name_plural = _("MoeinAccounts")
@@ -173,6 +141,49 @@ class MoeinAccount(models.Model,LinkHelper):
     def __str__(self):
         return self.basicaccount.title+" " +self.name
  
+class Account(models.Model,LinkHelper):
+    moeinaccount=models.ForeignKey("moeinaccount", verbose_name=_("moein account"), on_delete=models.CASCADE)
+    
+    title=models.CharField(_("title"), max_length=500)
+    mobile=models.CharField(_("mobile"),null=True,blank=True, max_length=50)
+    tel=models.CharField(_("tel"),null=True,blank=True, max_length=50)
+    description=models.CharField(_("description"),null=True,blank=True, max_length=500)
+    profile=models.ForeignKey("authentication.profile",null=True,blank=True, verbose_name=_("profile"), on_delete=models.SET_NULL)
+    logo_origin=models.ImageField(_("logo"),blank=True,null=True, upload_to=IMAGE_FOLDER+"account", height_field=None, width_field=None, max_length=None)
+    bedehkar=models.IntegerField(_("bedehkar"),default=0)
+    bestankar=models.IntegerField(_("bestankar"),default=0)
+    balance=models.IntegerField("balance",default=0)
+    class_name="account"
+    app_name=APP_NAME
+    @property
+    def logo(self):
+        if not self.logo_origin :
+            return f"{STATIC_URL}{APP_NAME}/img/pages/thumbnail/account.png"
+        return f"{MEDIA_URL}{self.logo_origin}"
+
+        # if self.logo_origin:
+        #     return MEDIA_URL+str(self.logo_origin)
+        # if self.profile is not None:
+        #     return self.profile.image
+        # return f"{STATIC_URL}{self.app_name}/img/{self.class_name}.png"
+    class Meta:
+        verbose_name = _("Account")
+        verbose_name_plural = _("Accounts")
+    def __str__(self):
+        return self.moeinaccount.title+" " +self.title
+    def normalize_total(self):
+        balance=0
+        bestankar=0
+        bedehkar=0
+        for ac_doc_line in AccountingDocumentLine.objects.filter(account_id=self.id):
+            bedehkar+=ac_doc_line.bedehkar
+            bestankar+=ac_doc_line.bestankar
+        self.balance=bestankar-bedehkar
+        self.bedehkar=bedehkar
+        self.bestankar=bestankar
+        super(Account,self).save()
+   
+
 class FinancialDocument(LinkHelper,models.Model):
     account=models.ForeignKey("account", verbose_name=_("account"), on_delete=models.PROTECT)
     event=models.ForeignKey("event", verbose_name=_("event"), on_delete=models.PROTECT)
