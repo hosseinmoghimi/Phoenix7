@@ -1,0 +1,14 @@
+<div >
+
+    <a href="{{account_group.get_absolute_url}}">
+        <h1 class="farsi account-group">
+
+            
+            {{account_group.title}}
+        </h1>  
+    </a>
+    {% for basic_account in account_group.basicaccount_set.all %}
+    
+    {% include "accounting/includes/basic-account-app/tree.html" %}
+    {% endfor %}
+</div>

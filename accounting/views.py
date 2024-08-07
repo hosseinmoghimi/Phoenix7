@@ -1,8 +1,8 @@
 from django.shortcuts import render,reverse
 from .apps import APP_NAME
 from django.views import View
-from .repo import AccountRepo
-from .serializers import AccountSerializer
+from .repo import AccountRepo,AccountGroupRepo
+from .serializers import AccountSerializer,AccountGroupSerializer
 from .forms import *
 from core.views import CoreContext
 import json
@@ -43,6 +43,38 @@ class AccountView(View):
         account_s=json.dumps(AccountSerializer(account).data)
         context['account_s']=account_s
         return render(request,TEMPLATE_ROOT+"account.html",context)
+class BasicAccountView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        account=AccountRepo(request=request).account(*args, **kwargs)
+        context['account']=account
+        account_s=json.dumps(AccountSerializer(account).data)
+        context['account_s']=account_s
+        return render(request,TEMPLATE_ROOT+"basic-account.html",context)
+class MoeinAccountView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        account=AccountRepo(request=request).account(*args, **kwargs)
+        context['account']=account
+        account_s=json.dumps(AccountSerializer(account).data)
+        context['account_s']=account_s
+        return render(request,TEMPLATE_ROOT+"moein-account.html",context)
+class AccountGroupView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        account=AccountRepo(request=request).account(*args, **kwargs)
+        context['account']=account
+        account_s=json.dumps(AccountSerializer(account).data)
+        context['account_s']=account_s
+        return render(request,TEMPLATE_ROOT+"account-group.html",context)
 class SearchView(View):
     def get(self,request,*args, **kwargs):
         pass
+class AccountGroupsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        account_groups=AccountGroupRepo(request=request).list(*args, **kwargs)
+        context['account_groups']=account_groups
+        account_groups_s=json.dumps(AccountGroupSerializer(account_groups,many=True).data)
+        context['account_groups_s']=account_groups_s
+        return render(request,TEMPLATE_ROOT+"account-groups.html",context)

@@ -1,0 +1,33 @@
+{% load to_price %}
+ {% load to_amount_color %}
+ 
+<div class="row mr-5">
+    <div class="col-md-6">
+        <a href="{{account.get_absolute_url}}">
+            <h5 class="text-{{account.dynamic_balance|to_amount_color}}">
+
+                {{account.title}} 
+                <small class="text-{{account.dynamic_balance|to_amount_color}} ">
+(
+
+    
+    {{account.dynamic_balance|to_price_color}} 
+    )
+    
+                </small>
+            </h5>
+        </a>
+    </div>
+    <div class="col-md-3">
+        <h5>
+
+            {{account.balance|to_price_color}} 
+        </h5>
+    </div>
+    <div class="col-md-3">
+        <h6 class="text-{{account.dynamic_balance|to_amount_color}} ">
+
+            {{account.dynamic_balance|to_price_color}} 
+        </h6>
+    </div>
+</div>

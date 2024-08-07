@@ -3,6 +3,7 @@ from core.models import LinkHelper,Page
 from .apps import APP_NAME
 from django.utils.translation import gettext as _
 from .enums import *
+from utility.calendar import PersianCalendar
 IMAGE_FOLDER=APP_NAME+"/images/"
 from phoenix.server_settings import MEDIA_URL,STATIC_URL
 # Create your models here.
@@ -35,14 +36,31 @@ class Account(models.Model,LinkHelper):
 
     def __str__(self):
         return self.title
- 
+
+    @property
+    def dynamic_balance(self):
+        dynamic_balance=0
+        for accountingdocumentline in self.accountingdocumentline_set.all():
+            dynamic_balance+=accountingdocumentline.balance
+        return dynamic_balance
 
 class AccountGroup(models.Model,LinkHelper):
     name=models.CharField(_("name"), max_length=200)
     # basic_accounts=models.ManyToManyField("basicaccount",blank=True, verbose_name=_("حساب های کل"))
     class_name="accountgroup"
     app_name=APP_NAME  
-
+    @property
+    def basic_accounts(self):
+        return self.basicaccount_set.all()
+    @property
+    def balance(self):
+        balance=0
+        for basic_account in self.basicaccount_set.all():
+            balance+=basic_account.balance
+        return balance
+    @property
+    def title(self):
+        return self.name
     class Meta:
         verbose_name = _("AccountGroup")
         verbose_name_plural = _("AccountGroups")
@@ -50,17 +68,29 @@ class AccountGroup(models.Model,LinkHelper):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse("AccountGroup_detail", kwargs={"pk": self.pk})
+     
 class BasicAccount(models.Model,LinkHelper):
     name=models.CharField(_("name"), max_length=200)
     accountgroup=models.ForeignKey("accountgroup", verbose_name=_("account group"), on_delete=models.CASCADE)
     # moein_accounts=models.ManyToManyField("moeinaccount",blank=True, verbose_name=_("حساب های معین"))
   
 
+   
     class_name="basicaccount"
     app_name=APP_NAME
 
+    @property
+    def title(self):
+        return self.name
+    @property
+    def moein_accounts(self):
+        return self.moeinaccount_set.all()
+    @property
+    def balance(self):
+        balance=0
+        for moein_account in self.moein_account_set.all():
+            balance+=moein_account.balance
+        return balance
     class Meta:
         verbose_name = _("BasicAccount")
         verbose_name_plural = _("BasicAccounts")
@@ -68,8 +98,7 @@ class BasicAccount(models.Model,LinkHelper):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse("BasicAccount_detail", kwargs={"pk": self.pk})
+     
 class MoeinAccount(models.Model,LinkHelper):
 
     name=models.CharField(_("name"), max_length=200)
@@ -79,17 +108,28 @@ class MoeinAccount(models.Model,LinkHelper):
     
     class_name="moeinaccount"
     app_name=APP_NAME
+ 
+    @property
+    def title(self):
+        return self.name
 
+    @property
+    def accounts(self):
+        return self.account_set.all()
+
+    @property
+    def balance(self):
+        balance=0
+        for account in self.account_set.all():
+            balance+=account.balance
+        return balance
     class Meta:
         verbose_name = _("MoeinAccount")
         verbose_name_plural = _("MoeinAccounts")
 
     def __str__(self):
         return self.name
-
-    def get_absolute_url(self):
-        return reverse("MoeinAccount_detail", kwargs={"pk": self.pk})
-
+ 
 class FinancialDocument(LinkHelper,models.Model):
     account=models.ForeignKey("account", verbose_name=_("account"), on_delete=models.PROTECT)
     event=models.ForeignKey("event", verbose_name=_("event"), on_delete=models.PROTECT)
@@ -121,7 +161,60 @@ class FinancialDocument(LinkHelper,models.Model):
     def get_absolute_url(self):
         return reverse("FinancialDocument_detail", kwargs={"pk": self.pk})
 
- 
+class AccountingDocument(models.Model,LinkHelper):
+    title=models.CharField(_("title"), max_length=500)
+    lines=models.ManyToManyField("accountingdocumentline",blank=True, verbose_name=_("accounting document lines "))
+    
+
+    
+
+    class_name="accountingdocument"
+    app_name=APP_NAME    
+    class Meta:
+        verbose_name = _("AccountingDocument")
+        verbose_name_plural = _("AccountingDocuments")
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("AccountingDocument_detail", kwargs={"pk": self.pk})
+
+class AccountingDocumentLine(models.Model,LinkHelper):
+    account=models.ForeignKey("account", verbose_name=_("account"), on_delete=models.CASCADE)
+    event=models.ForeignKey("event", verbose_name=_("event"), on_delete=models.CASCADE)
+    bedehkar=models.IntegerField(_("بدهکار"),default=0)
+    bestankar=models.IntegerField(_("بستانکار"),default=0)
+    balance=models.IntegerField(_("بالانس"),default=0)
+    def save(self):
+        if self.account==self.event.pay_from:
+            self.bestankar=self.event.amount
+            self.bedehkar=0
+            self.balance=self.event.amount
+        if self.account==self.event.pay_to:
+            self.bestankar=0
+            self.bedehkar=self.event.amount
+            self.balance=0-self.event.amount
+        super(AccountingDocumentLine,self).save()
+    @property
+    def title(self):
+        return self.event.title 
+    @property
+    def amount(self):
+        return self.event.amount
+    class_name="accountingdocumentline"
+    app_name=APP_NAME 
+
+    class Meta:
+        verbose_name = _("AccountingDocumentLine")
+        verbose_name_plural = _("AccountingDocumentLines")
+
+    def __str__(self):
+        return f"{self.account.id} , {self.event.title} , {self.balance}"
+
+    def get_absolute_url(self):
+        return reverse("AccountingDocumentLine_detail", kwargs={"pk": self.pk})
+
 class EventCategory(models.Model,LinkHelper):
     class_name="eventcategory"
     app_name=APP_NAME
@@ -153,7 +246,9 @@ class Event(Page):
     event_datetime=models.DateTimeField(_("تاریخ تراکنش"), auto_now=False, auto_now_add=False)
     
 
-    
+    @property 
+    def persian_event_datetime(self):
+        return PersianCalendar().from_gregorian(self.event_datetime)
 
     class Meta:
         verbose_name = _("Event")

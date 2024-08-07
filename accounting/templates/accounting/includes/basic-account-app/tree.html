@@ -1,0 +1,14 @@
+<div class="mr-2">
+<a href="{{basic_account.get_absolute_url}}">
+     
+        <h2 class="farsi basic-account">
+
+        {{basic_account.title}}
+    </h2>
+</a>
+{% for moein_account in basic_account.moeinaccount_set.all %}
+ 
+        {% include "accounting/includes/moein-account-app/tree.html" %}
+{% endfor %}
+
+</div>

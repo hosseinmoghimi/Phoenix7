@@ -9,9 +9,12 @@ from utility.log import leolog
 @register.filter
 def to_price(value,*args, **kwargs):
     return to_price_origin(value=value)
+@register.filter
+def to_price_color(value,*args, **kwargs):
+    return to_price_origin(value=value,color=True,*args, **kwargs)
 
 @register.filter
-def to_price_rial(value):
+def to_price_rial(value,*args, **kwargs):
     if CURRENCY==TUMAN:
         value=value*1
     return to_price_origin(value=value,unit=RIAL) 
