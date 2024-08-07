@@ -163,10 +163,17 @@ class FinancialDocument(LinkHelper,models.Model):
 
 class AccountingDocument(models.Model,LinkHelper):
     title=models.CharField(_("title"), max_length=500)
-    lines=models.ManyToManyField("accountingdocumentline",blank=True, verbose_name=_("accounting document lines "))
+    # lines=models.ManyToManyField("accountingdocumentline",blank=True, verbose_name=_("accounting document lines "))
+    # events=models.ManyToManyField("event",blank=True, verbose_name=_("events"))
     
+    @property 
+    def lines(self):
+        return self.accountingdocumentline_set.all()
 
-    
+
+    def save(self):
+        super(AccountingDocument,self).save()
+
 
     class_name="accountingdocument"
     app_name=APP_NAME    
@@ -181,6 +188,7 @@ class AccountingDocument(models.Model,LinkHelper):
         return reverse("AccountingDocument_detail", kwargs={"pk": self.pk})
 
 class AccountingDocumentLine(models.Model,LinkHelper):
+    accounting_document=models.ForeignKey("accountingdocument", verbose_name=_("accountingdocument"), on_delete=models.CASCADE)
     account=models.ForeignKey("account", verbose_name=_("account"), on_delete=models.CASCADE)
     event=models.ForeignKey("event", verbose_name=_("event"), on_delete=models.CASCADE)
     bedehkar=models.IntegerField(_("بدهکار"),default=0)
@@ -236,6 +244,7 @@ class EventCategory(models.Model,LinkHelper):
 class Event(Page):
     class_name="event"
     app_name=APP_NAME
+    accounting_document=models.ForeignKey("accountingdocument",blank=True,null=True, verbose_name=_("سند حسابداری"), on_delete=models.PROTECT)
     pay_from=models.ForeignKey("account",related_name="events_from", verbose_name=_("پرداخت کننده"), on_delete=models.PROTECT)
     pay_to=models.ForeignKey("account", related_name="events_to",verbose_name=_("دریافت کننده"), on_delete=models.PROTECT)
     creator=models.ForeignKey("authentication.profile",null=True,blank=True, verbose_name=_("ثبت شده توسط"), on_delete=models.SET_NULL)
@@ -259,6 +268,20 @@ class Event(Page):
  
     def save(self,*args, **kwargs):
         super(Event,self).save()
+        if self.accounting_document is not None:
+            AccountingDocumentLine.objects.filter(event=self).delete()
+            AccountingDocumentLineBestankar=AccountingDocumentLine()
+            AccountingDocumentLineBestankar.account=self.pay_from
+            AccountingDocumentLineBestankar.accounting_document=self.accounting_document
+            AccountingDocumentLineBestankar.event=self
+            AccountingDocumentLineBestankar.save()
+            
+            AccountingDocumentLineBedehkar=AccountingDocumentLine()
+            AccountingDocumentLineBedehkar.account=self.pay_to
+            AccountingDocumentLineBedehkar.accounting_document=self.accounting_document
+            AccountingDocumentLineBedehkar.event=self
+            AccountingDocumentLineBedehkar.save()
+ 
 
 
 class EventPrint(models.Model):
