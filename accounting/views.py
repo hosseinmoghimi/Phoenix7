@@ -84,7 +84,16 @@ class BasicAccountsView(View):
         for basic_account in basic_accounts:
             basic_account.normalize_total()
         context['basic_accounts']=basic_accounts
-         
+        sum_bed=0
+        sum_bes=0
+        for basic_account in basic_accounts:
+            sum_bed+=basic_account.bedehkar 
+            sum_bes+=basic_account.bestankar 
+        context['sum_bedehkar']=sum_bed
+        context['sum_bestankar']=sum_bes
+        balance=sum_bed-sum_bes
+        if not balance==0:
+            context["balance"]=balance
         basic_accounts_s=json.dumps(BasicAccountSerializer(basic_accounts,many=True).data)
         context['basic_accounts_s']=basic_accounts_s
         return render(request,TEMPLATE_ROOT+"basic-accounts.html",context)
