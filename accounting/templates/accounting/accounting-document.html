@@ -68,7 +68,7 @@
                             </a>
                         </td>
                         <td>
-                            {{accounting_document_line.balance|to_price}}
+                            {{accounting_document_line.balance|to_price_color_or_blank|safe}}
                             
                         </td>
                         <td>
@@ -76,12 +76,17 @@
                             
                         </td>
                         <td>
-                            {{accounting_document_line.bedehkar|to_price}}
+                            <span class="text-success">
+
+                                {{accounting_document_line.bedehkar|to_price_or_blank|safe}}
+                            </span>
                             
                         </td>
                         <td>
-                            {{accounting_document_line.bestankar|to_price}}
-                            
+                            <span class="text-danger">
+
+                            {{accounting_document_line.bestankar|to_price_or_blank|safe}}
+                            </span>
                         </td>
                         
                         <td>

@@ -5,7 +5,7 @@ from django.utils.translation import gettext as _
 from .enums import *
 from utility.calendar import PersianCalendar
 IMAGE_FOLDER=APP_NAME+"/images/"
-from phoenix.server_settings import MEDIA_URL,STATIC_URL
+from phoenix.server_settings import MEDIA_URL,STATIC_URL 
 # Create your models here.
 class AccountGroup(models.Model,LinkHelper):
     name=models.CharField(_("name"), max_length=200)
@@ -49,8 +49,7 @@ class AccountGroup(models.Model,LinkHelper):
 
     def __str__(self):
         return self.name
-
-     
+ 
 class BasicAccount(models.Model,LinkHelper):
     name=models.CharField(_("name"), max_length=200)
     accountgroup=models.ForeignKey("accountgroup", verbose_name=_("account group"), on_delete=models.CASCADE)
@@ -94,7 +93,6 @@ class BasicAccount(models.Model,LinkHelper):
     def __str__(self):
         return self.accountgroup.title+" " +self.name
 
-     
 class MoeinAccount(models.Model,LinkHelper):
 
     name=models.CharField(_("name"), max_length=200)
@@ -183,7 +181,6 @@ class Account(models.Model,LinkHelper):
         self.bestankar=bestankar
         super(Account,self).save()
    
-
 class FinancialDocument(LinkHelper,models.Model):
     account=models.ForeignKey("account", verbose_name=_("account"), on_delete=models.PROTECT)
     event=models.ForeignKey("event", verbose_name=_("event"), on_delete=models.PROTECT)
@@ -336,7 +333,6 @@ class Event(Page):
             AccountingDocumentLineBedehkar.save()
             AccountingDocumentLineBedehkar.account.normalize_balance()
 
-
 class EventPrint(models.Model):
     event=models.ForeignKey("event", verbose_name=_("تراکنش"), on_delete=models.CASCADE)
     print_datetime=models.DateTimeField(_("تاریخ چاپ"),null=True,blank=True, auto_now=False, auto_now_add=True)
@@ -363,8 +359,6 @@ class ProductOrService(Page):
 
     def get_absolute_url(self):
         return reverse("ProductOrService_detail", kwargs={"pk": self.pk})
-
-
 
 class Product(ProductOrService):
 
