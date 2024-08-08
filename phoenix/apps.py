@@ -20,6 +20,13 @@ phoenix_apps=[
         'title':'هویت',
         'icon':'',
         'home_url':SITE_URL+'authentication/',
+    },
+    {
+        'priority':4,
+        'name':'processmanagement',
+        'title':'فرآیند ها',
+        'icon':'',
+        'home_url':SITE_URL+'processmanagement/',
     }
     
 ]

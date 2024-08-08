@@ -7,6 +7,18 @@ from utility.calendar import PersianCalendar
 IMAGE_FOLDER=APP_NAME+"/images/"
 from phoenix.server_settings import MEDIA_URL,STATIC_URL 
 # Create your models here.
+from django.contrib.auth.models import User,Group
+class Access(models.Model):
+
+    
+
+    class Meta:
+        verbose_name = _("Access")
+        verbose_name_plural = _("Accesss")
+
+    def __str__(self):
+        return self.name
+ 
 class AccountGroup(models.Model,LinkHelper):
     name=models.CharField(_("name"), max_length=200)
     bedehkar=models.IntegerField(_("bedehkar"),default=0)
