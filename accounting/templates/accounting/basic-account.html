@@ -3,45 +3,52 @@
 {% load to_price %}
 
 {% block content %}
-<div class="row rtl"> 
-
-
-    </div>
-    <div class="col-md-12">
-        <div class="card"> 
+<div class="row rtl">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h6>
+                     حساب کل
+                </h6>
+            </div>
             <div class="card-body">
                 <h6>
-                    حساب کل
+                     حساب کل 
                 </h6>
-                <h4>
-                    {{basic_account.title}}
-                </h4>
                 <h5>
-                    {{basic_account.balance|to_price_color|safe}}
+                    {{basic_account.title}}
                 </h5>
 
                 <h6>
-                    حساب های معین :
-
+                    {{basic_account.balance|to_price_color|safe}}
                 </h6>
-                {% for moein_account in basic_account.moein_accounts.all %}
+                 
 
-                <h6>
-                    <a href="{{moein_account.get_absolute_url}}">
-                        {{moein_account.title}}
-                        <small>
-                            (
-                            {{moein_account.balance|to_price_color|safe}}
-                            )
-                        </small>
-                    </a>
-                </h6>
-                {% endfor %}
             </div>
         </div>
 
     </div>
 
+    <div class="col-md-6">
+
+        <div class="card">
+            <div class="card-header">
+                <h6>
+                    حساب های معین
+
+                </h6>
+            </div>
+            <div class="card-body">
+
+                {% for moein_account in basic_account.moeinaccount_set.all %}
+                {% include "accounting/includes/moein-account-app/item-media.html" %}
+
+
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock content %}
 
