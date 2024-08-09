@@ -172,14 +172,18 @@ class AddDocumentView(View):
 class TreeChartView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
-        account_groups=AccountGroupRepo(request=request).list(*args, **kwargs)
+        if 'pk' in kwargs:
+            account_groups=[AccountGroupRepo(request=request).account_group(*args, **kwargs)]
+        else:
+            account_groups=AccountGroupRepo(request=request).list(*args, **kwargs)
+
         context['account_groups']=account_groups
         pages=[]
         pages.append({
             'title': f"""گروه های حساب""",
             'parent_id': 0,
             'parent': 0,
-            'get_absolute_url':"",
+            'get_absolute_url':reverse("accounting:account_groups"),
             'id': 1,
             'pre_title': "",
             'sub_title': "",
