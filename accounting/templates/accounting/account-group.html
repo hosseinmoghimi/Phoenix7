@@ -1,41 +1,64 @@
 {% extends "accounting/layout.html" %}
 {% load static %}
+{% load to_price %}
 
 {% block content %}
 <div class="row rtl">
-    <div class="col-md-12"> 
-            <div class="text-center">
-                <img src="{{account_group.logo}}" width="64" alt="">
 
-            </div>
-            <div class="text-center farsi">
-            
+
+</div>
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-body">
+            <h6>
+                گروه حساب
+            </h6>
+            <h4>
                 {{account_group.title}}
-            </div>
-         
-    </div>
-    <div class="col-md-12"> 
-        <div class="card">
-            <div class="catd-title">
-                <h3>
-                    حساب های کل
-                </h3>
-            </div>
-            <div class="card-body">
-                {% for basic_account in account_group.basic_accounts.all %}
-                  
+            </h4>
+
+            <h5>
+                {{account_group.balance|to_price_color|safe}}
+            </h5>
+
+            <h6>
+                حساب های کل :
+
+            </h6>
+            {% for basic_account in account_group.basicaccount_set.all %}
+
+            <h6>
+                <a href="{{basic_account.get_absolute_url}}">
+                    {{basic_account.title}}
+                    <small>
+                        (
+                        {{basic_account.balance|to_price_color|safe}}
+                        )
+                    </small>
+                </a>
+            </h6>
+            {% for moein_account in basic_account.moein_accounts.all %}
+            <div class="mr-5">
+
                 <h6>
-                    <a href="{{basic_account.get_absoulte_url}}">
-                        {{basic_account.title}}
+                    <a href="{{moein_account.get_absolute_url}}">
+                        {{moein_account.title}}
+                        <small>
+                            (
+                            {{moein_account.balance|to_price_color|safe}}
+                            )
+                        </small>
                     </a>
                 </h6>
-                {% endfor %}
             </div>
+            {% endfor %}
+
+            {% endfor %}
         </div>
-           
-         
     </div>
-    
+
+</div>
+
 </div>
 {% endblock content %}
 
@@ -43,4 +66,3 @@
 {% block script %}
 
 {% endblock script %}
-

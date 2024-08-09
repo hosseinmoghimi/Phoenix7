@@ -107,6 +107,10 @@ class BasicAccount(models.Model,LinkHelper):
 
 class MoeinAccount(models.Model,LinkHelper):
 
+
+    class_name="moeinaccount"
+    app_name=APP_NAME
+
     name=models.CharField(_("name"), max_length=200)
     # accounts=models.ManyToManyField("account", verbose_name=_("حساب ها"))
     basicaccount=models.ForeignKey("basicaccount", verbose_name=_("basicaccount"), on_delete=models.CASCADE)
@@ -130,9 +134,6 @@ class MoeinAccount(models.Model,LinkHelper):
         self.balance=balance
         self.save() 
 
-
-    class_name="moeinaccount"
-    app_name=APP_NAME
  
     @property
     def title(self):
@@ -304,7 +305,7 @@ class EventCategory(models.Model,LinkHelper):
 class Event(Page):
     class_name="event"
     app_name=APP_NAME
-    accounting_document=models.ForeignKey("accountingdocument",blank=True,null=True, verbose_name=_("سند حسابداری"), on_delete=models.PROTECT)
+    # accounting_document=models.ForeignKey("accountingdocument",blank=True,null=True, verbose_name=_("سند حسابداری"), on_delete=models.PROTECT)
     pay_from=models.ForeignKey("account",related_name="events_from", verbose_name=_("پرداخت کننده"), on_delete=models.PROTECT)
     pay_to=models.ForeignKey("account", related_name="events_to",verbose_name=_("دریافت کننده"), on_delete=models.PROTECT)
     creator=models.ForeignKey("authentication.profile",null=True,blank=True, verbose_name=_("ثبت شده توسط"), on_delete=models.SET_NULL)

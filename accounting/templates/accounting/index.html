@@ -32,26 +32,47 @@
             </h5>
         </a>
     </div>
+ 
 
     <div class="col-md-3">
-        <a href="{% url 'accounting:accounting_documents' %}">
-            <h5 class="farsi text-center">
-
-                اسناد حسابداری
-
-            </h5>
-        </a>
-    </div>
-
-    <div class="col-md-2">
         <a href="{% url 'accounting:basic_accounts' %}">
             <h5 class="farsi text-center">
 
-             دفاتر کل حسابداری
+                دفاتر کل حسابداری
 
             </h5>
         </a>
     </div>
+
+    <div class="col-md-3">
+        <a href="{% url 'accounting:tree_chart' %}">
+            <h5 class="farsi text-center">
+                نمودار درختی
+            </h5>
+        </a>
+    </div>
+
+
+
+    <div class="col-md-3">
+        <a href="{% url 'accounting:add_event' %}">
+            <h5 class="farsi text-center">
+                افزودن رویداد مالی
+
+            </h5>
+        </a>
+    </div>
+
+    
+    <div class="col-md-3">
+        <a href="{% url 'accounting:add_document' %}">
+            <h5 class="farsi text-center">
+                افزودن سند مالی
+
+            </h5>
+        </a>
+    </div>
+
 </div>
 {% endblock content %}
 

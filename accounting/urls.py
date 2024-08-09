@@ -19,5 +19,8 @@ urlpatterns = [
     path("accounting-document-line/<int:pk>/",login_required(views.AccountingDocumentLineView.as_view()),name="accountingdocumentline"),
     path("account/<int:pk>/",login_required(views.AccountView.as_view()),name="account"),
     path("add_account/",login_required(apis.AddAccountApi.as_view()),name="add_account"),
+    path("tree-chart/",login_required(views.TreeChartView.as_view()),name="tree_chart"),
+    path("add-document/",login_required(views.AddEventView.as_view()),name="add_event"),
+    path("add-event/",login_required(views.AddDocumentView.as_view()),name="add_document"),
     path("search/",login_required(views.SearchView.as_view()),name="search"),
 ]

@@ -1,11 +1,13 @@
 from django.shortcuts import render,reverse
 from .apps import APP_NAME
 from django.views import View
-from .repo import AccountRepo,AccountGroupRepo,AccountingDocumentRepo,BasicAccountRepo
+from .repo import AccountRepo,AccountGroupRepo,AccountingDocumentRepo,BasicAccountRepo,MoeinAccountRepo
 from .serializers import AccountSerializer,AccountGroupSerializer,BasicAccountSerializer
 from .forms import *
 from core.views import CoreContext
 import json
+from utility.currency import to_price
+from utility.log import leolog
 LAYOUT_PARENT = "phoenix/layout.html"
 TEMPLATE_ROOT = "accounting/"
 
@@ -110,26 +112,26 @@ class BalanceView(View):
 class BasicAccountView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
-        account=AccountRepo(request=request).account(*args, **kwargs)
-        context['account']=account
-        account_s=json.dumps(AccountSerializer(account).data)
-        context['account_s']=account_s
+        basic_account=BasicAccountRepo(request=request).basic_account(*args, **kwargs)
+        context['basic_account']=basic_account
+        # basic_account_s=json.dumps(BasicAccountSerializer(basic_account).data)
+        # context['basic_account_s']=basic_account_s
         return render(request,TEMPLATE_ROOT+"basic-account.html",context)
-class MoeinAccountView(View):
+class MoeinAccountView(View):   
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
-        account=AccountRepo(request=request).account(*args, **kwargs)
-        context['account']=account
-        account_s=json.dumps(AccountSerializer(account).data)
-        context['account_s']=account_s
+        moein_account=MoeinAccountRepo(request=request).moein_account(*args, **kwargs)
+        context['moein_account']=moein_account
+        # account_s=json.dumps(AccountSerializer(account).data)
+        # context['account_s']=account_s
         return render(request,TEMPLATE_ROOT+"moein-account.html",context)
 class AccountGroupView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
-        account=AccountRepo(request=request).account(*args, **kwargs)
-        context['account']=account
-        account_s=json.dumps(AccountSerializer(account).data)
-        context['account_s']=account_s
+        account_group=AccountGroupRepo(request=request).account_group(*args, **kwargs)
+        context['account_group']=account_group
+        # account_s=json.dumps(AccountSerializer(account).data)
+        # context['account_s']=account_s
         return render(request,TEMPLATE_ROOT+"account-group.html",context)
 class SearchView(View):
     def get(self,request,*args, **kwargs):
@@ -144,3 +146,80 @@ class AccountGroupsView(View):
         account_groups_s=json.dumps(AccountGroupSerializer(account_groups,many=True).data)
         context['account_groups_s']=account_groups_s
         return render(request,TEMPLATE_ROOT+"account-groups.html",context)
+class AddEventView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        account_groups=AccountGroupRepo(request=request).list(*args, **kwargs)
+        context['account_groups']=account_groups
+        for account_group in account_groups:
+            account_group.normalize_total()
+        account_groups_s=json.dumps(AccountGroupSerializer(account_groups,many=True).data)
+        context['account_groups_s']=account_groups_s
+        return render(request,TEMPLATE_ROOT+"add-event.html",context)
+class AddDocumentView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        account_groups=AccountGroupRepo(request=request).list(*args, **kwargs)
+        context['account_groups']=account_groups
+        for account_group in account_groups:
+            account_group.normalize_total()
+        account_groups_s=json.dumps(AccountGroupSerializer(account_groups,many=True).data)
+        context['account_groups_s']=account_groups_s
+        return render(request,TEMPLATE_ROOT+"add-document.html",context)
+class TreeChartView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        account_groups=AccountGroupRepo(request=request).list(*args, **kwargs)
+        context['account_groups']=account_groups
+        pages=[]
+        pages.append({
+            'title': f"""گروه های حساب""",
+            'parent_id': 0,
+            'parent': 0,
+            'get_absolute_url':"",
+            'id': 1,
+            'pre_title': "",
+            'sub_title': "",
+            })
+        AG=100000
+        BA=1000000
+        MA=10000000
+        for account_group in account_groups:
+            page=account_group
+            pages.append({
+                'title': f"""{page.title}""",
+                'parent_id': 1,
+                'parent': 1,
+                'get_absolute_url': page.get_absolute_url(),
+                'id': AG+page.id,
+                'pre_title': "",
+                'sub_title':"",
+                })
+                
+            for basic_account in account_group.basicaccount_set.all():
+                page=basic_account
+                pages.append({
+                    'title': f"""{page.title}""",
+                    'parent_id': AG+page.accountgroup.id,
+                    'parent': AG+page.accountgroup.id,
+                    'get_absolute_url': page.get_absolute_url(),
+                    'id': BA+page.id,
+                    'pre_title': "",
+                    'sub_title': to_price(page.balance),
+                    })
+                    
+                for moein_account in basic_account.moeinaccount_set.all():
+                    page=moein_account
+                    pages.append({
+                        'title': f"""{page.title}""",
+                        'parent_id': BA+page.basicaccount.id,
+                        'parent': BA+page.basicaccount.id,
+                        'get_absolute_url': page.get_absolute_url(),
+                        'id': MA+page.id,
+                        'pre_title': "",
+                        'sub_title':to_price(page.balance),
+                        })
+
+        context['pages_s'] = json.dumps(pages)
+
+        return render(request,TEMPLATE_ROOT+"tree-chart.html",context)
