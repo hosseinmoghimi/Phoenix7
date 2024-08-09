@@ -7,6 +7,7 @@ from .forms import *
 from core.views import CoreContext
 import json
 from utility.currency import to_price
+from utility.templatetags.to_price import to_price_color
 from utility.log import leolog
 LAYOUT_PARENT = "phoenix/layout.html"
 TEMPLATE_ROOT = "accounting/"
@@ -166,6 +167,8 @@ class AddDocumentView(View):
         account_groups_s=json.dumps(AccountGroupSerializer(account_groups,many=True).data)
         context['account_groups_s']=account_groups_s
         return render(request,TEMPLATE_ROOT+"add-document.html",context)
+ 
+
 class TreeChartView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
@@ -193,7 +196,7 @@ class TreeChartView(View):
                 'get_absolute_url': page.get_absolute_url(),
                 'id': AG+page.id,
                 'pre_title': "",
-                'sub_title':"",
+                'sub_title':to_price_color(page.balance),
                 })
                 
             for basic_account in account_group.basicaccount_set.all():
@@ -205,7 +208,7 @@ class TreeChartView(View):
                     'get_absolute_url': page.get_absolute_url(),
                     'id': BA+page.id,
                     'pre_title': "",
-                    'sub_title': to_price(page.balance),
+                    'sub_title': to_price_color(page.balance),
                     })
                     
                 for moein_account in basic_account.moeinaccount_set.all():
@@ -217,7 +220,7 @@ class TreeChartView(View):
                         'get_absolute_url': page.get_absolute_url(),
                         'id': MA+page.id,
                         'pre_title': "",
-                        'sub_title':to_price(page.balance),
+                        'sub_title':to_price_color(page.balance),
                         })
 
         context['pages_s'] = json.dumps(pages)
