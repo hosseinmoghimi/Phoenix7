@@ -12,6 +12,21 @@ from .forms import *
 from .serializers import AccountSerializer
 
 
+class InitALLAccountsApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            from .repo import init_all_accounts
+            (result,message)=init_all_accounts() 
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
 
 class AddAccountApi(APIView):
     def post(self,request,*args, **kwargs):

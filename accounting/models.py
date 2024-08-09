@@ -21,6 +21,7 @@ class Access(models.Model):
  
 class AccountGroup(models.Model,LinkHelper):
     name=models.CharField(_("name"), max_length=200)
+    code=models.CharField(_("code"), max_length=200)
     bedehkar=models.IntegerField(_("bedehkar"),default=0)
     bestankar=models.IntegerField(_("bestankar"),default=0)
     balance=models.IntegerField("balance",default=0)
@@ -60,11 +61,12 @@ class AccountGroup(models.Model,LinkHelper):
         verbose_name_plural = _("AccountGroups")
 
     def __str__(self):
-        return self.name
+        return self.code+" "+self.name
  
 class BasicAccount(models.Model,LinkHelper):
     name=models.CharField(_("name"), max_length=200)
-    accountgroup=models.ForeignKey("accountgroup", verbose_name=_("account group"), on_delete=models.CASCADE)
+    code=models.CharField(_("code"), max_length=200)
+    account_group=models.ForeignKey("accountgroup", verbose_name=_("account group"), on_delete=models.CASCADE)
     # moein_accounts=models.ManyToManyField("moeinaccount",blank=True, verbose_name=_("حساب های معین"))
   
     bedehkar=models.IntegerField(_("bedehkar"),default=0)
@@ -103,8 +105,7 @@ class BasicAccount(models.Model,LinkHelper):
         verbose_name_plural = _("BasicAccounts")
 
     def __str__(self):
-        return self.accountgroup.title+" " +self.name
-
+        return str(self.account_group)+" " + self.code+" "+self.name
 class MoeinAccount(models.Model,LinkHelper):
 
 
@@ -112,8 +113,9 @@ class MoeinAccount(models.Model,LinkHelper):
     app_name=APP_NAME
 
     name=models.CharField(_("name"), max_length=200)
+    code=models.CharField(_("code"), max_length=200)
     # accounts=models.ManyToManyField("account", verbose_name=_("حساب ها"))
-    basicaccount=models.ForeignKey("basicaccount", verbose_name=_("basicaccount"), on_delete=models.CASCADE)
+    basic_account=models.ForeignKey("basicaccount", verbose_name=_("basicaccount"), on_delete=models.CASCADE)
     bedehkar=models.IntegerField(_("bedehkar"),default=0)
     bestankar=models.IntegerField(_("bestankar"),default=0)
     balance=models.IntegerField("balance",default=0)
@@ -137,7 +139,7 @@ class MoeinAccount(models.Model,LinkHelper):
  
     @property
     def title(self):
-        return self.name
+        return self.code+" "+self.name
 
     @property
     def accounts(self):
@@ -150,10 +152,10 @@ class MoeinAccount(models.Model,LinkHelper):
         verbose_name_plural = _("MoeinAccounts")
 
     def __str__(self):
-        return self.basicaccount.title+" " +self.name
- 
+        return str(self.basic_account)+" "+self.code+" "+self.name
 class Account(models.Model,LinkHelper):
-    moeinaccount=models.ForeignKey("moeinaccount", verbose_name=_("moein account"), on_delete=models.CASCADE)
+    moein_account=models.ForeignKey("moeinaccount", verbose_name=_("moein account"), on_delete=models.CASCADE)
+    code=models.CharField(_("code"), max_length=200)
     
     title=models.CharField(_("title"), max_length=500)
     mobile=models.CharField(_("mobile"),null=True,blank=True, max_length=50)
@@ -181,7 +183,7 @@ class Account(models.Model,LinkHelper):
         verbose_name = _("Account")
         verbose_name_plural = _("Accounts")
     def __str__(self):
-        return self.moeinaccount.title+" " +self.title
+        return self.moein_account.title+" " +self.title
     def normalize_total(self):
         balance=0
         bestankar=0

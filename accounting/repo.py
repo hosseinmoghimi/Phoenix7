@@ -2,6 +2,173 @@ from .models import Account,AccountGroup,BasicAccount,BasicAccount,MoeinAccount,
 from utility.constants import FAILED,SUCCEED
 from authentication.repo import ProfileRepo
 from .apps import APP_NAME
+
+
+def init_all_accounts2():
+    account_groups=[
+            
+        {"name":"دارایی جاری",'code':"1","basic_accounts":[
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102","moein_accounts":[
+                {"name":"سرمایه گذاری کوتاه مدت",'code':"102","accounts":[
+                    {"name":"سرمایه گذاری کوتاه مدت",'code':"102"}
+                ]}
+            ]},
+            {"name":"موجودی نقد و بانک",'code':"101"},
+            ]},
+        {"name":"دارایی های غیر جاری",'code':"2","basic_accounts":[
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+            {"name":"موجودی نقد و بانک",'code':"101"},
+            ]},
+        {"name":"بدهی های جاری	",'code':"3","basic_accounts":[
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+            {"name":"موجودی نقد و بانک",'code':"101"},
+            ]},
+        {"name":"بدهی های بلند مدت (غیرجاری)",'code':"4","basic_accounts":[
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+            {"name":"موجودی نقد و بانک",'code':"101"},
+            ]},
+        {"name":"حقوق صاحبان سهام",'code':"5","basic_accounts":[
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+            {"name":"موجودی نقد و بانک",'code':"101"},
+            ]},
+        {"name":"درآمد ها",'code':"6","basic_accounts":[
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+            {"name":"موجودی نقد و بانک",'code':"101"},
+            ]},
+        {"name":"بهای تمام شده کالای فروش رفته و خدمات ارائه شده",'code':"7","basic_accounts":[
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+            {"name":"موجودی نقد و بانک",'code':"101"},
+            ]},
+        {"name":"هزینه ها",'code':"8","basic_accounts":[
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+            {"name":"موجودی نقد و بانک",'code':"101"},
+            ]},
+        {"name":"سایر حسابها",'code':"9","basic_accounts":[
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+            {"name":"موجودی نقد و بانک",'code':"101"},
+            ]},
+        
+    ]
+    for account_group in account_groups:
+        new_account_group=AccountGroup.objects.filter(name=account_group["name"]).first()
+        if new_account_group is None:
+            new_account_group=AccountGroup(name=account_group["name"],code=account_group['code'])
+            new_account_group.save()
+        if 'basic_accounts' in account_group:
+            for basic_account in account_group["basic_accounts"]:
+                new_basic_account=BasicAccount.objects.filter(name=basic_account["name"]).first()
+                if new_basic_account is None:
+                    new_basic_account=BasicAccount(name=basic_account["name"],code=basic_account['code'],account_group=new_account_group)
+                    new_basic_account.save()
+
+                if 'moein_accounts' in basic_account:
+                        
+                    for moein_account in basic_account["moein_accounts"]:
+                        new_moein_account=MoeinAccount.objects.filter(name=moein_account["name"]).first()
+                        if new_moein_account is None: 
+                            new_moein_account=MoeinAccount(name=moein_account["name"],code=moein_account['code'],basic_account=new_basic_account)
+                            new_moein_account.save()
+
+                        if 'basic_accounts' in account_group:
+                            
+                            for account in moein_account["accounts"]:
+                                new_account=Account.objects.filter(title=account["name"]).first()
+                                if new_moein_account is None: 
+                                    new_moein_account=MoeinAccount(title=account["name"],code=account['code'],moein_account=new_moein_account)
+                                    new_moein_account.save()
+    result=SUCCEED
+    message="افزوده شد."
+    return (result,message)
+
+
+
+
+def init_all_accounts():
+    account_groups=[
+            
+        {"name":"دارایی جاری",'code':"1","basic_accounts":[
+            {"name":"	موجودی نقد و بانک",'code':"101","moein_accounts":[
+                {"name":"سرمایه گذاری کوتاه مدت",'code':"102","accounts":[
+                    # {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+                ]}
+            ]},
+
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102","moein_accounts":[
+                {"name":"سرمایه گذاری کوتاه مدت",'code':"102","accounts":[
+                    {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+                    {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+                    {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+                ]}
+            ]},
+
+            {"name":"حسابها و اسناد دریافتنی تجاری",'code':"103"},
+            {"name":"سایر حساب ها و اسناد دریافتنی",'code':"104"},
+            {"name":"موجودی مواد و کالا",'code':"105"},
+            {"name":"سفارشات و پیش پرداختها",'code':"106"},
+            {"name":"سپرده هایمان نزد دیگران",'code':"107"},
+ 
+            ]},
+        {"name":"دارایی های غیر جاری",'code':"2","basic_accounts":[
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+            {"name":"موجودی نقد و بانک",'code':"101"},
+            ]},
+        {"name":"بدهی های جاری	",'code':"3","basic_accounts":[
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+            {"name":"موجودی نقد و بانک",'code':"101"},
+            ]},
+        {"name":"بدهی های بلند مدت (غیرجاری)",'code':"4","basic_accounts":[
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+            {"name":"موجودی نقد و بانک",'code':"101"},
+            ]},
+        {"name":"حقوق صاحبان سهام",'code':"5","basic_accounts":[
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+            {"name":"موجودی نقد و بانک",'code':"101"},
+            ]},
+        {"name":"درآمد ها",'code':"6","basic_accounts":[
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+            {"name":"موجودی نقد و بانک",'code':"101"},
+            ]},
+        {"name":"بهای تمام شده کالای فروش رفته و خدمات ارائه شده",'code':"7","basic_accounts":[
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+            {"name":"موجودی نقد و بانک",'code':"101"},
+            ]},
+        {"name":"هزینه ها",'code':"8","basic_accounts":[
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+            {"name":"موجودی نقد و بانک",'code':"101"},
+            ]},
+        {"name":"سایر حسابها",'code':"9","basic_accounts":[
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+            {"name":"موجودی نقد و بانک",'code':"101"},
+            ]},
+        
+    ]
+    AccountGroup.objects.all().delete()
+    BasicAccount.objects.all().delete()
+    MoeinAccount.objects.all().delete()
+    Account.objects.all().delete()
+    for account_group in account_groups:
+        new_account_group=AccountGroup(name=account_group["name"],code=account_group['code'])
+        new_account_group.save()
+        if 'basic_accounts' in account_group:
+            for basic_account in account_group["basic_accounts"]:
+                new_basic_account=BasicAccount(name=basic_account["name"],code=basic_account['code'],account_group=new_account_group)
+                new_basic_account.save()
+                if 'moein_accounts' in basic_account:
+                    for moein_account in basic_account["moein_accounts"]:
+                        new_moein_account=MoeinAccount(name=moein_account["name"],code=moein_account['code'],basic_account=new_basic_account)
+                        new_moein_account.save()
+                        if 'accounts' in moein_account:
+                            for account in moein_account["accounts"]:
+                                new_account=Account(title=account["name"],code=account['code'],moein_account=new_moein_account)
+                                new_account.save()
+    result=SUCCEED
+    message="افزوده شد."
+    return (result,message)
+
+
+
 class AccountRepo():
     def __init__(self,request,*args, **kwargs):
         self.request=request

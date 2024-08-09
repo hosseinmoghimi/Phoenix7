@@ -79,7 +79,6 @@ class AccountView(View):
         account_s=json.dumps(AccountSerializer(account).data)
         context['account_s']=account_s
         return render(request,TEMPLATE_ROOT+"account.html",context)
-
 class BasicAccountsView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
@@ -118,6 +117,14 @@ class BasicAccountView(View):
         # basic_account_s=json.dumps(BasicAccountSerializer(basic_account).data)
         # context['basic_account_s']=basic_account_s
         return render(request,TEMPLATE_ROOT+"basic-account.html",context)
+class SettingsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        basic_account=BasicAccountRepo(request=request).basic_account(*args, **kwargs)
+        context['basic_account']=basic_account
+        # basic_account_s=json.dumps(BasicAccountSerializer(basic_account).data)
+        # context['basic_account_s']=basic_account_s
+        return render(request,TEMPLATE_ROOT+"settings.html",context)
 class MoeinAccountView(View):   
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
@@ -167,8 +174,6 @@ class AddDocumentView(View):
         account_groups_s=json.dumps(AccountGroupSerializer(account_groups,many=True).data)
         context['account_groups_s']=account_groups_s
         return render(request,TEMPLATE_ROOT+"add-document.html",context)
- 
-
 class TreeChartView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
@@ -207,8 +212,8 @@ class TreeChartView(View):
                 page=basic_account
                 pages.append({
                     'title': f"""{page.title}""",
-                    'parent_id': AG+page.accountgroup.id,
-                    'parent': AG+page.accountgroup.id,
+                    'parent_id': AG+page.account_group.id,
+                    'parent': AG+page.account_group.id,
                     'get_absolute_url': page.get_absolute_url(),
                     'id': BA+page.id,
                     'pre_title': "",
@@ -219,8 +224,8 @@ class TreeChartView(View):
                     page=moein_account
                     pages.append({
                         'title': f"""{page.title}""",
-                        'parent_id': BA+page.basicaccount.id,
-                        'parent': BA+page.basicaccount.id,
+                        'parent_id': BA+page.basic_account.id,
+                        'parent': BA+page.basic_account.id,
                         'get_absolute_url': page.get_absolute_url(),
                         'id': MA+page.id,
                         'pre_title': "",

@@ -10,6 +10,20 @@ class AddAccountingDocumentForm(forms.Form):
 
 
 
+class AddAccountGroupForm(forms.Form):
+    title=forms.CharField(max_length=100, required=False)
+    code=forms.CharField(max_length=100, required=False)
+
+class AddBasicAccountForm(forms.Form):
+    title=forms.CharField(max_length=100, required=False)
+    code=forms.CharField(max_length=100, required=False)
+    account_group_id=forms.IntegerField(required=False)
+class AddMoeinAccountForm(forms.Form):
+    title=forms.CharField(max_length=100, required=False)
+    code=forms.CharField(max_length=100, required=False)
+    basic_account_id=forms.IntegerField(required=False)
+
+
 class AddAccountTagForm(forms.Form):
     tag=forms.CharField(max_length=100, required=False)
     account_id=forms.IntegerField(required=False)

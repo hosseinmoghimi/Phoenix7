@@ -24,4 +24,6 @@ urlpatterns = [
     path("add-document/",login_required(views.AddEventView.as_view()),name="add_event"),
     path("add-event/",login_required(views.AddDocumentView.as_view()),name="add_document"),
     path("search/",login_required(views.SearchView.as_view()),name="search"),
+    path("init_all_accounts/",login_required(apis.InitALLAccountsApi.as_view()),name="init_all_accounts"),
+    path("settings/",login_required(views.SettingsView.as_view()),name="settings"),
 ]
