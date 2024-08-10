@@ -223,7 +223,7 @@ class TreeChartView(View):
                 for moein_account in basic_account.moeinaccount_set.all():
                     page=moein_account
                     pages.append({
-                        'title': f"""{page.code}<br>{page.title}""",
+                        'title': f"""{page.title}""",
                         'parent_id': BA+page.basic_account.id,
                         'parent': BA+page.basic_account.id,
                         'get_absolute_url': page.get_absolute_url(),

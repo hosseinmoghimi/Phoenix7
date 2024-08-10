@@ -88,13 +88,21 @@ def init_all_accounts():
             
         {"name":"دارایی جاری",'code':"1","basic_accounts":[
             {"name":"	موجودی نقد و بانک",'code':"11","moein_accounts":[
-                {"name":"سرمایه گذاری کوتاه مدت",'code':"102","accounts":[
-                    # {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
-                    # {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
-                    # {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
-                ]}
-            ]},
+                {"name":"صندوق",'code':"111/10","accounts":[
+                    {"name":"ریالی",'code':"1111/10/01"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                ]},
 
+                
+                # {"name":"aaaaaaaaaaaa",'code':"111","accounts":[
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                # ]},
+            ]},
             {"name":"سرمایه گذاری کوتاه مدت",'code':"12","moein_accounts":[
                 {"name":"سرمایه گذاری کوتاه مدت",'code':"102","accounts":[
                     {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
@@ -102,8 +110,6 @@ def init_all_accounts():
                     {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
                 ]}
             ]},
-
-            
             {"name":"حساب ها و اسناد دریافتنی تجاری",'code':"13","moein_accounts":[
                 {"name":"سرمایه گذاری کوتاه مدت",'code':"102","accounts":[
                     {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
@@ -111,8 +117,6 @@ def init_all_accounts():
                     {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
                 ]}
             ]},
-
-            
             {"name":"سایر حساب های دریافتنی تجاری",'code':"14","moein_accounts":[
                 {"name":"سرمایه گذاری کوتاه مدت",'code':"102","accounts":[
                     {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
@@ -120,8 +124,6 @@ def init_all_accounts():
                     {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
                 ]}
             ]},
-
-            
             {"name":"جاری شرکا",'code':"15","moein_accounts":[
                 {"name":"سرمایه گذاری کوتاه مدت",'code':"102","accounts":[
                     {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
@@ -129,8 +131,6 @@ def init_all_accounts():
                     {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
                 ]}
             ]},
-
-            
             {"name":"موجودی مواد و کالا",'code':"16","moein_accounts":[
                 {"name":"سرمایه گذاری کوتاه مدت",'code':"102","accounts":[
                     {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
@@ -138,7 +138,6 @@ def init_all_accounts():
                     {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
                 ]}
             ]},
-            
             {"name":"سفارشات و پیش پرداختها",'code':"17","moein_accounts":[
                 {"name":"سرمایه گذاری کوتاه مدت",'code':"102","accounts":[
                     {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
@@ -147,15 +146,111 @@ def init_all_accounts():
                 ]}
             ]},
             {"name":"سپرده هایمان نزد دیگران",'code':"18"},
- 
+            {"name":"دارایی های نگهداری شده برای فروش",'code':"19"},
             ]},
         {"name":"دارایی های غیر جاری",'code':"2","basic_accounts":[
-            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
+            {"name":"دارایی های ثابت مشهود",'code':"21","moein_accounts":[
+                {"name":"زمین",'code':"111/10","accounts":[
+                    {"name":"ریالی",'code':"1111/10/01"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                ]},
+
+
+                {"name":"ساختمان",'code':"111/10","accounts":[
+                    {"name":"ریالی",'code':"1111/10/01"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                ]},
+
+                
+
+                {"name":"ماشین آلات و تجهیزات",'code':"111/10","accounts":[
+                    {"name":"ریالی",'code':"1111/10/01"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                ]},
+                 
+
+                 
+                {"name":"تاسیسات",'code':"111/10","accounts":[
+                    {"name":"ریالی",'code':"1111/10/01"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                ]},
+                 
+
+                 
+                {"name":"وسایط نقلیه",'code':"111/10","accounts":[
+                    {"name":"ریالی",'code':"1111/10/01"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                ]},
+                 
+
+                 
+                {"name":"اثاثه و منصوبات",'code':"111/10","accounts":[
+                    {"name":"ریالی",'code':"1111/10/01"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                ]},
+                
+                 
+                {"name":"ابزار آلات",'code':"111/10","accounts":[
+                    {"name":"ریالی",'code':"1111/10/01"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                ]},
+                
+                 
+                {"name":"قالب ها",'code':"111/10","accounts":[
+                    {"name":"ریالی",'code':"1111/10/01"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                ]},
+                
+            ]},
             {"name":"موجودی نقد و بانک",'code':"101"},
             ]},
         {"name":"بدهی های جاری	",'code':"3","basic_accounts":[
-            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
-            {"name":"موجودی نقد و بانک",'code':"101"},
+            {"name":"aaaaaa",'code':"102","moein_accounts":[
+                {"name":"صندوق",'code':"111/10","accounts":[
+                    {"name":"ریالی",'code':"1111/10/01"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                ]},
+            ]},
+
+            {"name":"bbbbb",'code':"102","moein_accounts":[
+                {"name":"صندوق",'code':"111/10","accounts":[
+                    {"name":"ریالی",'code':"1111/10/01"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                ]},
+            ]},
+
+            {"name":"ccccc",'code':"102","moein_accounts":[
+                {"name":"صندوق",'code':"111/10","accounts":[
+                    {"name":"ریالی",'code':"1111/10/01"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                    # {"name":"aaaaaaaaa",'code':"102"},
+                ]},
+            ]},
+
+ 
+
+
             ]},
         {"name":"بدهی های بلند مدت (غیرجاری)",'code':"4","basic_accounts":[
             {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
@@ -173,9 +268,57 @@ def init_all_accounts():
             {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
             {"name":"موجودی نقد و بانک",'code':"101"},
             ]},
-        {"name":"هزینه ها",'code':"8","basic_accounts":[
-            {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
-            {"name":"موجودی نقد و بانک",'code':"101"},
+        {"name":"هزینه ها",'code':"7","basic_accounts":[
+            {"name":"هزینه‌ی حقوق و دستمزد	",'code':"71",'moein_accounts':[
+                {"name":"حقوق پایه",'code':"7101",'accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+
+                {"name":"اضافه‌کاری",'code':"7102",'accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+
+                {"name":"خواربار و مسکن	",'code':"7103",'accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+
+                {"name":"حق اولاد",'code':"7104",'accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+
+                {"name":"کمک‌هزینه‌ی اقلام مصرفی خانوار	",'code':"7105",'accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+
+                {"name":"نوبت کاری و شب‌کاری	",'code':"7106",'accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+                {"name":"%23 حق بیمه‌ی سهم کارفرما	",'code':"7107",'accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+                {"name":"عیدی و پاداش",'code':"7108",'accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+                {"name":"حق‌الجذب",'code':"7109",'accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+                {"name":"بازخرید مرخصی استفاده‌نشده",'code':"7110",'accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+                {"name":"مزایای پایان‌خدمت کارکنان",'code':"7111",'accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+                {"name":"کمک‌های غیرنقدی",'code':"7112",'accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+            ],},
+
+
+            {"name":"هزینه‌های عملیاتی	",'code':"73"},
+            {"name":"هزینه‌های توزیع و فروش		",'code':"74"},
+            {"name":"سایر اقلام عملیاتی		",'code':"75"},
+            {"name":"هزینه‌های مالی		",'code':"76"},
+            {"name":"سایر درآمدها و هزینه‌های غیرعملیاتی",'code':"77"},
             ]},
         {"name":"سایر حسابها",'code':"9","basic_accounts":[
             {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
