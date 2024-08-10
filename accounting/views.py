@@ -199,7 +199,7 @@ class TreeChartView(View):
         for account_group in account_groups:
             page=account_group
             pages.append({
-                'title': f"""{page.title}""",
+                'title': f"""{page.code}<br>{page.title}""",
                 'parent_id': 1,
                 'parent': 1,
                 'get_absolute_url': page.get_absolute_url(),
@@ -211,7 +211,7 @@ class TreeChartView(View):
             for basic_account in account_group.basicaccount_set.all():
                 page=basic_account
                 pages.append({
-                    'title': f"""{page.title}""",
+                    'title': f"""{page.code}<br>{page.title}""",
                     'parent_id': AG+page.account_group.id,
                     'parent': AG+page.account_group.id,
                     'get_absolute_url': page.get_absolute_url(),
@@ -223,7 +223,7 @@ class TreeChartView(View):
                 for moein_account in basic_account.moeinaccount_set.all():
                     page=moein_account
                     pages.append({
-                        'title': f"""{page.title}""",
+                        'title': f"""{page.code}<br>{page.title}""",
                         'parent_id': BA+page.basic_account.id,
                         'parent': BA+page.basic_account.id,
                         'get_absolute_url': page.get_absolute_url(),
