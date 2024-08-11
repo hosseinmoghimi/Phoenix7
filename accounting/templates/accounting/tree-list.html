@@ -1,0 +1,86 @@
+{% extends "accounting/layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row rtl" id="settings-app">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                گروه های حساب
+            </div>
+            <div class="card-body">
+                {% for account_group in account_groups %}
+                <div>
+                    <h4 class="text-danger">
+
+                        <a  class="text-danger" href="{{account_group.get_absolute_url}}">
+
+                            {{account_group.code}}-
+                            {{account_group.title}}
+                        </a>
+                    </h4>
+                    {% for basic_account in account_group.basicaccount_set.all %}
+                    <div class="mr-5">
+                        <h5>
+
+                            <a class="text-success" href="{{basic_account.get_absolute_url}}">
+
+                                {{basic_account.code}}-
+                                {{basic_account.title}}
+                            </a>
+                        </h5>
+                        {% for moein_account in basic_account.moeinaccount_set.all %}
+                        <div class="mr-5">
+                            <h6>
+
+                                <a href="{{moein_account.get_absolute_url}}">
+
+                                    {{moein_account.code}}-
+                                    {{moein_account.title}}
+                                </a>
+                            </h6>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+<script>
+    let settings_app11 = new Vue({
+        el: "#settings-app",
+        date: {
+
+        },
+        methods: {
+            init_all_accounts: function () {
+                let url = "{% url 'accounting:init_all_accounts' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                }
+                posting = $.post(url, payload)
+                posting.done((data) => {
+                    console.log(data.message)
+                    console.log(data.result)
+
+                })
+            },
+        }
+    })
+</script>
+{% endblock script %}

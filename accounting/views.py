@@ -154,6 +154,12 @@ class AccountGroupsView(View):
         account_groups_s=json.dumps(AccountGroupSerializer(account_groups,many=True).data)
         context['account_groups_s']=account_groups_s
         return render(request,TEMPLATE_ROOT+"account-groups.html",context)
+class TreeListView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        account_groups=AccountGroupRepo(request=request).list(*args, **kwargs)
+        context['account_groups']=account_groups
+        return render(request,TEMPLATE_ROOT+"tree-list.html",context)
 class AddEventView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)

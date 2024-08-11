@@ -20,6 +20,7 @@ urlpatterns = [
     path("account/<int:pk>/",login_required(views.AccountView.as_view()),name="account"),
     path("add_account/",login_required(apis.AddAccountApi.as_view()),name="add_account"),
     path("tree-chart/",login_required(views.TreeChartView.as_view()),name="tree_chart"),
+    path("tree-list/",login_required(views.TreeListView.as_view()),name="tree_list"),
     path("account-group-tree-chart/<int:pk>/",login_required(views.TreeChartView.as_view()),name="account_group_tree_chart"),
     path("add-document/",login_required(views.AddEventView.as_view()),name="add_event"),
     path("add-event/",login_required(views.AddDocumentView.as_view()),name="add_document"),
