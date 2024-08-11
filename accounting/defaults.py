@@ -176,6 +176,29 @@ def init_all_accounts():
             {"name":"موجودی نقد و بانک",'code':"101"},
             ]},
         {"name":"حقوق صاحبان سهام",'code':"5","basic_accounts":[
+            {"name":"سرمایه",'code':"51","moein_accounts":[
+                {"name":"سرمایه",'code':"5101"},
+            ]},
+            {"name":"افزایش سرمایه‌ی در جریان",'code':"52",'moein_accounts':[
+                {"name":"افزایش سرمایه از محل مطالبات سهام‌داران",'code':"5201",'accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+
+                {"name":"افزایش سرمایه از محل آورده‌ی نقدی سهام‌داران",'code':"5202",'accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+                
+            ]},
+            {"name":"اندوخته‌ی صرف سهام",'code':"53",'moein_accounts':[
+                {"name":"اندوخته‌ی صرف سهام افزایش سرمایه‌ی ...",'code':"5301",'accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+
+                {"name":"اندوخته‌ی صرف سهام افزایش سرمایه‌ی ...	",'code':"5302",'accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+                
+            ]},
             {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},
             {"name":"موجودی نقد و بانک",'code':"101"},
             ]},
@@ -185,7 +208,7 @@ def init_all_accounts():
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
 
-                 {"name":"درآمد خدمات از ...",'code':"6102",'accounts':[
+                {"name":"درآمد خدمات از ...",'code':"6102",'accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
                 
@@ -358,10 +381,9 @@ def init_all_accounts():
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
             ],},
-            {"name":"هزینه‌های توزیع و فروش",'code':"74"},
-            {"name":"سایر اقلام عملیاتی",'code':"75"},
-            {"name":"هزینه‌های مالی",'code':"76"},
-            {"name":"سایر درآمدها و هزینه‌های غیرعملیاتی",'code':"77"},
+            {"name":"سایر اقلام عملیاتی",'code':"74"},
+            {"name":"هزینه‌های مالی",'code':"75"},
+            {"name":"سایر درآمدها و هزینه‌های غیرعملیاتی",'code':"76"},
             ]},
         {"name":"سایر حسابها",'code':"9","basic_accounts":[
             {"name":"سرمایه گذاری کوتاه مدت",'code':"102"},

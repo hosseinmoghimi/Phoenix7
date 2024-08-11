@@ -15,8 +15,8 @@
 
                         <a  class="text-danger" href="{{account_group.get_absolute_url}}">
 
-                            {{account_group.code}}-
-                            {{account_group.title}}
+                            {{account_group.code}} -
+                            {{account_group.name}}
                         </a>
                     </h4>
                     {% for basic_account in account_group.basicaccount_set.all %}
@@ -25,8 +25,8 @@
 
                             <a class="text-success" href="{{basic_account.get_absolute_url}}">
 
-                                {{basic_account.code}}-
-                                {{basic_account.title}}
+                                {{basic_account.code}} -
+                                {{basic_account.name}}
                             </a>
                         </h5>
                         {% for moein_account in basic_account.moeinaccount_set.all %}
@@ -34,9 +34,8 @@
                             <h6>
 
                                 <a href="{{moein_account.get_absolute_url}}">
-
-                                    {{moein_account.code}}-
-                                    {{moein_account.title}}
+ 
+                                    {{moein_account.code}} - {{moein_account.name}}
                                 </a>
                             </h6>
                         </div>
