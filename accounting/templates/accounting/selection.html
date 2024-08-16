@@ -1,0 +1,112 @@
+{% extends "accounting/layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row rtl" id="selection-app">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center">
+
+                    گروه های حساب
+                </h5>
+            </div>
+            <div class="card-body">
+
+
+                <div v-for="account_group in account_groups">
+
+                    <button class="btn btn-success mb-2" @click="select_account_group(account_group.id)">
+
+                        <span v-text="account_group.code"></span>
+                        <span v-text="account_group.name"></span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center">
+
+                    حساب های کل
+                </h5>
+            </div>
+            <div class="card-body">
+                <div v-for="basic_account in basic_accounts">
+
+                    <button class="btn btn-success mb-2" @click="select_basic_account(basic_account.id)">
+
+                        <span v-text="basic_account.code"></span>
+                        <span v-text="basic_account.name"></span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+<script>
+    let account_groups = JSON.parse("{{account_groups_s|escapejs}}")
+    let basic_accounts = JSON.parse("{{basic_accounts_s|escapejs}}")
+    let moein_accounts = JSON.parse("{{moein_accounts_s|escapejs}}")
+
+    let selection_app = new Vue({
+        el: "#selection-app",
+        date: {
+            account_groups: account_groups,
+            basic_accounts: [],
+            moein_accounts: [],
+        },
+        methods: {
+            select_account_group: function (account_group_id) {
+                // let url = "{% url 'accounting:select_account_group' %}"
+                // let payload = {
+                //     csrfmiddlewaretoken: csrfmiddlewaretoken,
+                // }
+                // console.log(account_group_id)
+                // posting = $.post(url, payload)
+                // posting.done((data) => {
+                //     console.log(data.message)
+                //     console.log(data.result)
+
+                // })
+            },
+
+            
+            select_basic_account: function (basic_account_id) {
+                // let url = "{% url 'accounting:select_account_group' %}"
+                // let payload = {
+                //     csrfmiddlewaretoken: csrfmiddlewaretoken,
+                // }
+                // console.log(account_group_id)
+                // posting = $.post(url, payload)
+                // posting.done((data) => {
+                //     console.log(data.message)
+                //     console.log(data.result)
+
+                // })
+            },
+
+            
+ 
+
+        }
+    })
+</script>
+{% endblock script %}

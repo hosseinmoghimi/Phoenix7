@@ -37,9 +37,9 @@ class BasicAccountSerializer(serializers.ModelSerializer):
     moein_accounts=MoeinAccountSerializer(many=True)
     class Meta:
         model = BasicAccount
-        fields = ['id', 'title','moein_accounts','get_absolute_url','get_edit_url','get_delete_url','balance']
+        fields = ['id', 'name','moein_accounts','get_absolute_url','get_edit_url','get_delete_url','balance']
 class AccountGroupSerializer(serializers.ModelSerializer):
     basic_accounts=BasicAccountSerializer(many=True)
     class Meta:
         model = AccountGroup
-        fields = ['id', 'title','basic_accounts','get_absolute_url','get_edit_url','get_delete_url','balance']
+        fields = ['id', 'name','basic_accounts','get_absolute_url','get_edit_url','get_delete_url','balance']

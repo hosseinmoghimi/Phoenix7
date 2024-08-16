@@ -7,7 +7,7 @@
         {% include "accounting/includes/account-app/card.html" %}
     </div>
     {% if moein_account.basic_account %}
-      
+
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
@@ -31,7 +31,7 @@
                     </a>
                 </h6>
 
-                 
+
                 {% endfor %}
 
 
@@ -39,7 +39,7 @@
         </div>
     </div>
     {% endif %}
-  
+
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
@@ -51,37 +51,17 @@
 
             <div class="card-body">
 
+             
+
                 {% for tafsili_account in moein_account.tafsiliaccount_set.all %}
-                <h6>
-                    <a href="{{tafsili_account.get_absolute_url}}">
-                        {{tafsili_account.code}} 
-                        {{tafsili_account.full_title}}
-                        <small>
-                            (
-                            {{tafsili_account.balance|to_price_color|safe}}
-                            )
-                        </small>
-                    </a>
-                </h6>
-
-                <h6>
-                    <a href="{{tafsili_account.parent_account.get_absolute_url}}">
-                        <small class="text-muted">
-
-                            {{tafsili_account.parent_account.title}}
-                        </small>
-                        
-                    </a>
-                </h6>
+                {% include "accounting/includes/tafsili-account-app/item-media.html" %}
                 {% endfor %}
-
-
             </div>
         </div>
     </div>
-  
-  
-  
+
+
+
     {% if add_moein_account_form %}
     <div class="col-md-6">
         {% include "accounting/includes/moein-account-app/add-template.html" %}
@@ -99,7 +79,7 @@
 {% endblock content %}
 {% block script %}
 <script>
-    let moein_account_id=parseInt("{{moein_account.id}}")
+    let moein_account_id = parseInt("{{moein_account.id}}")
 </script>
 {% if add_moein_account_form %}
 {% include "accounting/includes/moein-account-app/add-script.html" %}

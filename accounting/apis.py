@@ -11,6 +11,28 @@ from django.http import JsonResponse
 from .forms import *
 from .serializers import TafsiliAccountSerializer,MoeinAccountSerializer
 
+class SelectAccountGroupApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            log=222
+            select_account_group_formSelectAccountGroupForm(request.POST)
+            if add_moein_account_form.is_valid():
+                log=333
+                cd=add_moein_account_form.cleaned_data
+                moein_account,message,result=MoeinAccountRepo(request=request).add_moein_account(**cd)
+                if moein_account is not None:
+                    context['moein_account']=MoeinAccountSerializer(moein_account).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
 class AddMoeinAccountApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}
@@ -31,6 +53,7 @@ class AddMoeinAccountApi(APIView):
         context['result']=result
         context['log']=log
         return JsonResponse(context)
+
 
 
 

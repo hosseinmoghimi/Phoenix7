@@ -31,5 +31,7 @@ urlpatterns = [
     path("edit-document/",login_required(views.EditDocumentView.as_view()),name="edit_document"),
     path("search/",login_required(views.SearchView.as_view()),name="search"),
     path("init_all_accounts/",login_required(apis.InitALLAccountsApi.as_view()),name="init_all_accounts"),
+    path("select_account_group/",login_required(apis.SelectAccountGroupApi.as_view()),name="select_account_group"),
+    path("selection/",login_required(views.SelectionView.as_view()),name="selection"),
     path("settings/",login_required(views.SettingsView.as_view()),name="settings"),
 ]

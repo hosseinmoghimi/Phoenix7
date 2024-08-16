@@ -1,0 +1,25 @@
+{% load to_price %}
+<div class="media">
+    <img src="{{tafsili_account.logo}}" width="48" alt="">
+    <div class="media-body mr-2">
+        <a href="{{tafsili_account.get_absolute_url}}">
+            <h5>{{tafsili_account.name}}
+
+            </h5>
+        </a>
+        <h6>
+            <small class="text-muted">
+
+                {{tafsili_account.code}}
+            </small>
+            <span class="mr-2">
+
+                {{tafsili_account.balance|to_price|safe}}
+            </span>
+        </h6>
+        <a href="">
+
+            <h6>{{tafsili_account.parent_account}}</h6>
+        </a>
+    </div>
+</div>
