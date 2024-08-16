@@ -88,8 +88,10 @@ class TafsiliAccountView(View):
         accounting_document_lines=account.accountingdocumentline_set.all()
         context['accounting_document_lines']=accounting_document_lines
 
-        account_s=json.dumps(AccountSerializer(account).data)
-        context['account_s']=account_s
+        tasili_account_s=json.dumps(TafsiliAccountSerializer(account).data)
+        context['tasili_account_s']=tasili_account_s
+        
+
         return render(request,TEMPLATE_ROOT+"tafsili-account.html",context)
 
 class AccountView(View):
@@ -145,6 +147,11 @@ class BasicAccountView(View):
         context['basic_account']=basic_account
         # basic_account_s=json.dumps(BasicAccountSerializer(basic_account).data)
         # context['basic_account_s']=basic_account_s
+        CAN_ADD_MOEIN_ACCOUNT=True
+        
+        if CAN_ADD_MOEIN_ACCOUNT :
+            context['add_moein_account_form']=AddMoeinAccountForm()
+
         return render(request,TEMPLATE_ROOT+"basic-account.html",context)
 
 class SettingsView(View):

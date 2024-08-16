@@ -46,17 +46,25 @@
 
                 {% for moein_account in basic_account.moeinaccount_set.all %}
                 {% include "accounting/includes/moein-account-app/item-media.html" %}
-
-
-
                 {% endfor %}
             </div>
         </div>
     </div>
+    
+    {% if add_moein_account_form %}
+    <div class="col-md-6">
+        {% include "accounting/includes/moein-account-app/add-template.html" %}
+    </div>
+    {% endif %}
+
 </div>
 {% endblock content %}
 
 
 {% block script %}
 
+{% if add_moein_account_form %} 
+    {% include "accounting/includes/moein-account-app/add-script.html" %}
+ 
+{% endif %}
 {% endblock script %}

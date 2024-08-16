@@ -1,16 +1,11 @@
 {% extends "accounting/layout.html" %}
 {% load static %}
 {% load to_price %}
-
 {% block content %}
 <div class="row rtl">
     <div class="col-md-4">
         {% include "accounting/includes/account-app/card.html" %}
     </div>
-
-
-
-
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
@@ -22,13 +17,13 @@
 
             <div class="card-body">
 
-                {% for account in moein_account.accounts.all %}
+                {% for tafsili_account in moein_account.tafsiliaccount_set.all %}
                 <h6>
-                    <a href="{{account.get_absolute_url}}">
-                        {{account.title}}
+                    <a href="{{tafsili_account.get_absolute_url}}">
+                        {{tafsili_account.title}}
                         <small>
                             (
-                            {{account.balance|to_price_color|safe}}
+                            {{tafsili_account.balance|to_price_color|safe}}
                             )
                         </small>
                     </a>
@@ -39,36 +34,13 @@
             </div>
         </div>
     </div>
-
-
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <h6>
-                    حساب های تفصیلی
-                </h6>
-            </div>
-
-            <div class="card-body">
-
-
-                {% for account in moein_account.accounts.all %}
-                {% include "accounting/includes/account-app/item-media.html" %}
-                {% endfor %}
-
-            </div>
-        </div>
-    </div>
     {% if add_moein_account_form %}
     <div class="col-md-6">
         {% include "accounting/includes/moein-account-app/add-template.html" %}
     </div>
     {% endif %}
-
 </div>
 {% endblock content %}
-
-
 {% block script %}
 {% if add_moein_account_form %}
 <div class="col-md-6">

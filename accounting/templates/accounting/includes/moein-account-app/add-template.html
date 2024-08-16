@@ -1,12 +1,37 @@
 <div class="card" id="add-moein-account-app">
     <div class="card-header">
         <h6>
-            افزودن
-        </h6>
+         افزودن
+     حساب معین
+       </h6>
     </div>
-    <div class="card-body">
+    <div class="card-body rtl text-right">
+        <h6>سر فصل :
+            {{basic_account.full_title}}
+            {{moein_account.full_title}}
+        </h6>
         <form @submit.prevent="add_moein_account()">
-            <input required type="text" v-model="name">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="">کد</label>
+                        <input required type="text" v-model="code">
+
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="">نام</label>
+                        <input required type="text" v-model="name">
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
             <button type="submit" class="btn btn-success">
                 <i class="fa fa-plus"></i>
                 افزودن
@@ -14,4 +39,4 @@
         </form>
 
     </div>
-</div> 
+</div>
