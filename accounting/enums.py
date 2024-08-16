@@ -2,6 +2,11 @@ from django.utils.translation import gettext as _
 from django.db.models import TextChoices
 from core.enums import ColorEnum
 
+class AccountTypeEnum(TextChoices):
+    GROUP="گروه",_("گروه")
+    MOEIN="معین",_("معین")
+    TAFSILI="تفصیلی",_("تفصیلی")
+    BASIC="کل",_("کل")
 
 
 class UnitNameEnum(TextChoices):

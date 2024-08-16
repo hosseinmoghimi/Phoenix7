@@ -1,5 +1,5 @@
-from .models import Account,AccountGroup,BasicAccount,MoeinAccount
-
+from .models import TafsiliAccount,AccountGroup,BasicAccount,MoeinAccount
+from utility.constants import SUCCEED,FAILED
 
 
 def init_all_accounts():
@@ -180,21 +180,21 @@ def init_all_accounts():
                 {"name":"سرمایه",'code':"5101"},
             ]},
             {"name":"افزایش سرمایه‌ی در جریان",'code':"52",'moein_accounts':[
-                {"name":"افزایش سرمایه از محل مطالبات سهام‌داران",'code':"5201",'accounts':[
+                {"name":"افزایش سرمایه از محل مطالبات سهام‌داران",'code':"5201",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
 
-                {"name":"افزایش سرمایه از محل آورده‌ی نقدی سهام‌داران",'code':"5202",'accounts':[
+                {"name":"افزایش سرمایه از محل آورده‌ی نقدی سهام‌داران",'code':"5202",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
                 
             ]},
             {"name":"اندوخته‌ی صرف سهام",'code':"53",'moein_accounts':[
-                {"name":"اندوخته‌ی صرف سهام افزایش سرمایه‌ی ...",'code':"5301",'accounts':[
+                {"name":"اندوخته‌ی صرف سهام افزایش سرمایه‌ی ...",'code':"5301",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
 
-                {"name":"اندوخته‌ی صرف سهام افزایش سرمایه‌ی ...	",'code':"5302",'accounts':[
+                {"name":"اندوخته‌ی صرف سهام افزایش سرمایه‌ی ...	",'code':"5302",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
                 
@@ -204,22 +204,22 @@ def init_all_accounts():
             ]},
         {"name":"درآمد ها",'code':"6","basic_accounts":[
             {"name":"درآمد خدمات",'code':"61",'moein_accounts':[
-                {"name":"درآمد ارائه‌ی خدمات",'code':"6101",'accounts':[
+                {"name":"درآمد ارائه‌ی خدمات",'code':"6101",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
 
-                {"name":"درآمد خدمات از ...",'code':"6102",'accounts':[
+                {"name":"درآمد خدمات از ...",'code':"6102",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
                 
             ]},
 
             {"name":"سایر درآمدهای عملیاتی",'code':"62",'moein_accounts':[
-                {"name":"سایر درآمد خدمات",'code':"6201",'accounts':[
+                {"name":"سایر درآمد خدمات",'code':"6201",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
 
-                 {"name":"سایر درآمدهای عملیاتی",'code':"6202",'accounts':[
+                 {"name":"سایر درآمدهای عملیاتی",'code':"6202",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
                 
@@ -233,151 +233,151 @@ def init_all_accounts():
             ]},
         {"name":"هزینه ها",'code':"7","basic_accounts":[
             {"name":"هزینه‌ی حقوق و دستمزد	",'code':"71",'moein_accounts':[
-                {"name":"حقوق پایه",'code':"7101",'accounts':[
+                {"name":"حقوق پایه",'code':"7101",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
 
-                {"name":"اضافه‌کاری",'code':"7102",'accounts':[
+                {"name":"اضافه‌کاری",'code':"7102",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
 
-                {"name":"خواربار و مسکن	",'code':"7103",'accounts':[
+                {"name":"خواربار و مسکن	",'code':"7103",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
 
-                {"name":"حق اولاد",'code':"7104",'accounts':[
+                {"name":"حق اولاد",'code':"7104",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
 
-                {"name":"کمک‌هزینه‌ی اقلام مصرفی خانوار	",'code':"7105",'accounts':[
+                {"name":"کمک‌هزینه‌ی اقلام مصرفی خانوار	",'code':"7105",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
 
-                {"name":"نوبت کاری و شب‌کاری	",'code':"7106",'accounts':[
+                {"name":"نوبت کاری و شب‌کاری	",'code':"7106",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"%23 حق بیمه‌ی سهم کارفرما	",'code':"7107",'accounts':[
+                {"name":"%23 حق بیمه‌ی سهم کارفرما	",'code':"7107",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"عیدی و پاداش",'code':"7108",'accounts':[
+                {"name":"عیدی و پاداش",'code':"7108",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"حق‌الجذب",'code':"7109",'accounts':[
+                {"name":"حق‌الجذب",'code':"7109",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"بازخرید مرخصی استفاده‌نشده",'code':"7110",'accounts':[
+                {"name":"بازخرید مرخصی استفاده‌نشده",'code':"7110",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"مزایای پایان‌خدمت کارکنان",'code':"7111",'accounts':[
+                {"name":"مزایای پایان‌خدمت کارکنان",'code':"7111",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"کمک‌های غیرنقدی",'code':"7112",'accounts':[
+                {"name":"کمک‌های غیرنقدی",'code':"7112",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
             ],},
 
             {"name":"هزینه‌های عملیاتی",'code':"72",'moein_accounts':[
-                {"name":"تعمیر و نگهداری ساختمان و تاسیسات",'code':"7202",'accounts':[
+                {"name":"تعمیر و نگهداری ساختمان و تاسیسات",'code':"7202",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
 
-                {"name":"تعمیر و نگهداری ماشین‌آلات و تجهیزات",'code':"7203",'accounts':[
+                {"name":"تعمیر و نگهداری ماشین‌آلات و تجهیزات",'code':"7203",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
 
-                {"name":"تعمیر و نگهداری وسائط نقلیه",'code':"7204",'accounts':[
+                {"name":"تعمیر و نگهداری وسائط نقلیه",'code':"7204",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
 
-                {"name":"تعمیر و نگهداری اثاثیه و منصوبات",'code':"7205",'accounts':[
+                {"name":"تعمیر و نگهداری اثاثیه و منصوبات",'code':"7205",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
 
 
-                {"name":"سوخت و انرژی",'code':"7206",'accounts':[
+                {"name":"سوخت و انرژی",'code':"7206",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"آب ، برق ، گاز و تلفن",'code':"7207",'accounts':[
+                {"name":"آب ، برق ، گاز و تلفن",'code':"7207",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"ملزومات ، نوشت‌افزار و آگهی",'code':"7208",'accounts':[
+                {"name":"ملزومات ، نوشت‌افزار و آگهی",'code':"7208",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"آبدارخانه",'code':"7209",'accounts':[
+                {"name":"آبدارخانه",'code':"7209",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"حمل‌ و نقل",'code':"7210",'accounts':[
+                {"name":"حمل‌ و نقل",'code':"7210",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"اجاره‌ی مکان",'code':"7211",'accounts':[
+                {"name":"اجاره‌ی مکان",'code':"7211",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"بیمه‌ی دارایی‌ها",'code':"7212",'accounts':[
+                {"name":"بیمه‌ی دارایی‌ها",'code':"7212",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"استهلاک دارایی‌ها",'code':"7213",'accounts':[
+                {"name":"استهلاک دارایی‌ها",'code':"7213",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"ملزومات مصرفی",'code':"7214",'accounts':[
+                {"name":"ملزومات مصرفی",'code':"7214",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"ایاب‌ و‌ ذهاب",'code':"7215",'accounts':[
+                {"name":"ایاب‌ و‌ ذهاب",'code':"7215",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"هزینه‌ی غذای کارکنان",'code':"7216",'accounts':[
+                {"name":"هزینه‌ی غذای کارکنان",'code':"7216",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"هزینه‌ی پیک و پست",'code':"7217",'accounts':[
+                {"name":"هزینه‌ی پیک و پست",'code':"7217",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"پوشاک کارکنان	",'code':"7218",'accounts':[
+                {"name":"پوشاک کارکنان	",'code':"7218",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"بهداشت و درمان	",'code':"7219",'accounts':[
+                {"name":"بهداشت و درمان	",'code':"7219",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"هزینه‌ی سفر و ماموریت",'code':"7220",'accounts':[
+                {"name":"هزینه‌ی سفر و ماموریت",'code':"7220",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"کارمزدهای بانکی",'code':"7221",'accounts':[
+                {"name":"کارمزدهای بانکی",'code':"7221",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"هزینه‌های بسته‌بندی",'code':"7222",'accounts':[
+                {"name":"هزینه‌های بسته‌بندی",'code':"7222",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"حق‌المشاوره",'code':"7223",'accounts':[
+                {"name":"حق‌المشاوره",'code':"7223",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"هزینه‌های رایانه‌ای",'code':"7224",'accounts':[
+                {"name":"هزینه‌های رایانه‌ای",'code':"7224",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"هزینه‌ی ثبتی، حق تمبر و وکالت",'code':"7225",'accounts':[
+                {"name":"هزینه‌ی ثبتی، حق تمبر و وکالت",'code':"7225",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
             ],},
 
             {"name":"هزینه‌های توزیع و فروش",'code':"73",'moein_accounts':[
-                {"name":"هزینه‌های تبلیغات، بازاریابی، کاتالوگ و بروشور	",'code':"7301",'accounts':[
+                {"name":"هزینه‌های تبلیغات، بازاریابی، کاتالوگ و بروشور	",'code':"7301",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"هزینه‌ی انبار داری",'code':"7302",'accounts':[
+                {"name":"هزینه‌ی انبار داری",'code':"7302",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
  
 
-                {"name":"کمیسیون‌های پرداختی",'code':"7303",'accounts':[
+                {"name":"کمیسیون‌های پرداختی",'code':"7303",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
-                {"name":"هزینه‌ی حمل‌ونقل کالای فروش‌ رفته",'code':"7304",'accounts':[
-                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
-                ],},
- 
-                {"name":"هزینه‌ی مطالبات مشکوک‌الوصول و سوخت‌شده",'code':"7305",'accounts':[
+                {"name":"هزینه‌ی حمل‌ونقل کالای فروش‌ رفته",'code':"7304",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
  
+                {"name":"هزینه‌ی مطالبات مشکوک‌الوصول و سوخت‌شده",'code':"7305",'tafsili_accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
  
-                {"name":"پاداش هیئت‌ مدیره",'code':"7306",'accounts':[
+ 
+                {"name":"پاداش هیئت‌ مدیره",'code':"7306",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},
             ],},
@@ -391,11 +391,10 @@ def init_all_accounts():
             ]},
         
     ]
-    Account.objects.all().delete()
+    TafsiliAccount.objects.all().delete()
     MoeinAccount.objects.all().delete()
     BasicAccount.objects.all().delete()
-    AccountGroup.objects.all().delete()
-    Account.objects.all().delete()
+    AccountGroup.objects.all().delete() 
     for account_group in account_groups:
         new_account_group=AccountGroup(name=account_group["name"],code=account_group['code'])
         new_account_group.save()
@@ -407,10 +406,10 @@ def init_all_accounts():
                     for moein_account in basic_account["moein_accounts"]:
                         new_moein_account=MoeinAccount(name=moein_account["name"],code=moein_account['code'],basic_account=new_basic_account)
                         new_moein_account.save()
-                        if 'accounts' in moein_account:
-                            for account in moein_account["accounts"]:
-                                new_account=Account(title=account["name"],code=account['code'],moein_account=new_moein_account)
-                                new_account.save()
+                        if 'tafsili_accounts' in moein_account:
+                            for tafsili_account in moein_account["tafsili_accounts"]:
+                                new_tafsili_account=TafsiliAccount(title=tafsili_account["name"],code=account['code'],moein_account=new_moein_account)
+                                new_tafsili_account.save()
     result=SUCCEED
     message="افزوده شد."
     return (result,message)

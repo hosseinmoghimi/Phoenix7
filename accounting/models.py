@@ -8,6 +8,7 @@ IMAGE_FOLDER=APP_NAME+"/images/"
 from phoenix.server_settings import MEDIA_URL,STATIC_URL 
 # Create your models here.
 from django.contrib.auth.models import User,Group
+ACCOUNT_NAME_SEPERATOR=" - "
 class Access(models.Model):
 
     
@@ -19,12 +20,122 @@ class Access(models.Model):
     def __str__(self):
         return self.name
  
-class AccountGroup(models.Model,LinkHelper):
+class Account(models.Model,LinkHelper):
+    class_name="account"
+    app_name=APP_NAME  
+    profile=models.ForeignKey("authentication.profile",null=True,blank=True, verbose_name=_("profile"), on_delete=models.SET_NULL)
+    type=models.CharField(_("type"), max_length=200,null=True,blank=True)
     name=models.CharField(_("name"), max_length=200)
     code=models.CharField(_("code"), max_length=200)
     bedehkar=models.IntegerField(_("bedehkar"),default=0)
     bestankar=models.IntegerField(_("bestankar"),default=0)
     balance=models.IntegerField("balance",default=0)
+    description=models.CharField(_("description"),null=True,blank=True, max_length=500)
+    logo_origin=models.ImageField(_("logo"),blank=True,null=True, upload_to=IMAGE_FOLDER+"account", height_field=None, width_field=None, max_length=None)
+    @property
+    def parent_account(self):
+        if self.type==AccountTypeEnum.GROUP:
+            return None
+
+        
+        if self.type==AccountTypeEnum.BASIC:
+            account=BasicAccount.objects.filter(pk=self.pk).first()
+            if account is not None:
+                return account.account_group 
+
+        
+        if self.type==AccountTypeEnum.MOEIN:
+            account=MoeinAccount.objects.filter(pk=self.pk).first()
+            if account is not None:
+                if account.parent is not None:
+                    return account.parent
+                if account.basic_account is not None:
+                    return account.basic_account
+
+
+        
+        if self.type==AccountTypeEnum.TAFSILI:
+            account=TafsiliAccount.objects.filter(pk=self.pk).first()
+            if account is not None:
+                return account.moein_account
+        
+    @property
+    def full_title(self):
+
+        account_name=self.name
+        if self.type==AccountTypeEnum.GROUP:
+            account=AccountGroup.objects.filter(pk=self.pk).first()
+            if account is None:
+                return ""
+            return account.name
+
+        
+        if self.type==AccountTypeEnum.BASIC:
+            account=BasicAccount.objects.filter(pk=self.pk).first()
+            if account is None:
+                return ""
+            return account.account_group.full_title+ACCOUNT_NAME_SEPERATOR+account_name
+
+        
+        if self.type==AccountTypeEnum.MOEIN:
+            account=MoeinAccount.objects.filter(pk=self.pk).first()
+            if account is None:
+                return ""
+            pass
+        
+            try:
+                if account.parent is not None:
+                    return account.parent.full_title+ACCOUNT_NAME_SEPERATOR+account_name
+            except:
+                pass
+
+            
+            try:
+                if account.basic_account is not None:
+                    return account.basic_account.full_title+ACCOUNT_NAME_SEPERATOR+account_name
+            except:
+                pass
+
+
+        
+        if self.type==AccountTypeEnum.TAFSILI:
+            account=TafsiliAccount.objects.filter(pk=self.pk).first()
+            if account is None:
+                return ""
+            pass
+
+        return self.name
+    @property
+    def title(self):
+        return self.name
+   
+    def __str__(self):
+        return self.name
+        f"{self.code} - {self.name}"
+   
+    def normalize_total(self):
+        bedehkar=0
+        bestankar=0
+        balance=0
+        # for basic_account in self.basicaccount_set.all(): 
+        #     basic_account.normalize_total()
+           
+
+        #     bedehkar+=basic_account.bedehkar
+        #     bestankar+=basic_account.bestankar
+        balance=bestankar-bedehkar
+        self.bedehkar=bedehkar
+        self.bestankar=bestankar
+        self.balance=balance
+        self.save() 
+    @property
+    def logo(self):
+        if not self.logo_origin :
+            return f"{STATIC_URL}{APP_NAME}/img/pages/thumbnail/account.png"
+        return f"{MEDIA_URL}{self.logo_origin}"
+  
+class AccountGroup(Account):
+    
     
     # basic_accounts=models.ManyToManyField("basicaccount",blank=True, verbose_name=_("حساب های کل"))
     class_name="accountgroup"
@@ -62,23 +173,19 @@ class AccountGroup(models.Model,LinkHelper):
 
     def __str__(self):
         return self.code+" "+self.name
- 
-class BasicAccount(models.Model,LinkHelper):
-    name=models.CharField(_("name"), max_length=200)
-    code=models.CharField(_("code"), max_length=200)
+    def save(self):
+        self.type=AccountTypeEnum.GROUP
+        super(AccountGroup,self).save()
+class BasicAccount(Account):
+   
     account_group=models.ForeignKey("accountgroup", verbose_name=_("account group"), on_delete=models.CASCADE)
     # moein_accounts=models.ManyToManyField("moeinaccount",blank=True, verbose_name=_("حساب های معین"))
   
-    bedehkar=models.IntegerField(_("bedehkar"),default=0)
-    bestankar=models.IntegerField(_("bestankar"),default=0)
-    balance=models.IntegerField("balance",default=0)
+   
    
     class_name="basicaccount"
     app_name=APP_NAME
  
-    @property
-    def title(self):
-        return self.name
     @property
     def moein_accounts(self):
         return self.moeinaccount_set.all()
@@ -106,20 +213,19 @@ class BasicAccount(models.Model,LinkHelper):
 
     def __str__(self):
         return str(self.account_group)+" " + self.code+" "+self.name
-class MoeinAccount(models.Model,LinkHelper):
+    def save(self):
+        self.type=AccountTypeEnum.BASIC
+        super(BasicAccount,self).save()
+class MoeinAccount(Account):
 
 
     class_name="moeinaccount"
     app_name=APP_NAME
-
-    name=models.CharField(_("name"), max_length=200)
-    code=models.CharField(_("code"), max_length=200)
+    parent=models.ForeignKey("moeinaccount", verbose_name=_("parent"), on_delete=models.SET_NULL,blank=True,null=True)
+   
     # accounts=models.ManyToManyField("account", verbose_name=_("حساب ها"))
-    basic_account=models.ForeignKey("basicaccount", verbose_name=_("basicaccount"), on_delete=models.CASCADE)
-    bedehkar=models.IntegerField(_("bedehkar"),default=0)
-    bestankar=models.IntegerField(_("bestankar"),default=0)
-    balance=models.IntegerField("balance",default=0)
-         
+    basic_account=models.ForeignKey("basicaccount", verbose_name=_("basicaccount"), on_delete=models.CASCADE,blank=True,null=True)
+   
     
     def normalize_total(self):
         bedehkar=0
@@ -143,9 +249,10 @@ class MoeinAccount(models.Model,LinkHelper):
 
     @property
     def accounts(self):
-        return self.account_set.all()
+        return self.tafsiliaccount_set.all()
 
     def save(self):
+        self.type=AccountTypeEnum.MOEIN
         super(MoeinAccount,self).save()
     class Meta:
         verbose_name = _("MoeinAccount")
@@ -153,26 +260,17 @@ class MoeinAccount(models.Model,LinkHelper):
 
     def __str__(self):
         return str(self.basic_account)+" "+self.code+" "+self.name
-class Account(models.Model,LinkHelper):
+
+class TafsiliAccount(Account):
+    parent=models.ForeignKey("tafsiliaccount", verbose_name=_("parent"), on_delete=models.SET_NULL,blank=True,null=True)
     moein_account=models.ForeignKey("moeinaccount", verbose_name=_("moein account"), on_delete=models.CASCADE)
-    code=models.CharField(_("code"), max_length=200)
     
-    title=models.CharField(_("title"), max_length=500)
     mobile=models.CharField(_("mobile"),null=True,blank=True, max_length=50)
     tel=models.CharField(_("tel"),null=True,blank=True, max_length=50)
-    description=models.CharField(_("description"),null=True,blank=True, max_length=500)
-    profile=models.ForeignKey("authentication.profile",null=True,blank=True, verbose_name=_("profile"), on_delete=models.SET_NULL)
-    logo_origin=models.ImageField(_("logo"),blank=True,null=True, upload_to=IMAGE_FOLDER+"account", height_field=None, width_field=None, max_length=None)
-    bedehkar=models.IntegerField(_("bedehkar"),default=0)
-    bestankar=models.IntegerField(_("bestankar"),default=0)
-    balance=models.IntegerField("balance",default=0)
-    class_name="account"
+     
+    class_name="tafsiliaccount"
     app_name=APP_NAME
-    @property
-    def logo(self):
-        if not self.logo_origin :
-            return f"{STATIC_URL}{APP_NAME}/img/pages/thumbnail/account.png"
-        return f"{MEDIA_URL}{self.logo_origin}"
+    
 
         # if self.logo_origin:
         #     return MEDIA_URL+str(self.logo_origin)

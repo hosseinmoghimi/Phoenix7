@@ -3,44 +3,63 @@
 {% load to_price %}
 
 {% block content %}
-<div class="row rtl"> 
-    <div class="col-md-12"> 
+<div class="row rtl">
+    <div class="col-md-4">
+        {% include "accounting/includes/account-app/card.html" %}
+    </div>
+
+  
+
+
+    <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                 <h6>
-                    حساب معین
+                <h6>
+                    حساب های تفصیلی
+
                 </h6>
             </div>
-            
+
             <div class="card-body">
-                <h6>
-                    حساب معین
-                </h6>
-                <h4>
-                    {{moein_account.title}}
-                </h4>
-                <h5>
-                    {{moein_account.balance|to_price_color|safe}}
-                </h5>
-                
-                <h6>
-                حساب های تفصیلی :
-                </h6>
+
                 {% for account in moein_account.accounts.all %}
                 <h6>
                     <a href="{{account.get_absolute_url}}">
                         {{account.title}}
                         <small>
                             (
-                                {{account.balance|to_price_color|safe}}
+                            {{account.balance|to_price_color|safe}}
                             )
                         </small>
                     </a>
                 </h6>
                 {% endfor %}
+ 
+
             </div>
-        </div> 
+        </div>
     </div>
+
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h6>
+                    حساب های تفصیلی 
+                </h6>
+            </div>
+
+            <div class="card-body">
+             
+ 
+                {% for account in moein_account.accounts.all %}
+                {% include "accounting/includes/account-app/item-media.html" %}
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
 </div>
 {% endblock content %}
 
@@ -48,4 +67,3 @@
 {% block script %}
 
 {% endblock script %}
-

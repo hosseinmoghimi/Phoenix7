@@ -1,15 +1,15 @@
-from .models import Account,AccountGroup,BasicAccount,BasicAccount,MoeinAccount,AccountingDocument,AccountingDocumentLine
+from .models import TafsiliAccount,AccountGroup,BasicAccount,BasicAccount,MoeinAccount,AccountingDocument,AccountingDocumentLine
 from utility.constants import FAILED,SUCCEED
 from authentication.repo import ProfileRepo
 from .apps import APP_NAME
 from .defaults import init_all_accounts
 
-class AccountRepo():
+class TafsiliAccountRepo():
     def __init__(self,request,*args, **kwargs):
         self.request=request
         self.me=None
         profile=ProfileRepo(request=request).me
-        self.objects=Account.objects
+        self.objects=TafsiliAccount.objects
         if profile is not None:
             self.me=self.objects.filter(profile=profile).first()
     def list(self,*args, **kwargs):
@@ -29,11 +29,11 @@ class AccountRepo():
         if not self.request.user.has_perm(APP_NAME+".add_account"):
             message="دسترسی غیر مجاز"
             return account,message,result
-        if len(Account.objects.filter(title=kwargs['title']))>0:
+        if len(TafsiliAccount.objects.filter(title=kwargs['title']))>0:
             message="از قبل حسابی با همین عنوان ثبت شده است."
             return account,message,result
 
-        account=Account()
+        account=TafsiliAccount()
 
         if 'title' in kwargs:
             account.title=kwargs['title']

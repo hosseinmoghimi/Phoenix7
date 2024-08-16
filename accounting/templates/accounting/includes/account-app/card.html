@@ -1,0 +1,54 @@
+{% load to_price %}
+{% load to_amount_color %}
+{% load to_persian_date %}
+<div class="card">
+    <div class="card-header">
+        <h6>
+            {{account.type}}
+        </h6>
+    </div>
+
+    <div class="card-body">
+        <div class="div">
+
+            <h5>
+
+                {{account.code}}
+            </h5>
+            {% if account.parent_account %}
+
+            <h6>
+                <small class="text-muted">
+                    <a href="{{account.parent_account.get_absolute_url}}">
+    
+                        {{account.parent_account.full_title}}
+                    </a>
+                </small>
+    
+            </h6>
+            {% endif %}
+            <h5>
+                {{account.name}}
+            </h5>
+
+            <a href="{{account.get_edit_url}}">
+                <i class="fa fa-edit text-warning">
+
+                </i>
+            </a>
+            <a href="{{account.get_delete_url}}">
+                <i class="fa fa-trash text-danger">
+
+                </i>
+            </a>
+
+        </div>
+
+        <div class="text-center text-{{account.balance|to_amount_color}} farsi">
+
+            {{account.balance|to_price}}
+        </div>
+    </div>
+
+
+</div>

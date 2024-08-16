@@ -1,0 +1,16 @@
+<div class="card">
+  <div class="card-header">
+    <h5>
+      اسناد حسابداری
+    </h5>
+  </div>
+    <div class="card-body">
+        {% for accounting_document in accounting_documents %}
+          <h5>
+            <a href="{{accounting_document.get_absolute_url}}">
+                {{accounting_document.title}}
+            </a>
+          </h5>
+        {% endfor %}
+    </div>
+</div>

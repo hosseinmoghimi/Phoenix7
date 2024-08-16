@@ -6,10 +6,10 @@ from rest_framework.views import APIView
 
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import AccountRepo
+from .repo import TafsiliAccountRepo
 from django.http import JsonResponse
 from .forms import *
-from .serializers import AccountSerializer
+from .serializers import TafsiliAccountSerializer
 
 
 class InitALLAccountsApi(APIView):
