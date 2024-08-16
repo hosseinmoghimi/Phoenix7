@@ -26,6 +26,7 @@ urlpatterns = [
     path("account-group-tree-chart/<int:pk>/",login_required(views.TreeChartView.as_view()),name="account_group_tree_chart"),
     path("add-document/",login_required(views.AddEventView.as_view()),name="add_event"),
     path("add-document/",login_required(views.AddDocumentView.as_view()),name="add_document"),
+    path("add-moein-account/",login_required(apis.AddMoeinAccountApi.as_view()),name="add_moein_account"),
     path("edit-document/",login_required(views.EditDocumentView.as_view()),name="edit_document"),
     path("search/",login_required(views.SearchView.as_view()),name="search"),
     path("init_all_accounts/",login_required(apis.InitALLAccountsApi.as_view()),name="init_all_accounts"),

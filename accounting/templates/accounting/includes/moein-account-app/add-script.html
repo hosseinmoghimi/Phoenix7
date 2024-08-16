@@ -1,0 +1,43 @@
+<script>
+
+
+    let moein_account_id = 0
+    let basic_account_id = 0 
+</script>
+{% if moein_account %}
+<script>
+    moein_account_id = parseInt("{{moein_account.id}}")
+</script>
+{% endif %}
+{% if basic_account %}
+<script>
+    basic_account_id = parseInt("{{basic_account.id}}")
+</script>
+{% endif %}
+<script>
+
+    let add_moein_account_app = new Vue({
+        el: "#add-moein-account-app",
+        data: {
+            name: "ssdsdsdssd",
+            code: "ssdsdsdssd",
+        },
+        methods: {
+            add_moein_account: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    name: this.name,
+                    code: this.code,
+                    parent_id: moein_account_id,
+                    basic_account_id: basic_account_id,
+                }
+                console.log(payload)
+                let url = "{% url 'accounting:add_moein_account' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    console.log(data)
+                })
+            },
+        }
+    })
+</script>

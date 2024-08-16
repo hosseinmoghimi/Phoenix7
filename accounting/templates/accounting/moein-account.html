@@ -8,7 +8,7 @@
         {% include "accounting/includes/account-app/card.html" %}
     </div>
 
-  
+
 
 
     <div class="col-md-12">
@@ -34,7 +34,7 @@
                     </a>
                 </h6>
                 {% endfor %}
- 
+
 
             </div>
         </div>
@@ -45,13 +45,13 @@
         <div class="card">
             <div class="card-header">
                 <h6>
-                    حساب های تفصیلی 
+                    حساب های تفصیلی
                 </h6>
             </div>
 
             <div class="card-body">
-             
- 
+
+
                 {% for account in moein_account.accounts.all %}
                 {% include "accounting/includes/account-app/item-media.html" %}
                 {% endfor %}
@@ -59,11 +59,20 @@
             </div>
         </div>
     </div>
+    {% if add_moein_account_form %}
+    <div class="col-md-6">
+        {% include "accounting/includes/moein-account-app/add-template.html" %}
+    </div>
+    {% endif %}
 
 </div>
 {% endblock content %}
 
 
 {% block script %}
-
+{% if add_moein_account_form %}
+<div class="col-md-6">
+    {% include "accounting/includes/moein-account-app/add-script.html" %}
+</div>
+{% endif %}
 {% endblock script %}

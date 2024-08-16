@@ -1,27 +1,35 @@
 from django import forms
+
 class SearchForm(forms.Form):
     search_for=forms.CharField( max_length=200, required=False)
     start_date=forms.CharField(max_length=20, required=False)
     end_date=forms.CharField(max_length=20, required=False)
     account_id=forms.IntegerField(required=False)
     profile_id=forms.IntegerField(required=False)
+
 class AddAccountingDocumentForm(forms.Form):
     title=forms.CharField(max_length=100, required=False)
 
 
 
 class AddAccountGroupForm(forms.Form):
-    title=forms.CharField(max_length=100, required=False)
-    code=forms.CharField(max_length=100, required=False)
+    title=forms.CharField(max_length=100, required=True)
+    code=forms.CharField(max_length=100, required=True)
 
 class AddBasicAccountForm(forms.Form):
-    title=forms.CharField(max_length=100, required=False)
-    code=forms.CharField(max_length=100, required=False)
+    title=forms.CharField(max_length=100, required=True)
+    code=forms.CharField(max_length=100, required=True)
     account_group_id=forms.IntegerField(required=False)
+
 class AddMoeinAccountForm(forms.Form):
-    title=forms.CharField(max_length=100, required=False)
-    code=forms.CharField(max_length=100, required=False)
+    name=forms.CharField(max_length=100, required=True)
+    code=forms.CharField(max_length=100, required=True)
     basic_account_id=forms.IntegerField(required=False)
+    parent_id=forms.IntegerField(required=False)
+class AddTafsiliAccountForm(forms.Form):
+    title=forms.CharField(max_length=100, required=True)
+    code=forms.CharField(max_length=100, required=True)
+    moein_account_id=forms.IntegerField(required=False)
 
 
 class AddAccountTagForm(forms.Form):

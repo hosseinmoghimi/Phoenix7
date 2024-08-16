@@ -165,6 +165,12 @@ class MoeinAccountView(View):
         
         # account_s=json.dumps(AccountSerializer(account).data)
         # context['account_s']=account_s
+        CAN_ADD_MOEIN_ACCOUNT=True
+        CAN_ADD_TAFSILI_ACCOUNT=True
+        if CAN_ADD_MOEIN_ACCOUNT :
+            context['add_moein_account_form']=AddMoeinAccountForm()
+        if CAN_ADD_TAFSILI_ACCOUNT :
+            context['add_tafsili_account_form']=AddTafsiliAccountForm()
         return render(request,TEMPLATE_ROOT+"moein-account.html",context)
 
 class MoeinAccountsView(View):   

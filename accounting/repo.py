@@ -330,29 +330,35 @@ class MoeinAccountRepo():
             return self.objects.filter(pk=kwargs['id']).first() 
 
             
-    def add_account_group(self,*args, **kwargs):
-        account,message,result=(None,"",FAILED)
+    def add_moein_account(self,*args, **kwargs):
+        moein_account,message,result=(None,"",FAILED)
         if not self.request.user.has_perm(APP_NAME+".add_account"):
             message="دسترسی غیر مجاز"
             return account,message,result
-        if len(Account.objects.filter(title=kwargs['title']))>0:
+        if len(MoeinAccount.objects.filter(name=kwargs['name']))>0:
             message="از قبل حسابی با همین عنوان ثبت شده است."
-            return account,message,result
+            return moein_account,message,result
 
-        account=Account()
+        moein_account=MoeinAccount()
 
-        if 'title' in kwargs:
-            account.title=kwargs['title']
+        if 'name' in kwargs:
+            moein_account.name=kwargs['name']
+        if 'code' in kwargs:
+            moein_account.code=kwargs['code']
         if 'profile_id' in kwargs:
-            account.profile_id=kwargs['profile_id']
+            moein_account.profile_id=kwargs['profile_id']
         if 'description' in kwargs:
-            account.description=kwargs['description']
+            moein_account.description=kwargs['description']
         if 'address' in kwargs:
-            account.address=kwargs['address']
+            moein_account.address=kwargs['address']
         if 'tel' in kwargs:
-            account.tel=kwargs['tel']
+            moein_account.tel=kwargs['tel']
         if 'mobile' in kwargs:
-            account.mobile=kwargs['mobile']
+            moein_account.mobile=kwargs['mobile']
+        if 'parent_id' in kwargs and kwargs['parent_id']>0 :
+            moein_account.parent_id=kwargs['parent_id']
+        if 'basic_account_id' in kwargs and kwargs['basic_account_id']>0 :
+            moein_account.basic_account_id=kwargs['basic_account_id']
        
         
         # if 'financial_year_id' in kwargs:
@@ -360,7 +366,7 @@ class MoeinAccountRepo():
         # else:
         #     payment.financial_year_id=FinancialYear.get_by_date(date=payment.transaction_datetime).id
 
-        account.save()
+        moein_account.save()
         result=SUCCEED
         message="با موفقیت اضافه گردید."
         
@@ -383,35 +389,8 @@ class MoeinAccountRepo():
                     payment.pay_to_id=account.id
                 payment.save()
 
-        return account,message,result
-
-    def add_account_tag(self,*args, **kwargs):
-        result,message,account_tags=FAILED,"",[]
-        if not self.request.user.has_perm(APP_NAME+".change_account"):
-            return result,message,account_tags
-        tag=kwargs['tag']
-        account_id=kwargs['account_id']
-        account_tags=AccountTag.objects.filter(account_id=account_id).filter(tag=tag)
-        
-        if len(account_tags)>0:
-            account_tags.delete()
-            account_tags=AccountTag.objects.filter(account_id=account_id)
-            result=SUCCEED
-            message="تگ "+tag+" حذف شد."
-            return result,message,account_tags
-        
-
-        account_tag=AccountTag()
-        account_tag.account_id=account_id
-        account_tag.tag=tag
-        account_tag.save()
-        message="تگ "+tag+" اضافه شد."
-
-        account_tags=AccountTag.objects.filter(account_id=account_id)
-        result=SUCCEED
-
-        return result,message,account_tags
-       
+        return moein_account,message,result
+ 
 class AccountingDocumentRepo():
     def __init__(self,request,*args, **kwargs):
         self.request=request

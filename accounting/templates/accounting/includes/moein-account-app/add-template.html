@@ -1,0 +1,17 @@
+<div class="card" id="add-moein-account-app">
+    <div class="card-header">
+        <h6>
+            افزودن
+        </h6>
+    </div>
+    <div class="card-body">
+        <form @submit.prevent="add_moein_account()">
+            <input required type="text" v-model="name">
+            <button type="submit" class="btn btn-success">
+                <i class="fa fa-plus"></i>
+                افزودن
+            </button>
+        </form>
+
+    </div>
+</div> 
