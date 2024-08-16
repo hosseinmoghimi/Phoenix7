@@ -3,6 +3,7 @@ from .apps import APP_NAME
 from django.views import View
 from .repo import TafsiliAccountRepo,AccountGroupRepo,AccountingDocumentRepo,BasicAccountRepo,MoeinAccountRepo
 from .serializers import TafsiliAccountSerializer,AccountGroupSerializer,BasicAccountSerializer,MoeinAccountSerializer
+from .serializers import AccountGroupBriefSerializer,BasicAccountBriefSerializer,MoeinAccountBriefSerializer,TafsiliAccountBriefSerializer
 from .forms import *
 from core.views import CoreContext
 import json
@@ -169,24 +170,27 @@ class SelectionView(View):
 
         account_groups=AccountGroupRepo(request=request).list(*args, **kwargs)
         context['account_groups']=account_groups
-        account_groups_s=json.dumps(AccountGroupSerializer(account_groups,many=True).data)
+        account_groups_s=json.dumps(AccountGroupBriefSerializer(account_groups,many=True).data)
         context['account_groups_s']=account_groups_s
 
         
 
         basic_accounts=BasicAccountRepo(request=request).list(*args, **kwargs)
         context['basic_accounts']=basic_accounts
-        basic_accounts_s=json.dumps(BasicAccountSerializer(basic_accounts,many=True).data)
+        basic_accounts_s=json.dumps(BasicAccountBriefSerializer(basic_accounts,many=True).data)
         context['basic_accounts_s']=basic_accounts_s
 
 
         moein_accounts=MoeinAccountRepo(request=request).list(*args, **kwargs)
         context['moein_accounts']=moein_accounts
-        moein_accounts_s=json.dumps(MoeinAccountSerializer(moein_accounts,many=True).data)
+        moein_accounts_s=json.dumps(MoeinAccountBriefSerializer(moein_accounts,many=True).data)
         context['moein_accounts_s']=moein_accounts_s
 
         
- 
+        moein_accounts2=MoeinAccountRepo(request=request).list(*args, **kwargs)
+        context['moein_accounts2']=moein_accounts2
+        moein_accounts2_s=json.dumps(MoeinAccountBriefSerializer(moein_accounts2,many=True).data)
+        context['moein_accounts2_s']=moein_accounts2_s
 
 
         return render(request,TEMPLATE_ROOT+"selection.html",context)

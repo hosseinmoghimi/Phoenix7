@@ -33,6 +33,9 @@ class Account(models.Model,LinkHelper):
     description=models.CharField(_("description"),null=True,blank=True, max_length=500)
     logo_origin=models.ImageField(_("logo"),blank=True,null=True, upload_to=IMAGE_FOLDER+"account", height_field=None, width_field=None, max_length=None)
     @property
+    def parent_account_id(self):
+        return 13476
+    @property
     def parent_account(self):
         if self.type==AccountTypeEnum.GROUP:
             return None

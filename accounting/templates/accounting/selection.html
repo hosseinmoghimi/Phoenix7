@@ -15,12 +15,16 @@
 
 
                 <div v-for="account_group in account_groups">
+                    <div class="mb-2 text-center">
 
-                    <button class="btn btn-success mb-2" @click="select_account_group(account_group.id)">
+                        <button
+                            :class="selected_account_group_id==account_group.id ?'w-100 btn btn-primary': 'w-100 btn btn-secondary'"
+                            @click="select_account_group(account_group.id)">
 
-                        <span v-text="account_group.code"></span>
-                        <span v-text="account_group.name"></span>
-                    </button>
+                            <span v-text="account_group.code"></span>
+                            <span v-text="account_group.name"></span>
+                        </button>
+                    </div>
                 </div>
 
             </div>
@@ -38,12 +42,18 @@
             </div>
             <div class="card-body">
                 <div v-for="basic_account in basic_accounts">
+                    <div class="mb-2 text-center">
 
-                    <button class="btn btn-success mb-2" @click="select_basic_account(basic_account.id)">
+                        <button
+                            :class="selected_basic_account_id==basic_account.id ?'w-100 btn btn-primary': 'w-100 btn btn-secondary'"
+                            @click="select_basic_account(basic_account.id)">
 
-                        <span v-text="basic_account.code"></span>
-                        <span v-text="basic_account.name"></span>
-                    </button>
+                            <span v-text="basic_account.code"></span>
+                            <span v-text="basic_account.name"></span>
+                        </button>
+                    </div>
+
+ 
                 </div>
 
             </div>
@@ -51,6 +61,57 @@
     </div>
 
 
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center">
+
+                    حساب های معین
+                </h5>
+            </div>
+            <div class="card-body">
+                <div v-for="moein_account in moein_accounts">
+
+                    <div class="mb-2 text-center">
+
+                        <button
+                            :class="selected_moein_account_id==moein_account.id ?'w-100 btn btn-primary': 'w-100 btn btn-secondary'"
+                            @click="select_moein_account(moein_account.id)">
+
+                            <span v-text="moein_account.code"></span>
+                            <span v-text="moein_account.name"></span>
+                        </button>
+                    </div>
+
+ 
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center">
+
+                    حساب های معین سطح دو
+                </h5>
+            </div>
+            <div class="card-body">
+                <div v-for="moein_account2 in moein_accounts2">
+
+                    <button class="btn btn-primary mb-2">
+
+                        <span v-text="moein_account2.code"></span>
+                        <span v-text="moein_account2.name"></span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 
 
@@ -65,13 +126,18 @@
     let account_groups = JSON.parse("{{account_groups_s|escapejs}}")
     let basic_accounts = JSON.parse("{{basic_accounts_s|escapejs}}")
     let moein_accounts = JSON.parse("{{moein_accounts_s|escapejs}}")
+    let moein_accounts2 = JSON.parse("{{moein_accounts2_s|escapejs}}")
 
     let selection_app = new Vue({
         el: "#selection-app",
-        date: {
+        data: {
             account_groups: account_groups,
             basic_accounts: [],
             moein_accounts: [],
+            moein_accounts2: [],
+            selected_account_group_id: 0,
+            selected_basic_account_id: 0,
+            selected_moein_account_id: 0,
         },
         methods: {
             select_account_group: function (account_group_id) {
@@ -79,7 +145,13 @@
                 // let payload = {
                 //     csrfmiddlewaretoken: csrfmiddlewaretoken,
                 // }
-                // console.log(account_group_id)
+                selection_app.selected_account_group_id = account_group_id
+                selection_app.basic_accounts = basic_accounts.filter(basic_account =>
+                    basic_account.account_group_id == account_group_id
+                )
+                selection_app.moein_accounts2=[]
+
+                selection_app.moein_accounts=[]
                 // posting = $.post(url, payload)
                 // posting.done((data) => {
                 //     console.log(data.message)
@@ -88,23 +160,40 @@
                 // })
             },
 
-            
+
             select_basic_account: function (basic_account_id) {
                 // let url = "{% url 'accounting:select_account_group' %}"
                 // let payload = {
                 //     csrfmiddlewaretoken: csrfmiddlewaretoken,
                 // }
-                // console.log(account_group_id)
                 // posting = $.post(url, payload)
                 // posting.done((data) => {
                 //     console.log(data.message)
                 //     console.log(data.result)
 
                 // })
+                selection_app.selected_basic_account_id = basic_account_id
+
+                selection_app.moein_accounts = moein_accounts.filter(moein_account =>
+                    moein_account.basic_account_id == basic_account_id
+                )
+                selection_app.moein_accounts2=[]
+
             },
 
-            
+            select_moein_account: function (moein_account_id) {
+                
+                selection_app.selected_moein_account_id = moein_account_id
+
+                selection_app.moein_accounts2 = moein_accounts2.filter(moein_account2 =>
+                    moein_account2.parent_id == moein_account_id
+                )
  
+            },
+
+
+
+
 
         }
     })
