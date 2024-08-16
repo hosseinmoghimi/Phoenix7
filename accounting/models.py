@@ -102,7 +102,15 @@ class Account(models.Model,LinkHelper):
             account=TafsiliAccount.objects.filter(pk=self.pk).first()
             if account is None:
                 return ""
-            pass
+        
+            try:
+                if account.parent is not None:
+                    return account.parent.full_title+ACCOUNT_NAME_SEPERATOR+account_name
+
+                else:
+                    return account.moein_account.full_title+ACCOUNT_NAME_SEPERATOR+account_name
+            except:
+                pass
 
         return self.name
     @property
@@ -259,7 +267,15 @@ class MoeinAccount(Account):
         verbose_name_plural = _("MoeinAccounts")
 
     def __str__(self):
-        return str(self.basic_account)+" "+self.code+" "+self.name
+        basic_account_name=""
+        if self.basic_account is not None:
+            basic_account_name=str(self.basic_account)+" "
+            
+        moein_account_name=""
+        if self.parent is not None:
+            moein_account_name=str(self.parent)+" "
+
+        return basic_account_name+moein_account_name+self.code+" "+self.name
 
 class TafsiliAccount(Account):
     parent=models.ForeignKey("tafsiliaccount", verbose_name=_("parent"), on_delete=models.SET_NULL,blank=True,null=True)
@@ -294,6 +310,12 @@ class TafsiliAccount(Account):
         self.bestankar=bestankar
         super(Account,self).save()
    
+
+    def save(self):
+        self.type=AccountTypeEnum.TAFSILI
+        super(TafsiliAccount,self).save()
+        
+        
 class FinancialDocument(LinkHelper,models.Model):
     account=models.ForeignKey("account", verbose_name=_("account"), on_delete=models.PROTECT)
     event=models.ForeignKey("event", verbose_name=_("event"), on_delete=models.PROTECT)

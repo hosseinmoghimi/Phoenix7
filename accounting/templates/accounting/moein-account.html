@@ -3,9 +3,43 @@
 {% load to_price %}
 {% block content %}
 <div class="row rtl">
-    <div class="col-md-4">
+    <div class="col-md-6">
         {% include "accounting/includes/account-app/card.html" %}
     </div>
+    {% if moein_account.basic_account %}
+      
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h6>
+                    حساب های معین زیر مجموعه
+
+                </h6>
+            </div>
+
+            <div class="card-body">
+
+                {% for moein_account in moein_account.moeinaccount_set.all %}
+                <h6>
+                    <a href="{{moein_account.get_absolute_url}}">
+                        {{moein_account.full_title}}
+                        <small>
+                            (
+                            {{moein_account.balance|to_price_color|safe}}
+                            )
+                        </small>
+                    </a>
+                </h6>
+
+                 
+                {% endfor %}
+
+
+            </div>
+        </div>
+    </div>
+    {% endif %}
+  
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
@@ -20,12 +54,23 @@
                 {% for tafsili_account in moein_account.tafsiliaccount_set.all %}
                 <h6>
                     <a href="{{tafsili_account.get_absolute_url}}">
-                        {{tafsili_account.title}}
+                        {{tafsili_account.code}} 
+                        {{tafsili_account.full_title}}
                         <small>
                             (
                             {{tafsili_account.balance|to_price_color|safe}}
                             )
                         </small>
+                    </a>
+                </h6>
+
+                <h6>
+                    <a href="{{tafsili_account.parent_account.get_absolute_url}}">
+                        <small class="text-muted">
+
+                            {{tafsili_account.parent_account.title}}
+                        </small>
+                        
                     </a>
                 </h6>
                 {% endfor %}
@@ -34,17 +79,35 @@
             </div>
         </div>
     </div>
+  
+  
+  
     {% if add_moein_account_form %}
     <div class="col-md-6">
         {% include "accounting/includes/moein-account-app/add-template.html" %}
     </div>
     {% endif %}
+
+
+    {% if add_tafsili_account_form %}
+    <div class="col-md-6">
+        {% include "accounting/includes/tafsili-account-app/add-template.html" %}
+    </div>
+    {% endif %}
+
 </div>
 {% endblock content %}
 {% block script %}
+<script>
+    let moein_account_id=parseInt("{{moein_account.id}}")
+</script>
 {% if add_moein_account_form %}
-<div class="col-md-6">
-    {% include "accounting/includes/moein-account-app/add-script.html" %}
-</div>
+{% include "accounting/includes/moein-account-app/add-script.html" %}
 {% endif %}
+
+
+{% if add_tafsili_account_form %}
+{% include "accounting/includes/tafsili-account-app/add-script.html" %}
+{% endif %}
+
 {% endblock script %}

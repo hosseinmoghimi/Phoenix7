@@ -35,6 +35,12 @@
         </div>
 
     </div>
+    {% if add_tafsili_account_form %}
+    <div class="col-md-6">
+        {% include "accounting/includes/tafsili-account-app/add-template.html" %}
+    </div>
+    {% endif %}
+
     <div class="col-lg-12">
 
         <div class="card">
@@ -111,5 +117,9 @@
 
 
 {% block script %}
-
+ {% if add_tafsili_account_form %}
+    <div class="col-md-6">
+        {% include "accounting/includes/tafsili-account-app/add-script.html" %}
+    </div>
+    {% endif %}
 {% endblock script %}

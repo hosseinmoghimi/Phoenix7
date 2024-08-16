@@ -84,11 +84,11 @@ class TafsiliAccountView(View):
         tasili_account=TafsiliAccountRepo(request=request).account(*args, **kwargs)
         context['tasili_account']=tasili_account
         context.update(get_account_context(account=tasili_account))
-        account.normalize_total()
-        accounting_document_lines=account.accountingdocumentline_set.all()
+        tasili_account.normalize_total()
+        accounting_document_lines=tasili_account.accountingdocumentline_set.all()
         context['accounting_document_lines']=accounting_document_lines
 
-        tasili_account_s=json.dumps(TafsiliAccountSerializer(account).data)
+        tasili_account_s=json.dumps(TafsiliAccountSerializer(tasili_account).data)
         context['tasili_account_s']=tasili_account_s
         
 
@@ -174,6 +174,10 @@ class MoeinAccountView(View):
         # context['account_s']=account_s
         CAN_ADD_MOEIN_ACCOUNT=True
         CAN_ADD_TAFSILI_ACCOUNT=True
+        if moein_account.basic_account is None:
+            CAN_ADD_MOEIN_ACCOUNT=False
+        else:
+            CAN_ADD_TAFSILI_ACCOUNT=False
         if CAN_ADD_MOEIN_ACCOUNT :
             context['add_moein_account_form']=AddMoeinAccountForm()
         if CAN_ADD_TAFSILI_ACCOUNT :

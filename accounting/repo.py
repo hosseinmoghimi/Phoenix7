@@ -24,29 +24,29 @@ class TafsiliAccountRepo():
             return self.objects.filter(pk=kwargs['id']).first() 
 
             
-    def add_account(self,*args, **kwargs):
-        account,message,result=(None,"",FAILED)
+    def add_tafsili_account(self,*args, **kwargs):
+        tafsili_account,message,result=(None,"",FAILED)
         if not self.request.user.has_perm(APP_NAME+".add_account"):
             message="دسترسی غیر مجاز"
-            return account,message,result
-        if len(TafsiliAccount.objects.filter(title=kwargs['title']))>0:
+            return tafsili_account,message,result
+        if len(TafsiliAccount.objects.filter(name=kwargs['name']))>0:
             message="از قبل حسابی با همین عنوان ثبت شده است."
-            return account,message,result
+            return tafsili_account,message,result
 
-        account=TafsiliAccount()
+        tafsili_account=TafsiliAccount()
 
-        if 'title' in kwargs:
-            account.title=kwargs['title']
+        if 'name' in kwargs:
+            tafsili_account.name=kwargs['name']
         if 'profile_id' in kwargs:
             account.profile_id=kwargs['profile_id']
         if 'description' in kwargs:
             account.description=kwargs['description']
-        if 'address' in kwargs:
-            account.address=kwargs['address']
+        if 'moein_account_id' in kwargs and kwargs["moein_account_id"]>0:
+            tafsili_account.moein_account_id=kwargs['moein_account_id']
         if 'tel' in kwargs:
-            account.tel=kwargs['tel']
-        if 'mobile' in kwargs:
-            account.mobile=kwargs['mobile']
+            tafsili_account.tel=kwargs['tel']
+        if 'parent_id' in kwargs and kwargs["parent_id"]>0:
+            tafsili_account.parent_id=kwargs['parent_id']
        
         
         # if 'financial_year_id' in kwargs:
@@ -54,7 +54,7 @@ class TafsiliAccountRepo():
         # else:
         #     payment.financial_year_id=FinancialYear.get_by_date(date=payment.transaction_datetime).id
 
-        account.save()
+        tafsili_account.save()
         result=SUCCEED
         message="با موفقیت اضافه گردید."
         
@@ -77,7 +77,7 @@ class TafsiliAccountRepo():
                     payment.pay_to_id=account.id
                 payment.save()
 
-        return account,message,result
+        return tafsili_account,message,result
 
     def add_account_tag(self,*args, **kwargs):
         result,message,account_tags=FAILED,"",[]

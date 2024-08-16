@@ -34,6 +34,31 @@ class AddMoeinAccountApi(APIView):
 
 
 
+
+class AddTafsiliAccountApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            log=222
+            add_tafsili_account_form=AddTafsiliAccountForm(request.POST)
+            if add_tafsili_account_form.is_valid():
+                log=333
+                cd=add_tafsili_account_form.cleaned_data
+                tafsili_account,message,result=TafsiliAccountRepo(request=request).add_tafsili_account(**cd)
+                if tafsili_account is not None:
+                    context['tafsili_account']=TafsiliAccountSerializer(tafsili_account).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
+
+
 class InitALLAccountsApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}
