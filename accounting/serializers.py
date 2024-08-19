@@ -1,4 +1,4 @@
-from .models import TafsiliAccount,AccountingDocumentLine,AccountingDocument,Event,AccountGroup,BasicAccount,MoeinAccount
+from .models import TafsiliAccount,AccountingDocumentLine,AccountingDocument,Event,AccountGroup,BasicAccount,MoeinAccount,Account
 from rest_framework import serializers
 
 
@@ -60,6 +60,12 @@ class AccountGroupSerializer(serializers.ModelSerializer):
         fields = ['id', 'name','code','basic_accounts','get_absolute_url','get_edit_url','get_delete_url','balance']
 
 
+class AccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ['id', 'name','balance_colored','code','get_absolute_url','get_edit_url','get_delete_url','balance']
+
+
 
 class AccountGroupBriefSerializer(serializers.ModelSerializer):
     class Meta:
@@ -69,12 +75,12 @@ class AccountGroupBriefSerializer(serializers.ModelSerializer):
 class BasicAccountBriefSerializer(serializers.ModelSerializer):
     class Meta:
         model = BasicAccount
-        fields = ['id', 'name','account_group_id','code','get_absolute_url','get_edit_url','get_delete_url','balance']
+        fields = ['id','balance_colored', 'name','account_group_id','logo','code','get_absolute_url','get_edit_url','get_delete_url','balance']
 
 class MoeinAccountBriefSerializer(serializers.ModelSerializer):
     class Meta:
         model = MoeinAccount
-        fields = ['id', 'name','parent_id','code','basic_account_id','get_absolute_url','get_edit_url','get_delete_url','balance']
+        fields = ['id', 'name','parent_id','logo','code','basic_account_id','get_absolute_url','get_edit_url','get_delete_url','balance']
 
 
 class TafsiliAccountBriefSerializer(serializers.ModelSerializer):

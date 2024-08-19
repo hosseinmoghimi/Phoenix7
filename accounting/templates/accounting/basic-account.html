@@ -12,12 +12,12 @@
         <div class="card">
             <div class="card-header">
                 <h6>
-                     حساب کل
+                    حساب کل
                 </h6>
             </div>
             <div class="card-body">
                 <h6>
-                     حساب کل 
+                    حساب کل
                 </h6>
                 <h5>
                     {{basic_account.title}}
@@ -26,36 +26,22 @@
                 <h6>
                     {{basic_account.balance|to_price_color|safe}}
                 </h6>
-                 
+
 
             </div>
         </div>
 
-    </div>
 
-    <div class="col-md-4">
-
-        <div class="card">
-            <div class="card-header">
-                <h6>
-                    حساب های معین
-
-                </h6>
-            </div>
-            <div class="card-body">
-
-                {% for moein_account in basic_account.moeinaccount_set.all %}
-                {% include "accounting/includes/moein-account-app/item-media.html" %}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    
-    {% if add_moein_account_form %}
-    <div class="col-md-6">
+        {% if add_moein_account_form %}
         {% include "accounting/includes/moein-account-app/add-template.html" %}
+        {% endif %}
+
     </div>
-    {% endif %}
+    <div class="col-md-4">
+        {% include "accounting/includes/moein-account-app/list-template.html" %}
+
+    </div>
+
 
 </div>
 {% endblock content %}
@@ -63,8 +49,10 @@
 
 {% block script %}
 
-{% if add_moein_account_form %} 
-    {% include "accounting/includes/moein-account-app/add-script.html" %}
- 
+{% if add_moein_account_form %}
+{% include "accounting/includes/moein-account-app/add-script.html" %}
+
 {% endif %}
+{% include "accounting/includes/moein-account-app/list-script.html" %}
+
 {% endblock script %}

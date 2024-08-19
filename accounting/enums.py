@@ -9,6 +9,13 @@ class AccountTypeEnum(TextChoices):
     BASIC="کل",_("کل")
 
 
+class PersonPrefixEnum(TextChoices):
+    MR="آقای",_("آقای")
+    MRS="خانم",_("خانم")
+    COMPANY="شرکت",_("شرکت")
+    DR="دکتر",_("دکتر")
+    ENGINEER="مهندس",_("مهندس")
+
 class UnitNameEnum(TextChoices):
     ADAD="عدد",_("عدد")
     KILOGERAM="کیلوگرم",_("کیلوگرم")

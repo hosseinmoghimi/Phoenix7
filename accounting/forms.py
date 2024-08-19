@@ -17,9 +17,9 @@ class AddAccountGroupForm(forms.Form):
     code=forms.CharField(max_length=100, required=True)
 
 class AddBasicAccountForm(forms.Form):
-    title=forms.CharField(max_length=100, required=True)
+    name=forms.CharField(max_length=100, required=True)
     code=forms.CharField(max_length=100, required=True)
-    account_group_id=forms.IntegerField(required=False)
+    account_group_id=forms.IntegerField(required=True)
 
 class AddMoeinAccountForm(forms.Form):
     name=forms.CharField(max_length=100, required=True)

@@ -2,7 +2,7 @@ from django.shortcuts import render,reverse
 from .apps import APP_NAME
 from django.views import View
 from .repo import TafsiliAccountRepo,AccountGroupRepo,AccountingDocumentRepo,BasicAccountRepo,MoeinAccountRepo
-from .serializers import TafsiliAccountSerializer,AccountGroupSerializer,BasicAccountSerializer,MoeinAccountSerializer
+from .serializers import TafsiliAccountSerializer,AccountGroupSerializer,BasicAccountSerializer,MoeinAccountSerializer,AccountSerializer
 from .serializers import AccountGroupBriefSerializer,BasicAccountBriefSerializer,MoeinAccountBriefSerializer,TafsiliAccountBriefSerializer
 from .forms import *
 from core.views import CoreContext
@@ -14,7 +14,7 @@ LAYOUT_PARENT = "phoenix/layout.html"
 TEMPLATE_ROOT = "accounting/"
 
 
-def getContext(request, *args, **kwargs):
+def getContext(request,app_name=APP_NAME, *args, **kwargs):
     context = CoreContext(request=request, app_name=APP_NAME)
     context['search_form'] = SearchForm()
     context['me_account']=TafsiliAccountRepo(request=request).me
@@ -25,6 +25,10 @@ def getContext(request, *args, **kwargs):
 def get_account_context(account,*args, **kwargs):
     context={}
     context['account']=account
+    
+    account_s=json.dumps(AccountSerializer(account).data)
+    context['account_s']=account_s
+
     return context
 
 class IndexView(View):
@@ -146,8 +150,12 @@ class BasicAccountView(View):
         basic_account=BasicAccountRepo(request=request).basic_account(*args, **kwargs)
         context.update(get_account_context(account=basic_account))
         context['basic_account']=basic_account
-        # basic_account_s=json.dumps(BasicAccountSerializer(basic_account).data)
-        # context['basic_account_s']=basic_account_s
+
+        moein_accounts=basic_account.moeinaccount_set.order_by('code')
+        moein_accounts_s=json.dumps(MoeinAccountBriefSerializer(moein_accounts,many=True).data)
+        context['moein_accounts_s']=moein_accounts_s
+
+
         CAN_ADD_MOEIN_ACCOUNT=True
         
         if CAN_ADD_MOEIN_ACCOUNT :
@@ -202,6 +210,11 @@ class MoeinAccountView(View):
         context['moein_account']=moein_account 
         context.update(get_account_context(account=moein_account))
         
+
+        moein_accounts=moein_account.moeinaccount_set.order_by('code')
+        moein_accounts_s=json.dumps(MoeinAccountBriefSerializer(moein_accounts,many=True).data)
+        context['moein_accounts_s']=moein_accounts_s
+
         # account_s=json.dumps(AccountSerializer(account).data)
         # context['account_s']=account_s
         CAN_ADD_MOEIN_ACCOUNT=True
@@ -232,8 +245,13 @@ class AccountGroupView(View):
         account_group=AccountGroupRepo(request=request).account_group(*args, **kwargs)
         context.update(get_account_context(account=account_group))
         context['account_group']=account_group
-        # account_s=json.dumps(AccountSerializer(account).data)
-        # context['account_s']=account_s
+
+        basic_accounts=account_group.basicaccount_set.order_by('code')
+        context['basic_accounts_s']=json.dumps(BasicAccountBriefSerializer(basic_accounts,many=True).data)
+
+        CAN_ADD_BASIC_ACCOUNT=True
+        if CAN_ADD_BASIC_ACCOUNT :
+            context['add_basic_account_form']=AddBasicAccountForm()
         return render(request,TEMPLATE_ROOT+"account-group.html",context)
 
 class SearchView(View):

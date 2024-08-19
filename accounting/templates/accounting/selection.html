@@ -17,13 +17,29 @@
                 <div v-for="account_group in account_groups">
                     <div class="mb-2 text-center">
 
-                        <button
+                        <div class="btn-group w-100 rtl" role="group" aria-label="Basic example">
+                            <a :href="account_group.get_absolute_url" type="button" class="btn btn-primary farsi" 
+                            style="border-top-left-radius:0;border-bottom-left-radius:0;border-top-right-radius:.25rem;border-bottom-right-radius:.25rem;"
+                            >
+                            جزئیات</a>
+                            <button style="border-top-right-radius:0;border-bottom-right-radius:0;border-top-left-radius:.25rem;border-bottom-left-radius:.25rem;"
+                                :class="selected_account_group_id==account_group.id ?'w-100 btn btn-primary': 'w-100 btn btn-secondary'"
+                                @click="select_account_group(account_group.id)">
+    
+                                <span v-text="account_group.code"></span>
+                                <span v-text="account_group.name"></span>
+                            </button>
+    
+                        </div>
+
+
+                        <!-- <button
                             :class="selected_account_group_id==account_group.id ?'w-100 btn btn-primary': 'w-100 btn btn-secondary'"
                             @click="select_account_group(account_group.id)">
 
                             <span v-text="account_group.code"></span>
                             <span v-text="account_group.name"></span>
-                        </button>
+                        </button> -->
                     </div>
                 </div>
 
@@ -44,16 +60,25 @@
                 <div v-for="basic_account in basic_accounts">
                     <div class="mb-2 text-center">
 
-                        <button
-                            :class="selected_basic_account_id==basic_account.id ?'w-100 btn btn-primary': 'w-100 btn btn-secondary'"
-                            @click="select_basic_account(basic_account.id)">
-
-                            <span v-text="basic_account.code"></span>
-                            <span v-text="basic_account.name"></span>
-                        </button>
+                        <div class="btn-group w-100 rtl" role="group" aria-label="Basic example">
+                            <a :href="basic_account.get_absolute_url" type="button" class="btn btn-primary farsi" 
+                            style="border-top-left-radius:0;border-bottom-left-radius:0;border-top-right-radius:.25rem;border-bottom-right-radius:.25rem;"
+                            >
+                            جزئیات</a>
+                            <button style="border-top-right-radius:0;border-bottom-right-radius:0;border-top-left-radius:.25rem;border-bottom-left-radius:.25rem;"
+                                :class="selected_basic_account_id==basic_account.id ?'w-100 btn btn-primary': 'w-100 btn btn-secondary'"
+                                @click="select_basic_account(basic_account.id)">
+    
+                                <span v-text="basic_account.code"></span>
+                                <span v-text="basic_account.name"></span>
+                            </button>
+    
+                        </div>
+                        
+                        
                     </div>
 
- 
+
                 </div>
 
             </div>
@@ -73,18 +98,26 @@
             <div class="card-body">
                 <div v-for="moein_account in moein_accounts">
 
-                    <div class="mb-2 text-center">
+                    <div class="mb-2 rtl">
+                        <div class="btn-group w-100 rtl" role="group" aria-label="Basic example">
+                            <a :href="moein_account.get_absolute_url" type="button" class="btn btn-primary farsi" 
+                            style="border-top-left-radius:0;border-bottom-left-radius:0;border-top-right-radius:.25rem;border-bottom-right-radius:.25rem;"
+                            >
+                            جزئیات</a>
+                            <button style="border-top-right-radius:0;border-bottom-right-radius:0;border-top-left-radius:.25rem;border-bottom-left-radius:.25rem;"
+                                :class="selected_moein_account_id==moein_account.id ?'w-100 btn btn-primary': 'w-100 btn btn-secondary'"
+                                @click="select_moein_account(moein_account.id)">
 
-                        <button
-                            :class="selected_moein_account_id==moein_account.id ?'w-100 btn btn-primary': 'w-100 btn btn-secondary'"
-                            @click="select_moein_account(moein_account.id)">
+                                <span v-text="moein_account.code"></span>
+                                <span v-text="moein_account.name"></span>
+                            </button>
 
-                            <span v-text="moein_account.code"></span>
-                            <span v-text="moein_account.name"></span>
-                        </button>
+                        </div>
+
+
                     </div>
 
- 
+
                 </div>
 
             </div>
@@ -101,6 +134,10 @@
             </div>
             <div class="card-body">
                 <div v-for="moein_account2 in moein_accounts2">
+
+                   
+
+
 
                     <button class="btn btn-primary mb-2">
 
@@ -149,9 +186,9 @@
                 selection_app.basic_accounts = basic_accounts.filter(basic_account =>
                     basic_account.account_group_id == account_group_id
                 )
-                selection_app.moein_accounts2=[]
+                selection_app.moein_accounts2 = []
 
-                selection_app.moein_accounts=[]
+                selection_app.moein_accounts = []
                 // posting = $.post(url, payload)
                 // posting.done((data) => {
                 //     console.log(data.message)
@@ -177,18 +214,18 @@
                 selection_app.moein_accounts = moein_accounts.filter(moein_account =>
                     moein_account.basic_account_id == basic_account_id
                 )
-                selection_app.moein_accounts2=[]
+                selection_app.moein_accounts2 = []
 
             },
 
             select_moein_account: function (moein_account_id) {
-                
+
                 selection_app.selected_moein_account_id = moein_account_id
 
                 selection_app.moein_accounts2 = moein_accounts2.filter(moein_account2 =>
                     moein_account2.parent_id == moein_account_id
                 )
- 
+
             },
 
 

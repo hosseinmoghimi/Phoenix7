@@ -15,12 +15,23 @@ def init_all_accounts():
                 ]},
 
                 
-                # {"name":"aaaaaaaaaaaa",'code':"111","accounts":[
-                    # {"name":"aaaaaaaaa",'code':"102"},
-                    # {"name":"aaaaaaaaa",'code':"102"},
-                    # {"name":"aaaaaaaaa",'code':"102"},
-                    # {"name":"aaaaaaaaa",'code':"102"},
-                # ]},
+                {"name":"بانک ملی",'code':"111/11","accounts":[
+ 
+                ]},
+
+                {"name":"بانک رفاه کارگران",'code':"111/12","accounts":[
+ 
+                ]},
+
+                {"name":"بانک صادرات",'code':"111/13","accounts":[
+  
+                ]},
+                {"name":"بانک ملت",'code':"111/14","accounts":[
+ 
+                ]},
+                 {"name":"بانک تجارت",'code':"111/15","accounts":[
+     
+                ]},
             ]},
             {"name":"سرمایه گذاری کوتاه مدت",'code':"12","moein_accounts":[
                 {"name":"سرمایه گذاری کوتاه مدت",'code':"102","accounts":[
@@ -203,7 +214,40 @@ def init_all_accounts():
             {"name":"موجودی نقد و بانک",'code':"101"},
             ]},
         {"name":"درآمد ها",'code':"6","basic_accounts":[
-            {"name":"درآمد خدمات",'code':"61",'moein_accounts':[
+            {"name":"درآمد فروش",'code':"61",'moein_accounts':[
+                {"name":"درآمد ارائه‌ی خدمات",'code':"6101",'tafsili_accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+
+                {"name":"درآمد خدمات از ...",'code':"6102",'tafsili_accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+                
+            ]},
+
+            {"name":"ارائه خدمات",'code':"61",'moein_accounts':[
+                {"name":"درآمد ارائه‌ی خدمات",'code':"6101",'tafsili_accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+
+                {"name":"درآمد خدمات از ...",'code':"6102",'tafsili_accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+                
+            ]},
+
+            {"name":"برگشت از فروش",'code':"61",'moein_accounts':[
+                {"name":"درآمد ارائه‌ی خدمات",'code':"6101",'tafsili_accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+
+                {"name":"درآمد خدمات از ...",'code':"6102",'tafsili_accounts':[
+                    # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
+                ],},
+                
+            ]},
+
+            {"name":"تخفیفات فروش",'code':"61",'moein_accounts':[
                 {"name":"درآمد ارائه‌ی خدمات",'code':"6101",'tafsili_accounts':[
                     # {"name":"aaaaaaaaaaaaaaaaaaaaa	",'code':"7101/01",},
                 ],},

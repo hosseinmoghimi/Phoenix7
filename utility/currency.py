@@ -1,5 +1,8 @@
 from .constants import TUMAN,RIAL
 from phoenix.server_settings import CURRENCY
+from utility.templatetags.to_amount_color import to_amount_color
+def to_price_colored(price):
+    return f"""<span class="text-{to_amount_color(price)}">{to_price(price)}</span>"""
 
 
 def to_price(value,unit=CURRENCY,*args, **kwargs):
@@ -21,7 +24,7 @@ def to_price(value,unit=CURRENCY,*args, **kwargs):
         a=separate(value)
         stringed_number= sign+a+' '+unit
     except:
-        stringed_number= " invalid currency value"
+        stringed_number= " مقدار عددی نامعتبر"
     if 'color' in kwargs and value<0:
         return f"""
             <span class="danger">{stringed_number}<span>

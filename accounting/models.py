@@ -3,6 +3,7 @@ from core.models import LinkHelper,Page
 from .apps import APP_NAME
 from django.utils.translation import gettext as _
 from .enums import *
+from utility.currency import to_price_colored
 from utility.calendar import PersianCalendar
 IMAGE_FOLDER=APP_NAME+"/images/"
 from phoenix.server_settings import MEDIA_URL,STATIC_URL 
@@ -145,6 +146,9 @@ class Account(models.Model,LinkHelper):
             return f"{STATIC_URL}{APP_NAME}/img/pages/thumbnail/account.png"
         return f"{MEDIA_URL}{self.logo_origin}"
   
+    @property
+    def balance_colored(self):
+        return to_price_colored(self.balance)
 class AccountGroup(Account):
     
     
@@ -187,6 +191,8 @@ class AccountGroup(Account):
     def save(self):
         self.type=AccountTypeEnum.GROUP
         super(AccountGroup,self).save()
+
+
 class BasicAccount(Account):
    
     account_group=models.ForeignKey("accountgroup", verbose_name=_("account group"), on_delete=models.CASCADE)
@@ -227,6 +233,8 @@ class BasicAccount(Account):
     def save(self):
         self.type=AccountTypeEnum.BASIC
         super(BasicAccount,self).save()
+
+
 class MoeinAccount(Account):
 
 
@@ -242,7 +250,7 @@ class MoeinAccount(Account):
         bedehkar=0
         bestankar=0
         balance=0
-        for account in self.account_set.all():
+        for account in self.tafsiliaccount_set.all():
             account.normalize_total()
             
             bedehkar+=account.bedehkar
@@ -297,8 +305,8 @@ class TafsiliAccount(Account):
         #     return self.profile.image
         # return f"{STATIC_URL}{self.app_name}/img/{self.class_name}.png"
     class Meta:
-        verbose_name = _("Account")
-        verbose_name_plural = _("Accounts")
+        verbose_name = _("حساب تفصیلی")
+        verbose_name_plural = _("حساب های تفصیلی")
     def __str__(self):
         return self.moein_account.title+" " +self.title
     def normalize_total(self):
@@ -482,34 +490,62 @@ class EventPrint(models.Model):
     def __str__(self):
         print_datetime=PersianCalendar().from_gregorian(self.print_datetime)
         return f"{self.event}   @  {print_datetime} "
-
-class ProductOrService(Page):
-    barcode=models.CharField(_("بارکد"),null=True,blank=True, max_length=100)
-
+  
+   
+class Person(models.Model,LinkHelper):
+    class_name="person"
+    app_name=APP_NAME
     
-
+    prefix=models.CharField(_("prefix"),choices=PersonPrefixEnum.choices, max_length=50)
+    first_name=models.CharField(_("first_name"), max_length=50)
+    last_name=models.CharField(_("last_name"), max_length=50)
     class Meta:
-        verbose_name = _("ProductOrService")
-        verbose_name_plural = _("ProductOrServices")
+        verbose_name = _("شخص")
+        verbose_name_plural = _("اشخاص")
 
     def __str__(self):
-        return self.name
+        return self.full_name 
 
-    def get_absolute_url(self):
-        return reverse("ProductOrService_detail", kwargs={"pk": self.pk})
+    @property
+    def full_name(self):
+        return f"{self.prefix} {self.first_name} {self.last_name}"
 
-class Product(ProductOrService):
+
+        
+class Thing(Page,LinkHelper):
+    
+    class Meta:
+        verbose_name = _("Thing")
+        verbose_name_plural = _("Thingس")
+ 
+
+class Material(Thing):
+    barcode=models.CharField(_("بارکد"),null=True,blank=True, max_length=100)
+    class_name="material"
+    app_name=APP_NAME
 
     class Meta:
-        verbose_name = _("Product")
-        verbose_name_plural = _("Products")
+        verbose_name = _("کالا")
+        verbose_name_plural = _("کالا ها")
+
+        
+    def save(self,*args, **kwargs):
+        if self.class_name is None or self.class_name=="":
+            self.class_name='material'
+        if self.app_name is None or self.app_name=="":
+            self.app_name=APP_NAME
+        return super(Service,self).save(*args, **kwargs)
+class Service(Thing): 
+
+    class Meta:
+        verbose_name = _("خدمت")
+        verbose_name_plural = _("خدمات")
+ 
  
         
     def save(self,*args, **kwargs):
         if self.class_name is None or self.class_name=="":
-            self.class_name='product'
+            self.class_name='service'
         if self.app_name is None or self.app_name=="":
             self.app_name=APP_NAME
-        return super(Product,self).save(*args, **kwargs)
-   
- 
+        return super(Service,self).save(*args, **kwargs)

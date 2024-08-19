@@ -1,6 +1,9 @@
 from django.contrib import admin
-from .models import TafsiliAccount,Event,EventPrint,EventCategory,AccountGroup,BasicAccount,MoeinAccount,AccountingDocumentLine,AccountingDocument
+from .models import Material,Service,Person,TafsiliAccount,Event,EventPrint,EventCategory,AccountGroup,BasicAccount,MoeinAccount,AccountingDocumentLine,AccountingDocument
 
+admin.site.register(Material)
+admin.site.register(Service)
+admin.site.register(Person)
 admin.site.register(AccountGroup)
 admin.site.register(TafsiliAccount)
 admin.site.register(Event)

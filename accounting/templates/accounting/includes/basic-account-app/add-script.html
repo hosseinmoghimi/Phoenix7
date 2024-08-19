@@ -1,0 +1,66 @@
+<script>
+
+
+    let account_group_id_for_add_2 = 0
+</script>
+{% if account_group %}
+<script>
+    account_group_id_for_add_2 = parseInt("{{account_group.id}}")
+</script>
+{% endif %}
+<script>
+
+    let add_basic_account_app = new Vue({
+        el: "#add-basic-account-app",
+        data: {
+            name: "",
+            code: "",
+            message:{show:false}
+        },
+        methods: {
+            add_basic_account: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    name: this.name,
+                    code: this.code,
+                    message:{show:false},
+                    account_group_id: account_group_id_for_add_2,
+                }
+                let url = "{% url 'accounting:add_basic_account' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    if (data.result === "SUCCEED") {
+                        if (typeof basic_accounts_app != "undefined") {
+                            basic_accounts_app.basic_accounts.push(data.basic_account)
+                        }
+                        add_basic_account_app.message={
+                            color:"success",
+                            title:"تبریک",
+                            show:true,
+                            body:data.message,
+                        }
+                        setTimeout(() => {
+                            add_basic_account_app.message={show:false,}
+                        }, 3000);
+
+                    }
+                    else{
+                        let basic_account=""
+                        if (data.basic_account.id){
+                            basic_account=`<a href=${data.basic_account.get_absolute_url}>${data.basic_account.code} - ${data.basic_account.name}</a>`
+                        }
+                        add_basic_account_app.message={
+                            color:"danger",
+                            title:"ناموفق",
+                            show:true,
+                            body:data.message+"<br>"+basic_account,
+                        }
+                        setTimeout(() => {
+                            add_basic_account_app.message={show:false,}
+                        }, 8000);
+                    }
+                })
+            },
+        }
+    })
+</script>

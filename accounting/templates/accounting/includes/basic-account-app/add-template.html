@@ -1,16 +1,15 @@
-<div class="card" id="add-moein-account-app">
+<div class="card" id="add-basic-account-app">
     <div class="card-header">
         <h6>
             افزودن
-            حساب معین
+            حساب کل
         </h6>
     </div>
     <div class="card-body rtl text-right">
         <h6>سر فصل :
-            {{basic_account.full_title}}
-            {{moein_account.full_title}}
+            {{account_group.full_title}}
         </h6>
-        <form @submit.prevent="add_moein_account()">
+        <form @submit.prevent="add_basic_account()">
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
@@ -37,13 +36,14 @@
                 افزودن
             </button>
         </form>
+
         <div class="mt-2" v-if="message.show">
             <div :class="'farsi text-right alert alert-'+message.color">
                 <h6 v-html="message.title">
 
                 </h6>
 
-                <span v-html="message.body">
+                <span  v-html="message.body">
 
                 </span>
             </div>

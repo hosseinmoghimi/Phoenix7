@@ -31,33 +31,18 @@
 
             </div>
         </div>
-
+        {% if add_basic_account_form %}
+        {% include "accounting/includes/basic-account-app/add-template.html" %}
+        {% endif %}
     </div>
-
     <div class="col-md-6">
-
-        <div class="card">
-            <div class="card-header">
-                <h6>
-                    حساب های کل
-
-                </h6>
-            </div>
-            <div class="card-body">
-
-                {% for basic_account in account_group.basicaccount_set.all %}
-                {% include "accounting/includes/basic-account-app/item-media.html" %}
-
-
-
-                {% endfor %}
-            </div>
-        </div>
+        {% include "accounting/includes/basic-account-app/list-template.html" %}
     </div>
 </div>
 {% endblock content %}
-
-
 {% block script %}
-
+{% if add_basic_account_form %}
+{% include "accounting/includes/basic-account-app/add-script.html" %}
+{% endif %}
+{% include "accounting/includes/basic-account-app/list-script.html" %}
 {% endblock script %}

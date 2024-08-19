@@ -6,10 +6,10 @@ from rest_framework.views import APIView
 
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import TafsiliAccountRepo,MoeinAccountRepo
+from .repo import TafsiliAccountRepo,MoeinAccountRepo,BasicAccountRepo
 from django.http import JsonResponse
 from .forms import *
-from .serializers import TafsiliAccountSerializer,MoeinAccountSerializer
+from .serializers import TafsiliAccountBriefSerializer,MoeinAccountBriefSerializer,BasicAccountBriefSerializer
 
 class SelectAccountGroupApi(APIView):
     def post(self,request,*args, **kwargs):
@@ -48,7 +48,31 @@ class AddMoeinAccountApi(APIView):
                 cd=add_moein_account_form.cleaned_data
                 moein_account,message,result=MoeinAccountRepo(request=request).add_moein_account(**cd)
                 if moein_account is not None:
-                    context['moein_account']=MoeinAccountSerializer(moein_account).data
+                    context['moein_account']=MoeinAccountBriefSerializer(moein_account).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
+
+
+class AddBasicAccountApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            log=222
+            add_basic_account_form=AddBasicAccountForm(request.POST)
+            if add_basic_account_form.is_valid():
+                log=333
+                cd=add_basic_account_form.cleaned_data
+                basic_account,message,result=BasicAccountRepo(request=request).add_basic_account(**cd)
+                if basic_account is not None:
+                    context['basic_account']=BasicAccountBriefSerializer(basic_account).data
         context['message']=message
         context['result']=result
         context['log']=log

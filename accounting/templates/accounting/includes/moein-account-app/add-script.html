@@ -19,6 +19,7 @@
         data: {
             name: "",
             code: "",
+            message:{show:false},
         },
         methods: {
             add_moein_account: function () {
@@ -33,7 +34,38 @@
                 let url = "{% url 'accounting:add_moein_account' %}"
                 let posting = $.post(url, payload)
                 posting.done(data => {
-                    console.log(data)
+                    
+                    if (data.result === "SUCCEED") {
+                        if (typeof moein_accounts_app != "undefined") {
+                            moein_accounts_app.moein_accounts.push(data.moein_account)
+                        }
+                        add_moein_account_app.message={
+                            color:"success",
+                            title:"تبریک",
+                            show:true,
+                            body:data.message,
+                        }
+                        setTimeout(() => {
+                            add_moein_account_app.message={show:false,}
+                        }, 3000);
+
+                    }
+                    else{
+                        let moein_account=""
+                        if (data.moein_account.id){
+                            moein_account=`<a href=${data.moein_account.get_absolute_url}>${data.moein_account.code} - ${data.moein_account.name}</a>`
+                        }
+                        add_moein_account_app.message={
+                            color:"danger",
+                            title:"ناموفق",
+                            show:true,
+                            body:data.message+"<br>"+moein_account,
+                        }
+                        setTimeout(() => {
+                            add_moein_account_app.message={show:false,}
+                        }, 5000);
+                    }
+
                 })
             },
         }

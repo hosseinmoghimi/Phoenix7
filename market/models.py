@@ -40,7 +40,7 @@ class Supplier(models.Model,LinkHelper):
 
 
 class ProductSpecification(models.Model,LinkHelper):
-    product=models.ForeignKey("accounting.product", verbose_name=_("product"), on_delete=models.CASCADE)
+    product=models.ForeignKey("accounting.material", verbose_name=_("product"), on_delete=models.CASCADE)
     category=models.CharField(_("category"), max_length=200)
     name=models.CharField(_("name"), max_length=200)
     value=models.CharField(_("value"), max_length=200)

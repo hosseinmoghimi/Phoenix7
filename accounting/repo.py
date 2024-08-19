@@ -1,4 +1,4 @@
-from .models import TafsiliAccount,AccountGroup,BasicAccount,BasicAccount,MoeinAccount,AccountingDocument,AccountingDocumentLine
+from .models import TafsiliAccount,AccountGroup,BasicAccount,BasicAccount,MoeinAccount,AccountingDocument,AccountingDocumentLine,Account
 from utility.constants import FAILED,SUCCEED
 from authentication.repo import ProfileRepo
 from .apps import APP_NAME
@@ -45,6 +45,8 @@ class TafsiliAccountRepo():
             tafsili_account.moein_account_id=kwargs['moein_account_id']
         if 'tel' in kwargs:
             tafsili_account.tel=kwargs['tel']
+        if 'code' in kwargs:
+            tafsili_account.code=kwargs['code']
         if 'parent_id' in kwargs and kwargs["parent_id"]>0:
             tafsili_account.parent_id=kwargs['parent_id']
        
@@ -228,61 +230,7 @@ class BasicAccountRepo():
             return self.objects.filter(pk=kwargs['id']).first() 
 
             
-    def add_account_group(self,*args, **kwargs):
-        account,message,result=(None,"",FAILED)
-        if not self.request.user.has_perm(APP_NAME+".add_account"):
-            message="دسترسی غیر مجاز"
-            return account,message,result
-        if len(Account.objects.filter(title=kwargs['title']))>0:
-            message="از قبل حسابی با همین عنوان ثبت شده است."
-            return account,message,result
-
-        account=Account()
-
-        if 'title' in kwargs:
-            account.title=kwargs['title']
-        if 'profile_id' in kwargs:
-            account.profile_id=kwargs['profile_id']
-        if 'description' in kwargs:
-            account.description=kwargs['description']
-        if 'address' in kwargs:
-            account.address=kwargs['address']
-        if 'tel' in kwargs:
-            account.tel=kwargs['tel']
-        if 'mobile' in kwargs:
-            account.mobile=kwargs['mobile']
-       
-        
-        # if 'financial_year_id' in kwargs:
-        #     payment.financial_year_id=kwargs['financial_year_id']
-        # else:
-        #     payment.financial_year_id=FinancialYear.get_by_date(date=payment.transaction_datetime).id
-
-        account.save()
-        result=SUCCEED
-        message="با موفقیت اضافه گردید."
-        
-        if 'balance' in kwargs and kwargs['balance'] is not None and not kwargs['balance']==0:
-            me_account=self.me
-            if me_account is not None:
-                balance=kwargs['balance']
-                payment=Payment()
-                payment.amount=balance if balance>0 else (0-balance)
-                payment.title="مانده از قبل"
-                payment.creator_id=me_account.profile.id
-                payment.status=TransactionStatusEnum.FROM_PAST
-                payment.payment_method=PaymentMethodEnum.FROM_PAST
-                payment.transaction_datetime=PersianCalendar().date
-                if balance>0:
-                    payment.pay_to_id=me_account.id
-                    payment.pay_from_id=account.id
-                if balance<0:
-                    payment.pay_from_id=me_account.id
-                    payment.pay_to_id=account.id
-                payment.save()
-
-        return account,message,result
-
+            
     def add_account_tag(self,*args, **kwargs):
         result,message,account_tags=FAILED,"",[]
         if not self.request.user.has_perm(APP_NAME+".change_account"):
@@ -310,6 +258,75 @@ class BasicAccountRepo():
 
         return result,message,account_tags
         
+            
+    def add_basic_account(self,*args, **kwargs):
+        basic_account,message,result=(None,"",FAILED)
+        if not self.request.user.has_perm(APP_NAME+".add_account"):
+            message="دسترسی غیر مجاز"
+            return account,message,result
+        basic_account=Account.objects.filter(name=kwargs['name']).first()
+        if basic_account is not None:
+            message="از قبل حسابی با همین عنوان ثبت شده است."
+            return basic_account,message,result
+        basic_account=Account.objects.filter(code=kwargs['code']).first()
+
+        if basic_account is not None:
+            message="از قبل حسابی با همین کد ثبت شده است."
+            return basic_account,message,result
+
+
+        basic_account=BasicAccount()
+
+        if 'name' in kwargs:
+            basic_account.name=kwargs['name']
+        if 'code' in kwargs:
+            basic_account.code=kwargs['code']
+        if 'profile_id' in kwargs:
+            basic_account.profile_id=kwargs['profile_id']
+        if 'description' in kwargs:
+            basic_account.description=kwargs['description']
+        if 'address' in kwargs:
+            basic_account.address=kwargs['address']
+        if 'tel' in kwargs:
+            basic_account.tel=kwargs['tel']
+        if 'mobile' in kwargs:
+            basic_account.mobile=kwargs['mobile']
+        if 'parent_id' in kwargs and kwargs['parent_id']>0 :
+            basic_account.parent_id=kwargs['parent_id']
+        if 'account_group_id' in kwargs and kwargs['account_group_id']>0 :
+            basic_account.account_group_id=kwargs['account_group_id']
+       
+        
+        # if 'financial_year_id' in kwargs:
+        #     payment.financial_year_id=kwargs['financial_year_id']
+        # else:
+        #     payment.financial_year_id=FinancialYear.get_by_date(date=payment.transaction_datetime).id
+
+        basic_account.save()
+        result=SUCCEED
+        message="با موفقیت اضافه گردید."
+        
+        if 'balance' in kwargs and kwargs['balance'] is not None and not kwargs['balance']==0:
+            me_account=self.me
+            if me_account is not None:
+                balance=kwargs['balance']
+                payment=Payment()
+                payment.amount=balance if balance>0 else (0-balance)
+                payment.title="مانده از قبل"
+                payment.creator_id=me_account.profile.id
+                payment.status=TransactionStatusEnum.FROM_PAST
+                payment.payment_method=PaymentMethodEnum.FROM_PAST
+                payment.transaction_datetime=PersianCalendar().date
+                if balance>0:
+                    payment.pay_to_id=me_account.id
+                    payment.pay_from_id=account.id
+                if balance<0:
+                    payment.pay_from_id=me_account.id
+                    payment.pay_to_id=account.id
+                payment.save()
+
+        return basic_account,message,result
+ 
 class MoeinAccountRepo():
     def __init__(self,request,*args, **kwargs):
         self.request=request
@@ -335,9 +352,18 @@ class MoeinAccountRepo():
         if not self.request.user.has_perm(APP_NAME+".add_account"):
             message="دسترسی غیر مجاز"
             return account,message,result
-        if len(MoeinAccount.objects.filter(name=kwargs['name']))>0:
+
+        moein_account=Account.objects.filter(name=kwargs['name']).first()
+        if moein_account is not None:
             message="از قبل حسابی با همین عنوان ثبت شده است."
             return moein_account,message,result
+
+            
+        moein_account=Account.objects.filter(code=kwargs['code']).first()
+        if moein_account is not None:
+            message="از قبل حسابی با همین کد ثبت شده است."
+            return moein_account,message,result
+
 
         moein_account=MoeinAccount()
 
