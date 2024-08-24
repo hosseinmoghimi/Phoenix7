@@ -32,6 +32,9 @@ def init_all_accounts():
                  {"name":"بانک تجارت",'code':"111/15","accounts":[
      
                 ]},
+                 {"name":"تنخواه",'code':"111/16","accounts":[
+     
+                ]},
             ]},
             {"name":"سرمایه گذاری کوتاه مدت",'code':"12","moein_accounts":[
                 {"name":"سرمایه گذاری کوتاه مدت",'code':"102","accounts":[
