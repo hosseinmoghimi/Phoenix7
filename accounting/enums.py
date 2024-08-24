@@ -5,9 +5,7 @@ from core.enums import ColorEnum
 class AccountTypeEnum(TextChoices):
     GROUP="گروه",_("گروه")
     MOEIN="معین",_("معین")
-    MOEIN="معین",_("معین")
-    MOEIN_1="معین",_("معین")
-    MOEIN_2="معین سطح دو",_("معین سطح دو")
+    MOEIN_1="معین سطح یک",_("معین سطح یک")
     MOEIN_2="معین سطح دو",_("معین سطح دو")
     TAFSILI="تفصیلی",_("تفصیلی")
     TAFSILI_1="تفصیلی سطح یک",_("تفصیلی سطح یک")
