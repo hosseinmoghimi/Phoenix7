@@ -1,0 +1,28 @@
+ 
+<script>
+    let account_groups_for_select_account_group_app = JSON.parse("{{account_groups_s|escapejs}}")
+    let select_account_group_app = new Vue({
+        el: "#select-account-group-app",
+        data: {
+            selected_account_group: {},
+            selected_account_group_id: 0,
+            selected_account_group_name: "همه",
+            account_groups: account_groups_for_select_account_group_app,
+
+        },
+        methods: {
+            filter: () => {
+                select_account_group_app.account_groups = account_groups_for_select_account_group_app.filter(account_group => {
+                    if (account_group.name.include(selected_account_group_name))
+                        return true
+                    //default    
+                    return false
+
+                })
+            },
+            select_account: () => {
+                console.log(this.selected_account_group)
+            },
+        }
+    })
+</script>

@@ -18,36 +18,18 @@
 
     </div>
     {% endif %}
-
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <h6>
-                    حساب های تفصیلی
-
-                </h6>
-            </div>
-
-            <div class="card-body">
-
-
-
-                {% for tafsili_account in moein_account.tafsiliaccount_set.all %}
-                {% include "accounting/includes/tafsili-account-app/item-media.html" %}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
+ 
 
 
 
 
-
-    {% if add_tafsili_account_form %}
     <div class="col-md-6">
+
+        {% if add_tafsili_account_form %}
         {% include "accounting/includes/tafsili-account-app/add-template.html" %}
+        {% endif %}
+        {% include "accounting/includes/tafsili-account-app/list-template.html" %}
     </div>
-    {% endif %}
 
 </div>
 {% endblock content %}
@@ -64,5 +46,6 @@
 {% include "accounting/includes/tafsili-account-app/add-script.html" %}
 {% endif %}
 {% include "accounting/includes/moein-account-app/list-script.html" %}
+{% include "accounting/includes/tafsili-account-app/list-script.html" %}
 
 {% endblock script %}

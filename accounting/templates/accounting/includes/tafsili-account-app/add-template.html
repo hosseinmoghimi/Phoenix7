@@ -37,6 +37,16 @@
                 افزودن
             </button>
         </form>
+        <div class="mt-2" v-if="message.show">
+            <div :class="'farsi text-right alert alert-'+message.color">
+                <h6 v-html="message.title">
 
+                </h6>
+
+                <span  v-html="message.body">
+
+                </span>
+            </div>
+        </div>
     </div>
 </div>

@@ -130,6 +130,10 @@ class BasicAccountsView(View):
         balance=sum_bed-sum_bes
         if not balance==0:
             context["balance"]=balance
+        account_groups=AccountGroupRepo(request=request).list()
+        account_groups_s=json.dumps(AccountGroupBriefSerializer(account_groups,many=True).data)
+        context['account_groups_s']=account_groups_s
+        context['account_groups']=account_groups
         basic_accounts_s=json.dumps(BasicAccountSerializer(basic_accounts,many=True).data)
         context['basic_accounts_s']=basic_accounts_s
         return render(request,TEMPLATE_ROOT+"basic-accounts.html",context)
@@ -217,6 +221,11 @@ class MoeinAccountView(View):
 
         # account_s=json.dumps(AccountSerializer(account).data)
         # context['account_s']=account_s
+
+        tafsili_accounts=moein_account.tafsiliaccount_set.order_by('code')
+        tafsili_accounts_s=json.dumps(TafsiliAccountBriefSerializer(tafsili_accounts,many=True).data)
+        context['tafsili_accounts_s']=tafsili_accounts_s
+
         CAN_ADD_MOEIN_ACCOUNT=True
         CAN_ADD_TAFSILI_ACCOUNT=True
         if moein_account.basic_account is None:

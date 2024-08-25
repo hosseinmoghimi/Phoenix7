@@ -1,0 +1,15 @@
+<div class="row" id="select-account-group-app">
+    <div class="col-md-4">
+        <input name="" v-model="selected_account_group_id" type="number">
+        <input name="" v-model="selected_account_group_name" type="text">
+    </div>
+    <div class="col-md-4">
+        <input name="" v-model="">
+    </div>
+    <div class="col-md-4">
+        <select @input="select_account()" name="" v-model="selected_account_group_id">
+            <option v-for="account_group in account_group" :value="account_group.id" v-text="account_group.name">
+            </option>
+        </select>
+    </div>
+</div>

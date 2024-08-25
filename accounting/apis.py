@@ -97,7 +97,7 @@ class AddTafsiliAccountApi(APIView):
                 cd=add_tafsili_account_form.cleaned_data
                 tafsili_account,message,result=TafsiliAccountRepo(request=request).add_tafsili_account(**cd)
                 if tafsili_account is not None:
-                    context['tafsili_account']=TafsiliAccountSerializer(tafsili_account).data
+                    context['tafsili_account']=TafsiliAccountBriefSerializer(tafsili_account).data
         context['message']=message
         context['result']=result
         context['log']=log
