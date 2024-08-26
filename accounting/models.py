@@ -3,6 +3,7 @@ from core.models import LinkHelper,Page
 from .apps import APP_NAME
 from django.utils.translation import gettext as _
 from .enums import *
+from utility.constants import SUCCEED,FAILED
 from utility.currency import to_price_colored
 from utility.calendar import PersianCalendar
 IMAGE_FOLDER=APP_NAME+"/images/"
@@ -24,6 +25,7 @@ class Access(models.Model):
 class Account(models.Model,LinkHelper):
     class_name="account"
     app_name=APP_NAME  
+    color=models.CharField(_("color") , choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
     profile=models.ForeignKey("authentication.profile",null=True,blank=True, verbose_name=_("profile"), on_delete=models.SET_NULL)
     type=models.CharField(_("type"), max_length=200,null=True,blank=True)
     name=models.CharField(_("name"), max_length=200)
@@ -33,6 +35,25 @@ class Account(models.Model,LinkHelper):
     balance=models.IntegerField("balance",default=0)
     description=models.CharField(_("description"),null=True,blank=True, max_length=500)
     logo_origin=models.ImageField(_("logo"),blank=True,null=True, upload_to=IMAGE_FOLDER+"account", height_field=None, width_field=None, max_length=None)
+    # def __init__(self,*args, **kwargs):
+    #     if 'name' in kwargs:
+    #         self.name=kwargs['name']
+            
+    #     if 'code' in kwargs:
+    #         self.code=kwargs['code']
+            
+    #     if 'color' in kwargs:
+    #         self.color=kwargs['color']
+            
+    #     if 'type' in kwargs:
+    #         self.type=kwargs['type']
+    #     if 'description' in kwargs:
+    #         self.description=kwargs['description']
+
+            
+    #     if 'description' in kwargs:
+    #         self.description=kwargs['description']
+    #     return super(Account,self).__init__(self)
     @property
     def parent_account_id(self):
         return 13476
@@ -149,6 +170,17 @@ class Account(models.Model,LinkHelper):
     @property
     def balance_colored(self):
         return to_price_colored(self.balance)
+    
+    def save(self):
+        result=SUCCEED
+        message="موفقیت آمیز"
+        if len(Account.objects.filter(name=self.name).exclude(pk=self.pk))>0:
+            result=FAILED
+            message="نام تکراری"
+        super(Account,self).save()
+        return self,result,message
+
+        
 class AccountGroup(Account):
     
     
@@ -232,7 +264,7 @@ class BasicAccount(Account):
         return str(self.account_group)+" " + self.code+" "+self.name
     def save(self):
         self.type=AccountTypeEnum.BASIC
-        super(BasicAccount,self).save()
+        return super(BasicAccount,self).save()
 
 
 class MoeinAccount(Account):
@@ -272,7 +304,7 @@ class MoeinAccount(Account):
 
     def save(self):
         self.type=AccountTypeEnum.MOEIN
-        super(MoeinAccount,self).save()
+        return super(MoeinAccount,self).save()
     class Meta:
         verbose_name = _("MoeinAccount")
         verbose_name_plural = _("MoeinAccounts")
@@ -324,7 +356,7 @@ class TafsiliAccount(Account):
 
     def save(self):
         self.type=AccountTypeEnum.TAFSILI
-        super(TafsiliAccount,self).save()
+        return super(TafsiliAccount,self).save()
         
         
 class FinancialDocument(LinkHelper,models.Model):

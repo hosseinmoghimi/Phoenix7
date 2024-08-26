@@ -69,7 +69,7 @@
       pages.forEach(page => {
         // //console.log(element)
         id = page.id.toString(10)
-        caption = '<a target="_blank" href="' + page.get_absolute_url + '">' + ((typeof page.pre_title != "undefined") ? page.pre_title : "") + '</a>' + '<a target="_blank" href="' + page.get_absolute_url + '">' + page.title + '</a>' + (typeof page.sub_title === 'undefined' ? '' : '<br><small>' + page.sub_title + '</small>')
+        caption = '<a target="_blank" href="' + page.get_absolute_url + '">' + ((typeof page.pre_title != "undefined") ? page.pre_title : "") + '</a>' + '<a target="_blank" class="btn btn-'+page.color+'" href="' + page.get_absolute_url + '">' + page.title + '</a>' + (typeof page.sub_title === 'undefined' ? '' : '<br><small>' + page.sub_title + '</small>')
         manager = page.parent_id ? page.parent_id.toString(10) : null
         tooltip = page.title
         data.addRow([{ 'v': id, 'f': caption }, manager, tooltip])

@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import TafsiliAccountRepo,MoeinAccountRepo,BasicAccountRepo
+from .repo import TafsiliAccountRepo,MoeinAccountRepo,BasicAccountRepo,AccountRepo
 from django.http import JsonResponse
 from .forms import *
 from .serializers import TafsiliAccountBriefSerializer,MoeinAccountBriefSerializer,BasicAccountBriefSerializer
@@ -114,12 +114,28 @@ class InitALLAccountsApi(APIView):
         log=111
         context['result']=FAILED
         if request.method=='POST':
-            from .repo import init_all_accounts
-            (result,message)=init_all_accounts() 
+            (account_groups,result,message)=AccountRepo(request=request).init_all_accounts() 
         context['message']=message
         context['result']=result
         context['log']=log
         return JsonResponse(context)
+
+
+
+class DeleteALLAccountsApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            (result,message)=AccountRepo(request=request).delete_all_accounts() 
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
 
 
 class AddAccountApi(APIView):

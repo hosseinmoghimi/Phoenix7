@@ -9,8 +9,15 @@
     </div>
 
     <div class="card-body">
-        <div class="div">
 
+        {% include "accounting/includes/account-app/media.html" %}
+        <div class="div">
+            <div class="mb-2">
+                <button class="btn btn-{{account.color}}">
+                    {{account.code}}
+                    {{account.name}}
+                </button>
+            </div>
             <h5>
 
                 {{account.code}}
@@ -20,11 +27,11 @@
             <h6>
                 <small class="text-muted">
                     <a href="{{account.parent_account.get_absolute_url}}">
-    
+
                         {{account.parent_account.full_title}}
                     </a>
                 </small>
-    
+
             </h6>
             {% endif %}
             <h5>

@@ -1,7 +1,7 @@
 from django.shortcuts import render,reverse
 from .apps import APP_NAME
 from django.views import View
-from .repo import TafsiliAccountRepo,AccountGroupRepo,AccountingDocumentRepo,BasicAccountRepo,MoeinAccountRepo
+from .repo import TafsiliAccountRepo,AccountGroupRepo,AccountingDocumentRepo,BasicAccountRepo,MoeinAccountRepo,AccountRepo
 from .serializers import TafsiliAccountSerializer,AccountGroupSerializer,BasicAccountSerializer,MoeinAccountSerializer,AccountSerializer
 from .serializers import AccountGroupBriefSerializer,BasicAccountBriefSerializer,MoeinAccountBriefSerializer,TafsiliAccountBriefSerializer
 from .forms import *
@@ -46,9 +46,7 @@ class AccountsView(View):
         context['accounts']=accounts
         accounts_s=json.dumps(AccountSerializer(accounts,many=True).data)
         context['accounts_s']=accounts_s
-        
-        if request.user.has_perm(APP_NAME+".add_account"):
-            context['add_account_form']=AddAccountForm()
+         
         return render(request,TEMPLATE_ROOT+"accounts.html",context)
 
 class AccountingDocumentsView(View):
@@ -351,6 +349,7 @@ class TreeChartView(View):
                 'get_absolute_url': page.get_absolute_url(),
                 'id': AG+page.id,
                 'pre_title': "",
+                'color': page.color,
                 'sub_title':to_price_color(page.balance),
                 })
                 
@@ -363,6 +362,7 @@ class TreeChartView(View):
                     'get_absolute_url': page.get_absolute_url(),
                     'id': BA+page.id,
                     'pre_title': "",
+                    'color': page.color,
                     'sub_title': to_price_color(page.balance),
                     })
                     
@@ -375,6 +375,7 @@ class TreeChartView(View):
                         'get_absolute_url': page.get_absolute_url(),
                         'id': MA+page.id,
                         'pre_title': "",
+                        'color': page.color,
                         'sub_title':to_price_color(page.balance),
                         })
                     for moein_account2 in moein_account.moeinaccount_set.all():
@@ -386,6 +387,7 @@ class TreeChartView(View):
                             'get_absolute_url': page.get_absolute_url(),
                             'id': MA2+page.id,
                             'pre_title': "",
+                            'color': page.color,
                             'sub_title':to_price_color(page.balance),
                             })
 

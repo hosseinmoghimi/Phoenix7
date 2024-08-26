@@ -16,6 +16,12 @@
                     افزودن کدینگ های پیش فرض
 
                 </button>
+
+                <button class="btn btn-success" @click="delete_all_accounts">
+                   حذف همه کد ها
+
+                </button>
+
                 <div class="mt-2" v-if="message.show">
                     <div :class="'farsi text-right alert alert-'+message.color">
                         <h6 v-html="message.title">
@@ -82,6 +88,41 @@
 
                 })
             },
+            delete_all_accounts: function () {
+                let url = "{% url 'accounting:delete_all_accounts' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                }
+                posting = $.post(url, payload)
+                posting.done((data) => {
+                    console.log(data)
+                    if (data.result === "SUCCEED") {
+                        settings_app.message = {
+                            color: "success",
+                            title: "موفق",
+                            show: true,
+                            body: data.message,
+                        }
+                        setTimeout(() => {
+                            settings_app.message = { show: false, }
+                        }, 8000);
+                    }
+
+                    else {
+                        settings_app.message = {
+                            color: "danger",
+                            title: "ناموفق",
+                            show: true,
+                            body: data.message,
+                        }
+                        setTimeout(() => {
+                            settings_app.message = { show: false, }
+                        }, 8000);
+                    }
+
+                })
+            },
+
         }
     })
 </script>

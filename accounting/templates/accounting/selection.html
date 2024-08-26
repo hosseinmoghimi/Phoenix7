@@ -17,20 +17,23 @@
                 <div v-for="account_group in account_groups">
                     <div class="mb-2 text-center">
 
+
                         <div class="btn-group w-100 rtl" role="group" aria-label="Basic example">
-                            <a :href="account_group.get_absolute_url" type="button" class="btn btn-primary farsi" 
+                            <a :href="account_group.get_absolute_url" type="button" :class="'btn farsi btn-'+account_group.color" 
                             style="border-top-left-radius:0;border-bottom-left-radius:0;border-top-right-radius:.25rem;border-bottom-right-radius:.25rem;"
                             >
                             جزئیات</a>
                             <button style="border-top-right-radius:0;border-bottom-right-radius:0;border-top-left-radius:.25rem;border-bottom-left-radius:.25rem;"
-                                :class="selected_account_group_id==account_group.id ?'w-100 btn btn-primary': 'w-100 btn btn-secondary'"
+                                :class="selected_account_group_id==account_group.id ?'w-100 btn btn-'+account_group.color: 'w-100 btn btn-secondary'"
                                 @click="select_account_group(account_group.id)">
-    
+
                                 <span v-text="account_group.code"></span>
                                 <span v-text="account_group.name"></span>
                             </button>
-    
+
                         </div>
+
+ 
 
 
                         <!-- <button
@@ -61,12 +64,12 @@
                     <div class="mb-2 text-center">
 
                         <div class="btn-group w-100 rtl" role="group" aria-label="Basic example">
-                            <a :href="basic_account.get_absolute_url" type="button" class="btn btn-primary farsi" 
+                            <a :href="basic_account.get_absolute_url" type="button" :class="'btn farsi btn-'+basic_account.color" 
                             style="border-top-left-radius:0;border-bottom-left-radius:0;border-top-right-radius:.25rem;border-bottom-right-radius:.25rem;"
                             >
                             جزئیات</a>
                             <button style="border-top-right-radius:0;border-bottom-right-radius:0;border-top-left-radius:.25rem;border-bottom-left-radius:.25rem;"
-                                :class="selected_basic_account_id==basic_account.id ?'w-100 btn btn-primary': 'w-100 btn btn-secondary'"
+                                :class="selected_basic_account_id==basic_account.id ?'w-100 btn btn-'+basic_account.color: 'w-100 btn btn-secondary'"
                                 @click="select_basic_account(basic_account.id)">
     
                                 <span v-text="basic_account.code"></span>
@@ -100,12 +103,12 @@
 
                     <div class="mb-2 rtl">
                         <div class="btn-group w-100 rtl" role="group" aria-label="Basic example">
-                            <a :href="moein_account.get_absolute_url" type="button" class="btn btn-primary farsi" 
+                            <a :href="moein_account.get_absolute_url" type="button" :class="'btn farsi btn-'+moein_account.color" 
                             style="border-top-left-radius:0;border-bottom-left-radius:0;border-top-right-radius:.25rem;border-bottom-right-radius:.25rem;"
                             >
                             جزئیات</a>
                             <button style="border-top-right-radius:0;border-bottom-right-radius:0;border-top-left-radius:.25rem;border-bottom-left-radius:.25rem;"
-                                :class="selected_moein_account_id==moein_account.id ?'w-100 btn btn-primary': 'w-100 btn btn-secondary'"
+                                :class="selected_moein_account_id==moein_account.id ?'w-100 btn btn-'+moein_account.color: 'w-100 btn btn-secondary'"
                                 @click="select_moein_account(moein_account.id)">
 
                                 <span v-text="moein_account.code"></span>
@@ -139,11 +142,13 @@
 
 
 
-                    <button class="btn btn-primary mb-2">
+                    <a :class="'farsi mb-2 btn btn-'+moein_account2.color" :href="moein_account2.get_absolute_url">
 
                         <span v-text="moein_account2.code"></span>
                         <span v-text="moein_account2.name"></span>
-                    </button>
+                    </a>
+
+                    
                 </div>
 
             </div>

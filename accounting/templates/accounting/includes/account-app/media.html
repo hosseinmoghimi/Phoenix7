@@ -1,0 +1,30 @@
+{% load to_price %}
+<div class="media">
+    <img :src="account.logo" width="48" alt="">
+    <div class="media-body mr-2">
+        <a :href="account.get_absolute_url">
+            <h5>
+                <span v-text="account.name"></span>
+
+            </h5>
+        </a>
+        <h6 :class="'text-'+account.color">
+            <small class="text-muted">
+                <span v-text="account.code"></span>
+
+                
+            </small>
+            <span class="mr-2">
+                <span v-html="to_price(account.balance)"></span>
+
+               
+            </span>
+        </h6>
+        <a href="">
+
+            <h6>
+                <span v-text="account.parent_account"></span>
+                </h6>
+        </a>
+    </div>
+</div>
