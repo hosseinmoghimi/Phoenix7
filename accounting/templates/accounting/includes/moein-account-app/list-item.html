@@ -1,0 +1,29 @@
+{% load to_price %}
+<div class="media mb-2">
+    <img :src="moein_account.logo" width="48" alt="">
+    <div class="media-body mr-2">
+        <h5>
+            <a :href="moein_account.get_absolute_url">
+                <span v-text="moein_account.code">
+                    
+                </span>
+                
+                &nbsp;
+                
+                <span v-text="moein_account.name">
+
+                </span>
+
+            </a>
+        </h5>
+
+        <h6>
+            <a :href="moein_account.get_absolute_url">
+                <span v-html="moein_account.balance_colored">
+
+                </span>
+            </a>
+        </h6>
+
+    </div>
+</div>

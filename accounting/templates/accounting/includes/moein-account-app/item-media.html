@@ -1,0 +1,23 @@
+{% load to_price %}
+
+<div class="media mb-3">
+    <img src="" width="48" alt="">
+    <div class="media-body mr-2">
+        <h5>
+            <a href="{{moein_account.get_absolute_url}}">
+
+                {{moein_account.title}}
+            </a>
+        </h5>
+
+        <h6>
+            <a href="{{moein_account.get_absolute_url}}">
+
+                {{moein_account.balance|to_price_color|safe}}
+            </a>
+        </h6>
+
+    </div>
+</div>
+
+     

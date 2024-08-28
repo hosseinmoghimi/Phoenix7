@@ -1,0 +1,42 @@
+{% extends "processmanagement/layout.html" %}
+{% block content %}
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="text-center">
+                    فرآیند ها
+                </h4>
+            </div>
+            <div class="card-body">
+                {% for process in processes %}
+
+                <h6>
+                    <a href="{{process.get_absolute_url}}">
+                        <small class="text-muted">
+                            {{forloop.counter}} -
+
+                        </small>
+                        {{process.title}}
+                        <small class="text-muted">
+                            (
+
+                                {{process.process_app_name}}
+                                )
+
+                        </small>
+                    </a>
+                </h6>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+
+
+{% block script %}
+
+{% endblock script %}

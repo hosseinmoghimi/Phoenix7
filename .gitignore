@@ -3,6 +3,22 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+
+########################################
+#by leo
+_run.bat
+_migrate.bat
+_collectstatic.bat
+_activate.bat
+_check.bat
+
+settings_server_apps.py
+settings_server.py
+server_settings.py
+urls_server.py
+server_urls.py
+secret/
+
 # C extensions
 *.so
 
@@ -58,6 +74,7 @@ cover/
 # Django stuff:
 *.log
 local_settings.py
+*.sqlite3
 db.sqlite3
 db.sqlite3-journal
 
@@ -158,3 +175,5 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+phoenix/settings_server.py
+phoenix/settings_server.py 

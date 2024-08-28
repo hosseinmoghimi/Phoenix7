@@ -1,0 +1,72 @@
+<script>
+
+
+    let moein_account_id_for_add_2 = 0
+    let tafsili_account_id_for_add_2 = 0 
+</script>
+{% if moein_account %}
+<script>
+    moein_account_id_for_add_2 = parseInt("{{moein_account.id}}")
+</script>
+{% endif %}
+{% if tafsili_account %}
+<script>
+    tafsili_account_id_for_add_2 = parseInt("{{tafsili_account.id}}")
+</script>
+{% endif %}
+<script>
+
+    let add_tafsili_account_app = new Vue({
+        el: "#add-tafsili-account-app",
+        data: {
+            name: "",
+            code: "",
+            message: { show: false },
+        },
+        methods: {
+            add_tafsili_account: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    name: this.name,
+                    code: this.code,
+                    moein_account_id: moein_account_id_for_add_2,
+                    parent_id: tafsili_account_id_for_add_2,
+                }
+                let url = "{% url 'accounting:add_tafsili_account' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    if (data.result === "SUCCEED") {
+                        let tafsili_account=""
+                        if (data.tafsili_account.id){
+                            tafsili_account=`<a href=${data.tafsili_account.get_absolute_url}>${data.tafsili_account.code} - ${data.tafsili_account.name}</a>`
+                            if(typeof tafsili_accounts_app != "undefined"){
+                                tafsili_accounts_app.tafsili_accounts.push(data.tafsili_account)
+                                console.log("11111111111111111111")
+                            }
+                        }
+                        add_tafsili_account_app.message = {
+                            color: "success",
+                            title: "موفق",
+                            show: true,
+                            body: data.message + "<br>" + tafsili_account,
+                        }
+                        setTimeout(() => {
+                            add_tafsili_account_app.message = { show: false, }
+                        }, 8000);
+                    }
+                    else {
+                        add_tafsili_account_app.message = {
+                            color: "danger",
+                            title: "ناموفق",
+                            show: true,
+                            body: data.message  ,
+                        }
+                        setTimeout(() => {
+                            add_tafsili_account_app.message = { show: false, }
+                        }, 8000);
+                    }
+                })
+            },
+        }
+    })
+</script>

@@ -1,0 +1,19 @@
+{% load to_price %}
+
+<div class="card" id="basic-accounts-app">
+    <div class="card-header">
+        <h6>
+            حساب های کل
+        </h6>
+    </div>
+    <div class="card-body">
+        <div class="mb-2">
+            <input type="text" class="form-control" @input="search()" v-model="search_for" placeholder="جستجو ...">
+
+        </div>
+        <div v-for="basic_account in basic_accounts">
+            {% include "accounting/includes/basic-account-app/list-item.html" %}
+
+        </div>
+    </div>
+</div>

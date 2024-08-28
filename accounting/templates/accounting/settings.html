@@ -1,0 +1,129 @@
+{% extends "accounting/layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row rtl" id="settings-app">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h6>
+
+                    تنظیمات
+                </h6>
+            </div>
+            <div class="card-body text-right">
+                <button class="btn btn-success" @click="init_all_accounts">
+                    افزودن کدینگ های پیش فرض
+
+                </button>
+
+                <button class="btn btn-success" @click="delete_all_accounts">
+                   حذف همه کد ها
+
+                </button>
+
+                <div class="mt-2" v-if="message.show">
+                    <div :class="'farsi text-right alert alert-'+message.color">
+                        <h6 v-html="message.title">
+
+                        </h6>
+
+                        <span v-html="message.body">
+
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+<script>
+    let settings_app = new Vue({
+        el: "#settings-app",
+        data: {
+            message: { show: false },
+        },
+        methods: {
+            init_all_accounts: function () {
+                let url = "{% url 'accounting:init_all_accounts' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                }
+                posting = $.post(url, payload)
+                posting.done((data) => {
+                    console.log(data)
+                    if (data.result === "SUCCEED") {
+                        settings_app.message = {
+                            color: "success",
+                            title: "موفق",
+                            show: true,
+                            body: data.message,
+                        }
+                        setTimeout(() => {
+                            settings_app.message = { show: false, }
+                        }, 8000);
+                    }
+
+                    else {
+                        settings_app.message = {
+                            color: "danger",
+                            title: "ناموفق",
+                            show: true,
+                            body: data.message,
+                        }
+                        setTimeout(() => {
+                            settings_app.message = { show: false, }
+                        }, 8000);
+                    }
+
+                })
+            },
+            delete_all_accounts: function () {
+                let url = "{% url 'accounting:delete_all_accounts' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                }
+                posting = $.post(url, payload)
+                posting.done((data) => {
+                    console.log(data)
+                    if (data.result === "SUCCEED") {
+                        settings_app.message = {
+                            color: "success",
+                            title: "موفق",
+                            show: true,
+                            body: data.message,
+                        }
+                        setTimeout(() => {
+                            settings_app.message = { show: false, }
+                        }, 8000);
+                    }
+
+                    else {
+                        settings_app.message = {
+                            color: "danger",
+                            title: "ناموفق",
+                            show: true,
+                            body: data.message,
+                        }
+                        setTimeout(() => {
+                            settings_app.message = { show: false, }
+                        }, 8000);
+                    }
+
+                })
+            },
+
+        }
+    })
+</script>
+{% endblock script %}

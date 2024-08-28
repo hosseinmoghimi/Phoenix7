@@ -1,0 +1,673 @@
+from .models import TafsiliAccount,AccountGroup,BasicAccount,BasicAccount,MoeinAccount,AccountingDocument,AccountingDocumentLine,Account
+from utility.constants import FAILED,SUCCEED
+from authentication.repo import ProfileRepo
+from .apps import APP_NAME
+from .defaults import init_all_accounts_list
+
+
+class AccountRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.request=request
+        self.me=None
+        profile=ProfileRepo(request=request).me
+        self.objects=Account.objects
+        if profile is not None:
+            self.me=self.objects.filter(profile=profile).first()
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            objects=objects.filter(title__contains=kwargs['search_for']) 
+        return objects.all()
+    def account(self,*args, **kwargs):
+        if "pk" in kwargs:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs:
+            return self.objects.filter(pk=kwargs['id']).first() 
+
+    def init_all_accounts(self,*args, **kwargs):
+        account_groups,message,result=([],"",FAILED)
+        if not self.request.user.has_perm(APP_NAME+".add_account"):
+            message="دسترسی غیر مجاز"
+            return tafsili_account,message,result
+        
+        account_groups=init_all_accounts_list()
+        tafsili_accounts_counter=0
+        basic_accounts_counter=0
+        for account_group in account_groups:
+            new_account_group=AccountGroup(name=account_group["name"],color=account_group["color"],code=account_group['code'])
+            new_account_group.save()
+            if 'basic_accounts' in account_group:
+                for basic_account in account_group["basic_accounts"]:
+                    new_basic_account=BasicAccount(name=basic_account["name"],color=basic_account["color"],code=basic_account['code'],account_group=new_account_group)
+                    new_basic_account.save()
+                    if 'moein_accounts' in basic_account:
+                        for moein_account in basic_account["moein_accounts"]:
+                            new_moein_account=MoeinAccount(name=moein_account["name"],color=moein_account["color"],code=moein_account['code'],basic_account=new_basic_account)
+                            # new_moein_account=MoeinAccount(basic_account=new_basic_account,**moein_account)
+                            new_moein_account.save()
+                            if 'moein_accounts' in moein_account:
+                                for moein_account2 in moein_account["moein_accounts"]:
+                                    moein_accounts_counter=0
+                                    new_moein_account2=MoeinAccount(name=moein_account2["name"],parent=new_moein_account,color=moein_account2["color"],code=moein_account2['code'])
+                                    # new_moein_account2=MoeinAccount(parent=new_moein_account,**moein_account2)
+                                    new_moein_account2,result,message=new_moein_account2.save()
+                                    if result==SUCCEED:
+                                        moein_accounts_counter+=1
+                                        print(message)
+                            if 'tafsili_accounts' in moein_account:
+                                for tafsili_account in moein_account["tafsili_accounts"]:
+                                    tafsili_accounts_counter=0
+                                    new_tafsili_account=TafsiliAccount(title=tafsili_account["name"],color=tafsili_account["color"],code=account['code'],moein_account=new_moein_account)
+                                    new_tafsili_account,result,message=new_tafsili_account.save()
+                                    if result==SUCCEED:
+                                        tafsili_accounts_counter+=1
+                                        print(message)
+        result=SUCCEED
+        message="با موفقیت اضافه گردید."
+        message=f"{tafsili_accounts_counter} تفصیلی {message}" 
+        message=f"{tafsili_accounts_counter} تفصیلی {message}" 
+        print(message)
+        return account_groups,message,result
+
+            
+    def add_tafsili_account(self,*args, **kwargs):
+        tafsili_account,message,result=(None,"",FAILED)
+        if not self.request.user.has_perm(APP_NAME+".add_account"):
+            message="دسترسی غیر مجاز"
+            return tafsili_account,message,result
+        if len(TafsiliAccount.objects.filter(name=kwargs['name']))>0:
+            message="از قبل حسابی با همین عنوان ثبت شده است."
+            return tafsili_account,message,result
+        if len(TafsiliAccount.objects.filter(code=kwargs['code']))>0:
+            message="از قبل حسابی با همین کد ثبت شده است."
+            return tafsili_account,message,result
+
+        tafsili_account=TafsiliAccount()
+
+        if 'name' in kwargs:
+            tafsili_account.name=kwargs['name']
+        if 'profile_id' in kwargs:
+            account.profile_id=kwargs['profile_id']
+        if 'description' in kwargs:
+            account.description=kwargs['description']
+        if 'moein_account_id' in kwargs and kwargs["moein_account_id"]>0:
+            tafsili_account.moein_account_id=kwargs['moein_account_id']
+            tafsili_account.color=MoeinAccount.objects.filter(pk=kwargs["moein_account_id"]).first().color
+        if 'tel' in kwargs:
+            tafsili_account.tel=kwargs['tel']
+        if 'color' in kwargs:
+            tafsili_account.color=kwargs['color']
+        if 'code' in kwargs:
+            tafsili_account.code=kwargs['code']
+        if 'parent_id' in kwargs and kwargs["parent_id"]>0:
+            tafsili_account.parent_id=kwargs['parent_id']
+       
+        
+        # if 'financial_year_id' in kwargs:
+        #     payment.financial_year_id=kwargs['financial_year_id']
+        # else:
+        #     payment.financial_year_id=FinancialYear.get_by_date(date=payment.transaction_datetime).id
+
+        tafsili_account.save()
+        result=SUCCEED
+        message="با موفقیت اضافه گردید."
+        
+        if 'balance' in kwargs and kwargs['balance'] is not None and not kwargs['balance']==0:
+            me_account=self.me
+            if me_account is not None:
+                balance=kwargs['balance']
+                payment=Payment()
+                payment.amount=balance if balance>0 else (0-balance)
+                payment.title="مانده از قبل"
+                payment.creator_id=me_account.profile.id
+                payment.status=TransactionStatusEnum.FROM_PAST
+                payment.payment_method=PaymentMethodEnum.FROM_PAST
+                payment.transaction_datetime=PersianCalendar().date
+                if balance>0:
+                    payment.pay_to_id=me_account.id
+                    payment.pay_from_id=account.id
+                if balance<0:
+                    payment.pay_from_id=me_account.id
+                    payment.pay_to_id=account.id
+                payment.save()
+
+        return tafsili_account,message,result
+
+    def add_account_tag(self,*args, **kwargs):
+        result,message,account_tags=FAILED,"",[]
+        if not self.request.user.has_perm(APP_NAME+".change_account"):
+            return result,message,account_tags
+        tag=kwargs['tag']
+        account_id=kwargs['account_id']
+        account_tags=AccountTag.objects.filter(account_id=account_id).filter(tag=tag)
+        
+        if len(account_tags)>0:
+            account_tags.delete()
+            account_tags=AccountTag.objects.filter(account_id=account_id)
+            result=SUCCEED
+            message="تگ "+tag+" حذف شد."
+            return result,message,account_tags
+        
+
+        account_tag=AccountTag()
+        account_tag.account_id=account_id
+        account_tag.tag=tag
+        account_tag.save()
+        message="تگ "+tag+" اضافه شد."
+
+        account_tags=AccountTag.objects.filter(account_id=account_id)
+        result=SUCCEED
+
+        return result,message,account_tags
+        
+    def delete_all_accounts(self,*args, **kwargs):
+        if not self.request.user.has_perm(APP_NAME+".delete_account"):
+            message="دسترسی غیر مجاز"
+            return message,result
+        TafsiliAccount.objects.all().delete()
+        MoeinAccount.objects.all().delete()
+        BasicAccount.objects.all().delete()
+        AccountGroup.objects.all().delete() 
+        result=SUCCEED
+        message="همه حساب ها حذف شد."
+        return result,message
+class TafsiliAccountRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.request=request
+        self.me=None
+        profile=ProfileRepo(request=request).me
+        self.objects=TafsiliAccount.objects
+        if profile is not None:
+            self.me=self.objects.filter(profile=profile).first()
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            objects=objects.filter(title__contains=kwargs['search_for']) 
+        return objects.all()
+    def account(self,*args, **kwargs):
+        if "pk" in kwargs:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs:
+            return self.objects.filter(pk=kwargs['id']).first() 
+
+            
+    def add_tafsili_account(self,*args, **kwargs):
+        tafsili_account,message,result=(None,"",FAILED)
+        if not self.request.user.has_perm(APP_NAME+".add_account"):
+            message="دسترسی غیر مجاز"
+            return tafsili_account,message,result
+        if len(TafsiliAccount.objects.filter(name=kwargs['name']))>0:
+            message="از قبل حسابی با همین عنوان ثبت شده است."
+            return tafsili_account,message,result
+        if len(TafsiliAccount.objects.filter(code=kwargs['code']))>0:
+            message="از قبل حسابی با همین کد ثبت شده است."
+            return tafsili_account,message,result
+
+        tafsili_account=TafsiliAccount()
+
+        if 'name' in kwargs:
+            tafsili_account.name=kwargs['name']
+        if 'profile_id' in kwargs:
+            account.profile_id=kwargs['profile_id']
+        if 'description' in kwargs:
+            account.description=kwargs['description']
+        if 'moein_account_id' in kwargs and kwargs["moein_account_id"]>0:
+            tafsili_account.moein_account_id=kwargs['moein_account_id']
+            tafsili_account.color=MoeinAccount.objects.filter(pk=kwargs["moein_account_id"]).first().color
+        if 'tel' in kwargs:
+            tafsili_account.tel=kwargs['tel']
+        if 'color' in kwargs:
+            tafsili_account.color=kwargs['color']
+        if 'code' in kwargs:
+            tafsili_account.code=kwargs['code']
+        if 'parent_id' in kwargs and kwargs["parent_id"]>0:
+            tafsili_account.parent_id=kwargs['parent_id']
+       
+        
+        # if 'financial_year_id' in kwargs:
+        #     payment.financial_year_id=kwargs['financial_year_id']
+        # else:
+        #     payment.financial_year_id=FinancialYear.get_by_date(date=payment.transaction_datetime).id
+
+        tafsili_account.save()
+        result=SUCCEED
+        message="با موفقیت اضافه گردید."
+        
+        if 'balance' in kwargs and kwargs['balance'] is not None and not kwargs['balance']==0:
+            me_account=self.me
+            if me_account is not None:
+                balance=kwargs['balance']
+                payment=Payment()
+                payment.amount=balance if balance>0 else (0-balance)
+                payment.title="مانده از قبل"
+                payment.creator_id=me_account.profile.id
+                payment.status=TransactionStatusEnum.FROM_PAST
+                payment.payment_method=PaymentMethodEnum.FROM_PAST
+                payment.transaction_datetime=PersianCalendar().date
+                if balance>0:
+                    payment.pay_to_id=me_account.id
+                    payment.pay_from_id=account.id
+                if balance<0:
+                    payment.pay_from_id=me_account.id
+                    payment.pay_to_id=account.id
+                payment.save()
+
+        return tafsili_account,message,result
+
+    def add_account_tag(self,*args, **kwargs):
+        result,message,account_tags=FAILED,"",[]
+        if not self.request.user.has_perm(APP_NAME+".change_account"):
+            return result,message,account_tags
+        tag=kwargs['tag']
+        account_id=kwargs['account_id']
+        account_tags=AccountTag.objects.filter(account_id=account_id).filter(tag=tag)
+        
+        if len(account_tags)>0:
+            account_tags.delete()
+            account_tags=AccountTag.objects.filter(account_id=account_id)
+            result=SUCCEED
+            message="تگ "+tag+" حذف شد."
+            return result,message,account_tags
+        
+
+        account_tag=AccountTag()
+        account_tag.account_id=account_id
+        account_tag.tag=tag
+        account_tag.save()
+        message="تگ "+tag+" اضافه شد."
+
+        account_tags=AccountTag.objects.filter(account_id=account_id)
+        result=SUCCEED
+
+        return result,message,account_tags
+        
+class AccountGroupRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.request=request
+        self.me=None
+        profile=ProfileRepo(request=request).me
+        self.objects=AccountGroup.objects
+        # if profile is not None:
+        #     self.me=self.objects.filter(profile=profile).first()
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            objects=objects.filter(title__contains=kwargs['search_for']) 
+        return objects.all()
+    def account_group(self,*args, **kwargs):
+        if "pk" in kwargs:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs:
+            return self.objects.filter(pk=kwargs['id']).first() 
+
+            
+    def add_account_group(self,*args, **kwargs):
+        account,message,result=(None,"",FAILED)
+        if not self.request.user.has_perm(APP_NAME+".add_account"):
+            message="دسترسی غیر مجاز"
+            return account,message,result
+        if len(Account.objects.filter(title=kwargs['title']))>0:
+            message="از قبل حسابی با همین عنوان ثبت شده است."
+            return account,message,result
+
+        account=Account()
+
+        if 'title' in kwargs:
+            account.title=kwargs['title']
+        if 'profile_id' in kwargs:
+            account.profile_id=kwargs['profile_id']
+        if 'description' in kwargs:
+            account.description=kwargs['description']
+        if 'address' in kwargs:
+            account.address=kwargs['address']
+        if 'tel' in kwargs:
+            account.tel=kwargs['tel']
+        if 'mobile' in kwargs:
+            account.mobile=kwargs['mobile']
+       
+        
+        # if 'financial_year_id' in kwargs:
+        #     payment.financial_year_id=kwargs['financial_year_id']
+        # else:
+        #     payment.financial_year_id=FinancialYear.get_by_date(date=payment.transaction_datetime).id
+
+        account.save()
+        result=SUCCEED
+        message="با موفقیت اضافه گردید."
+        
+        if 'balance' in kwargs and kwargs['balance'] is not None and not kwargs['balance']==0:
+            me_account=self.me
+            if me_account is not None:
+                balance=kwargs['balance']
+                payment=Payment()
+                payment.amount=balance if balance>0 else (0-balance)
+                payment.title="مانده از قبل"
+                payment.creator_id=me_account.profile.id
+                payment.status=TransactionStatusEnum.FROM_PAST
+                payment.payment_method=PaymentMethodEnum.FROM_PAST
+                payment.transaction_datetime=PersianCalendar().date
+                if balance>0:
+                    payment.pay_to_id=me_account.id
+                    payment.pay_from_id=account.id
+                if balance<0:
+                    payment.pay_from_id=me_account.id
+                    payment.pay_to_id=account.id
+                payment.save()
+
+        return account,message,result
+
+    def add_account_tag(self,*args, **kwargs):
+        result,message,account_tags=FAILED,"",[]
+        if not self.request.user.has_perm(APP_NAME+".change_account"):
+            return result,message,account_tags
+        tag=kwargs['tag']
+        account_id=kwargs['account_id']
+        account_tags=AccountTag.objects.filter(account_id=account_id).filter(tag=tag)
+        
+        if len(account_tags)>0:
+            account_tags.delete()
+            account_tags=AccountTag.objects.filter(account_id=account_id)
+            result=SUCCEED
+            message="تگ "+tag+" حذف شد."
+            return result,message,account_tags
+        
+
+        account_tag=AccountTag()
+        account_tag.account_id=account_id
+        account_tag.tag=tag
+        account_tag.save()
+        message="تگ "+tag+" اضافه شد."
+
+        account_tags=AccountTag.objects.filter(account_id=account_id)
+        result=SUCCEED
+
+        return result,message,account_tags
+   
+class BasicAccountRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.request=request
+        self.me=None
+        profile=ProfileRepo(request=request).me
+        self.objects=BasicAccount.objects
+        # if profile is not None:
+        #     self.me=self.objects.filter(profile=profile).first()
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            objects=objects.filter(title__contains=kwargs['search_for']) 
+        return objects.all()
+    def basic_account(self,*args, **kwargs):
+        if "pk" in kwargs:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs:
+            return self.objects.filter(pk=kwargs['id']).first() 
+
+            
+            
+    def add_account_tag(self,*args, **kwargs):
+        result,message,account_tags=FAILED,"",[]
+        if not self.request.user.has_perm(APP_NAME+".change_account"):
+            return result,message,account_tags
+        tag=kwargs['tag']
+        account_id=kwargs['account_id']
+        account_tags=AccountTag.objects.filter(account_id=account_id).filter(tag=tag)
+        
+        if len(account_tags)>0:
+            account_tags.delete()
+            account_tags=AccountTag.objects.filter(account_id=account_id)
+            result=SUCCEED
+            message="تگ "+tag+" حذف شد."
+            return result,message,account_tags
+        
+
+        account_tag=AccountTag()
+        account_tag.account_id=account_id
+        account_tag.tag=tag
+        account_tag.save()
+        message="تگ "+tag+" اضافه شد."
+
+        account_tags=AccountTag.objects.filter(account_id=account_id)
+        result=SUCCEED
+
+        return result,message,account_tags
+        
+            
+    def add_basic_account(self,*args, **kwargs):
+        basic_account,message,result=(None,"",FAILED)
+        if not self.request.user.has_perm(APP_NAME+".add_account"):
+            message="دسترسی غیر مجاز"
+            return account,message,result
+        basic_account=Account.objects.filter(name=kwargs['name']).first()
+        if basic_account is not None:
+            message="از قبل حسابی با همین عنوان ثبت شده است."
+            return basic_account,message,result
+        basic_account=Account.objects.filter(code=kwargs['code']).first()
+
+        if basic_account is not None:
+            message="از قبل حسابی با همین کد ثبت شده است."
+            return basic_account,message,result
+
+
+        basic_account=BasicAccount()
+
+        if 'name' in kwargs:
+            basic_account.name=kwargs['name']
+        if 'code' in kwargs:
+            basic_account.code=kwargs['code']
+        if 'profile_id' in kwargs:
+            basic_account.profile_id=kwargs['profile_id']
+        if 'description' in kwargs:
+            basic_account.description=kwargs['description']
+        if 'address' in kwargs:
+            basic_account.address=kwargs['address']
+        if 'tel' in kwargs:
+            basic_account.tel=kwargs['tel']
+        if 'color' in kwargs:
+            basic_account.color=kwargs['color']
+        if 'mobile' in kwargs:
+            basic_account.mobile=kwargs['mobile']
+        if 'parent_id' in kwargs and kwargs['parent_id']>0 :
+            basic_account.parent_id=kwargs['parent_id']
+        if 'account_group_id' in kwargs and kwargs['account_group_id']>0 :
+            basic_account.color=AccountGroup.objects.filter(pk=kwargs["account_group_id"]).first().color
+            basic_account.account_group_id=kwargs['account_group_id']
+       
+        
+        # if 'financial_year_id' in kwargs:
+        #     payment.financial_year_id=kwargs['financial_year_id']
+        # else:
+        #     payment.financial_year_id=FinancialYear.get_by_date(date=payment.transaction_datetime).id
+
+        basic_account.save()
+        result=SUCCEED
+        message="با موفقیت اضافه گردید."
+        
+        if 'balance' in kwargs and kwargs['balance'] is not None and not kwargs['balance']==0:
+            me_account=self.me
+            if me_account is not None:
+                balance=kwargs['balance']
+                payment=Payment()
+                payment.amount=balance if balance>0 else (0-balance)
+                payment.title="مانده از قبل"
+                payment.creator_id=me_account.profile.id
+                payment.status=TransactionStatusEnum.FROM_PAST
+                payment.payment_method=PaymentMethodEnum.FROM_PAST
+                payment.transaction_datetime=PersianCalendar().date
+                if balance>0:
+                    payment.pay_to_id=me_account.id
+                    payment.pay_from_id=account.id
+                if balance<0:
+                    payment.pay_from_id=me_account.id
+                    payment.pay_to_id=account.id
+                payment.save()
+
+        return basic_account,message,result
+ 
+class MoeinAccountRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.request=request
+        self.me=None
+        profile=ProfileRepo(request=request).me
+        self.objects=MoeinAccount.objects
+        # if profile is not None:
+        #     self.me=self.objects.filter(profile=profile).first()
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            objects=objects.filter(title__contains=kwargs['search_for']) 
+        return objects.all()
+    def moein_account(self,*args, **kwargs):
+        if "pk" in kwargs:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs:
+            return self.objects.filter(pk=kwargs['id']).first() 
+
+            
+    def add_moein_account(self,*args, **kwargs):
+        moein_account,message,result=(None,"",FAILED)
+        if not self.request.user.has_perm(APP_NAME+".add_account"):
+            message="دسترسی غیر مجاز"
+            return account,message,result
+
+        moein_account=Account.objects.filter(name=kwargs['name']).first()
+        if moein_account is not None:
+            message="از قبل حسابی با همین عنوان ثبت شده است."
+            return moein_account,message,result
+
+            
+        moein_account=Account.objects.filter(code=kwargs['code']).first()
+        if moein_account is not None:
+            message="از قبل حسابی با همین کد ثبت شده است."
+            return moein_account,message,result
+
+
+        moein_account=MoeinAccount()
+
+        if 'name' in kwargs:
+            moein_account.name=kwargs['name']
+        if 'code' in kwargs:
+            moein_account.code=kwargs['code']
+        if 'profile_id' in kwargs:
+            moein_account.profile_id=kwargs['profile_id']
+        if 'description' in kwargs:
+            moein_account.description=kwargs['description']
+        if 'address' in kwargs:
+            moein_account.address=kwargs['address']
+        if 'tel' in kwargs:
+            moein_account.tel=kwargs['tel']
+        if 'mobile' in kwargs:
+            moein_account.mobile=kwargs['mobile']
+        if 'parent_id' in kwargs and kwargs['parent_id']>0 :
+            moein_account.parent_id=kwargs['parent_id']
+            
+            moein_account.color=MoeinAccount.objects.filter(pk=kwargs["parent_id"]).first().color
+        if 'basic_account_id' in kwargs and kwargs['basic_account_id']>0 :
+            moein_account.basic_account_id=kwargs['basic_account_id']
+            moein_account.color=BasicAccount.objects.filter(pk=kwargs["basic_account_id"]).first().color
+       
+        
+        # if 'financial_year_id' in kwargs:
+        #     payment.financial_year_id=kwargs['financial_year_id']
+        # else:
+        #     payment.financial_year_id=FinancialYear.get_by_date(date=payment.transaction_datetime).id
+
+        moein_account.save()
+        result=SUCCEED
+        message="با موفقیت اضافه گردید."
+        
+        if 'balance' in kwargs and kwargs['balance'] is not None and not kwargs['balance']==0:
+            me_account=self.me
+            if me_account is not None:
+                balance=kwargs['balance']
+                payment=Payment()
+                payment.amount=balance if balance>0 else (0-balance)
+                payment.title="مانده از قبل"
+                payment.creator_id=me_account.profile.id
+                payment.status=TransactionStatusEnum.FROM_PAST
+                payment.payment_method=PaymentMethodEnum.FROM_PAST
+                payment.transaction_datetime=PersianCalendar().date
+                if balance>0:
+                    payment.pay_to_id=me_account.id
+                    payment.pay_from_id=account.id
+                if balance<0:
+                    payment.pay_from_id=me_account.id
+                    payment.pay_to_id=account.id
+                payment.save()
+
+        return moein_account,message,result
+ 
+class AccountingDocumentRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.request=request
+        self.me=None
+        profile=ProfileRepo(request=request).me
+        self.objects=AccountingDocument.objects
+        # if profile is not None:
+        #     self.me=self.objects.filter(profile=profile).first()
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            objects=objects.filter(title__contains=kwargs['search_for']) 
+        return objects.all()
+    def accounting_document(self,*args, **kwargs):
+        if "pk" in kwargs:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs:
+            return self.objects.filter(pk=kwargs['id']).first() 
+
+            
+    def add_accounting_document(self,*args, **kwargs):
+        account,message,result=(None,"",FAILED)
+        if not self.request.user.has_perm(APP_NAME+".add_account"):
+            message="دسترسی غیر مجاز"
+            return account,message,result
+        if len(Account.objects.filter(title=kwargs['title']))>0:
+            message="از قبل حسابی با همین عنوان ثبت شده است."
+            return account,message,result
+
+        account=Account()
+
+        if 'title' in kwargs:
+            account.title=kwargs['title']
+        if 'profile_id' in kwargs:
+            account.profile_id=kwargs['profile_id']
+        if 'description' in kwargs:
+            account.description=kwargs['description']
+        if 'address' in kwargs:
+            account.address=kwargs['address']
+        if 'tel' in kwargs:
+            account.tel=kwargs['tel']
+        if 'mobile' in kwargs:
+            account.mobile=kwargs['mobile']
+       
+        
+        # if 'financial_year_id' in kwargs:
+        #     payment.financial_year_id=kwargs['financial_year_id']
+        # else:
+        #     payment.financial_year_id=FinancialYear.get_by_date(date=payment.transaction_datetime).id
+
+        account.save()
+        result=SUCCEED
+        message="با موفقیت اضافه گردید."
+        
+        if 'balance' in kwargs and kwargs['balance'] is not None and not kwargs['balance']==0:
+            me_account=self.me
+            if me_account is not None:
+                balance=kwargs['balance']
+                payment=Payment()
+                payment.amount=balance if balance>0 else (0-balance)
+                payment.title="مانده از قبل"
+                payment.creator_id=me_account.profile.id
+                payment.status=TransactionStatusEnum.FROM_PAST
+                payment.payment_method=PaymentMethodEnum.FROM_PAST
+                payment.transaction_datetime=PersianCalendar().date
+                if balance>0:
+                    payment.pay_to_id=me_account.id
+                    payment.pay_from_id=account.id
+                if balance<0:
+                    payment.pay_from_id=me_account.id
+                    payment.pay_to_id=account.id
+                payment.save()
+
+        return account,message,result
+ 

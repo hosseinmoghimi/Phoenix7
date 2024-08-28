@@ -1,0 +1,21 @@
+{% load to_price %}
+<div class="mr-4">
+<a href="{{moein_account.get_absolute_url}}">
+    <h3 class="farsi moein-account">
+    {{moein_account.title}}
+    <small>
+        (
+
+            {{moein_account.balance|to_price}}
+            )
+
+    </small>
+
+    </h3>
+</a>
+{% for account in moein_account.accounts %}
+ 
+        {% include "accounting/includes/account-app/tree.html" %}
+{% endfor %}
+
+</div>

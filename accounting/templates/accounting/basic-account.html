@@ -1,0 +1,58 @@
+{% extends "accounting/layout.html" %}
+{% load static %}
+{% load to_price %}
+
+{% block content %}
+<div class="row rtl">
+    <div class="col-md-4">
+        {% include "accounting/includes/account-app/card.html" %}
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h6>
+                    حساب کل
+                </h6>
+            </div>
+            <div class="card-body">
+                <h6>
+                    حساب کل
+                </h6>
+                <h5>
+                    {{basic_account.title}}
+                </h5>
+
+                <h6>
+                    {{basic_account.balance|to_price_color|safe}}
+                </h6>
+
+
+            </div>
+        </div>
+
+
+        {% if add_moein_account_form %}
+        {% include "accounting/includes/moein-account-app/add-template.html" %}
+        {% endif %}
+
+    </div>
+    <div class="col-md-4">
+        {% include "accounting/includes/moein-account-app/list-template.html" %}
+
+    </div>
+
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+
+{% if add_moein_account_form %}
+{% include "accounting/includes/moein-account-app/add-script.html" %}
+
+{% endif %}
+{% include "accounting/includes/moein-account-app/list-script.html" %}
+
+{% endblock script %}

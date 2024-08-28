@@ -1,0 +1,110 @@
+{% extends "accounting/layout.html" %}
+
+{% load to_price %}
+{% block content %}
+<div class="row rtl">
+    
+    <div class="col-md-12">
+
+        <div class="text-center farsi">
+            حساب ها
+        </div>
+
+    </div>
+
+
+    {% if SIMPLE_VIEW %}
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped farsi">
+                        <thead>
+                            <th>
+                                نام
+                            </th>
+
+                            <th>
+                                دفتر
+                            </th>
+
+
+                            <th>
+                                مانده
+                            </th>
+
+                            <th>
+
+                            </th>
+
+                        </thead>
+                        <tbody>
+                            {% for account in accounts %}
+
+                            <tr>
+                                <td>
+                                    <a href="{{account.get_absolute_url}}">
+                                        <div class="media">
+
+                                            <img class="" src="{{account.logo}}" width="32" alt="">
+                                            <div class="media-body mr-2">
+                                                <div>
+                                                    {{account.title}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </td>
+                                <td>
+                                    {{account.type}}
+
+                                </td>
+
+
+                                <td>
+                                    {{account.balance|to_price}}
+
+                                </td>
+
+                                <td>
+
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-md-12">
+        {% include "accounting/includes/account-app/list-card.html" %}
+
+    </div>
+    {% endif %}
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>
+                    جدول حساب ها
+                </h5>
+            </div>
+            <div class="card-body">
+                {% include "accounting/includes/account-app/table-template.html" %}
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block script %}
+{% include "accounting/includes/account-app/list-script.html" %}
+
+{% include "accounting/includes/account-app/table-script.html" %}
+
+{% endblock script %}

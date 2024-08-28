@@ -1,0 +1,58 @@
+{% extends "processmanagement/layout.html" %}
+{% block content %}
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="text-center">
+                    فرآیند
+                </h4>
+            </div>
+            <div class="card-body">
+                <h4>
+                    <a href="{{process.get_absolute_url}}">
+                        {{process.title}}
+                    </a>
+                </h4>
+                <h6>
+
+                    گروه ها
+                </h6>
+                {% for group in process.groups.all %}
+                <h4>
+                    <a href="{{group.get_absolute_url}}">
+                        {{group}}
+                    </a>
+                </h4>
+
+                {% endfor %}
+<h6>
+
+    کاربران
+</h6>
+
+                {% for group in process.groups.all %}
+                {% for user in group.users %}
+                <h4>
+                    {{user}}
+
+                </h4>
+
+                {% endfor %}
+
+                {% endfor %}
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+
+
+{% block script %}
+
+{% endblock script %}

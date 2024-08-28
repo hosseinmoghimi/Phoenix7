@@ -1,0 +1,20 @@
+<script>
+    let tafsili_accounts_for_tafsili_accounts_app = JSON.parse("{{tafsili_accounts_s|escapejs}}")
+    let tafsili_accounts_app = new Vue({
+        el: "#tafsili-accounts-app",
+        data: {
+            tafsili_accounts: tafsili_accounts_for_tafsili_accounts_app,
+            search_for: "",
+        },
+        methods: {
+            search: () => {
+                tafsili_accounts_app.tafsili_accounts = tafsili_accounts_for_tafsili_accounts_app.filter(tafsili_account => {
+                
+                    if (tafsili_account.name.indexOf(tafsili_accounts_app.search_for)>-1)
+                        return true
+                })
+            },
+
+        },
+    })
+</script>

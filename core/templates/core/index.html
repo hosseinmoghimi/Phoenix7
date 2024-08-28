@@ -1,0 +1,31 @@
+{% extends "core/layout.html" %}
+
+{% block content %}
+  <div class="row rtl">
+    {% for phoenix_app in phoenix_apps %}
+      <div class="col-lg-2 col-md-3 col-sm-4">
+        <div class="text-center">
+            <div>
+                <a href="{{phoenix_app.home_url}}">
+
+                    <img src="{{phoenix_app.icon}}" alt="">
+                </a>
+            </div>
+            <div>
+                <a class="farsi" href="{{phoenix_app.home_url}}">
+
+                    {{phoenix_app.title}}
+                </a>
+            </div> 
+        </div>
+    </div>
+    {% endfor %}
+     
+  </div>
+{% endblock content %}
+
+
+
+{% block script %}
+  
+{% endblock script %}

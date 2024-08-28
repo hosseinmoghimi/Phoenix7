@@ -1,0 +1,43 @@
+{% extends "accounting/layout.html" %}
+{% load static %}
+{% load to_price %}
+
+{% block content %}
+<div class="row rtl">
+ 
+
+  
+
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h6>
+                    حساب های معین
+
+                </h6>
+            </div>
+
+            <div class="card-body">
+
+                {% for account in moein_accounts %}
+                {% include "accounting/includes/account-app/item-media.html" %}
+                {% endfor %}
+
+             
+ 
+
+            </div>
+        </div>
+    </div>
+
+
+  
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+
+{% endblock script %}

@@ -1,0 +1,28 @@
+{% extends "processmanagement/layout.html" %}
+{% block content %}
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="text-center">
+                    لینک ها
+                </h4>
+            </div>
+            <div class="card-body">
+                <h4>
+                    <a href="{% url 'processmanagement:processes' %}">
+                        فرآیند ها
+                    </a>
+                </h4>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+
+
+{% block script %}
+
+{% endblock script %}

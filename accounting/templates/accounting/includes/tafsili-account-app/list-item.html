@@ -1,0 +1,32 @@
+{% load to_price %}
+<div class="media mb-2">
+    <a :href="tafsili_account.get_absolute_url">
+
+        <img :src="tafsili_account.logo" width="48" alt="">
+    </a>
+    <div class="media-body mr-2">
+        <h5>
+            <a :href="tafsili_account.get_absolute_url">
+                <span v-text="tafsili_account.code" :class="'text-'+tafsili_account.color">
+
+                </span>
+
+                &nbsp;
+
+                <span  :class="'text-'+tafsili_account.color" v-text="tafsili_account.name">
+
+                </span>
+
+            </a>
+        </h5>
+
+        <h6>
+            <a :href="tafsili_account.get_absolute_url">
+                <span v-html="tafsili_account.balance_colored">
+
+                </span>
+            </a>
+        </h6>
+
+    </div>
+</div>

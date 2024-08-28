@@ -1,0 +1,22 @@
+{% load to_price %}
+
+<div class="media mb-2">
+    <img src="" width="48" alt="">
+    <div class="media-body mr-2">
+        <h5>
+            <a href="{{basic_account.get_absolute_url}}">
+                {{basic_account.code}}
+                &nbsp;
+                {{basic_account.title}}
+            </a>
+        </h5>
+
+        <h6>
+            <a href="{{basic_account.get_absolute_url}}">
+
+                {{basic_account.balance|to_price_color|safe}}
+            </a>
+        </h6>
+
+    </div>
+</div>

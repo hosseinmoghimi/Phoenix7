@@ -1,0 +1,73 @@
+<script>
+    let moein_account_id_for_add = 0
+    let basic_account_id_for_add = 0 
+</script>
+{% if moein_account %}
+<script>
+    moein_account_id_for_add = parseInt("{{moein_account.id}}")
+</script>
+{% endif %}
+{% if basic_account %}
+<script>
+    basic_account_id_for_add = parseInt("{{basic_account.id}}")
+</script>
+{% endif %}
+<script>
+
+    let add_moein_account_app = new Vue({
+        el: "#add-moein-account-app",
+        data: {
+            name: "",
+            code: "",
+            message:{show:false},
+        },
+        methods: {
+            add_moein_account: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    name: this.name,
+                    code: this.code,
+                    parent_id: moein_account_id_for_add,
+                    basic_account_id: basic_account_id_for_add,
+                }
+                console.log(payload)
+                let url = "{% url 'accounting:add_moein_account' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    
+                    if (data.result === "SUCCEED") {
+                        if (typeof moein_accounts_app != "undefined") {
+                            moein_accounts_app.moein_accounts.push(data.moein_account)
+                        }
+                        add_moein_account_app.message={
+                            color:"success",
+                            title:"تبریک",
+                            show:true,
+                            body:data.message,
+                        }
+                        setTimeout(() => {
+                            add_moein_account_app.message={show:false,}
+                        }, 3000);
+
+                    }
+                    else{
+                        let moein_account=""
+                        if (data.moein_account.id){
+                            moein_account=`<a href=${data.moein_account.get_absolute_url}>${data.moein_account.code} - ${data.moein_account.name}</a>`
+                        }
+                        add_moein_account_app.message={
+                            color:"danger",
+                            title:"ناموفق",
+                            show:true,
+                            body:data.message+"<br>"+moein_account,
+                        }
+                        setTimeout(() => {
+                            add_moein_account_app.message={show:false,}
+                        }, 5000);
+                    }
+
+                })
+            },
+        }
+    })
+</script>

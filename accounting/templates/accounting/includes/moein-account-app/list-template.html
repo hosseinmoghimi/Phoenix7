@@ -1,0 +1,16 @@
+{% load to_price %}
+ 
+<div class="card" id="moein-accounts-app">
+    <div class="card-header">
+        <h6>
+            حساب های معین
+        </h6>
+    </div>
+    <div class="card-body">
+   
+        <div v-for="moein_account in moein_accounts">
+            {% include "accounting/includes/moein-account-app/list-item.html" %}
+
+        </div>
+    </div>
+</div>

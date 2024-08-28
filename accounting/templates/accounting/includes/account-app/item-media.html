@@ -1,0 +1,30 @@
+{% load to_price %}
+
+<div class="media mb-3">
+    <img src="{{account.logo}}" width="48" alt="">
+    <div class="media-body mr-2">
+        <h5>
+            <a href="{{account.get_absolute_url}}">
+
+                {{account.title}}
+            </a>
+        </h5>
+        {% if account.parent_account %}
+
+        <h6>
+            <small class="text-muted">
+                <a href="{{account.parent_account.get_absolute_url}}">
+
+                    {{account.parent_account.full_title}}
+                </a>
+            </small>
+
+        </h6>
+        {% endif %}
+        <h6>
+
+                {{account.balance|to_price_color|safe}}
+        </h6>
+
+    </div>
+</div>

@@ -1,0 +1,51 @@
+{% extends "accounting/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% block content %}
+<div class="row rtl">
+    <div class="col-md-6">
+        {% include "accounting/includes/account-app/card.html" %}
+    </div>
+    {% if moein_account.basic_account %}
+
+    <div class="col-md-6">
+
+        {% if add_moein_account_form %}
+        {% include "accounting/includes/moein-account-app/add-template.html" %}
+        {% endif %}
+
+        {% include "accounting/includes/moein-account-app/list-template.html" %}
+
+    </div>
+    {% endif %}
+ 
+
+
+
+
+    <div class="col-md-6">
+
+        {% if add_tafsili_account_form %}
+        {% include "accounting/includes/tafsili-account-app/add-template.html" %}
+        {% endif %}
+        {% include "accounting/includes/tafsili-account-app/list-template.html" %}
+    </div>
+
+</div>
+{% endblock content %}
+{% block script %}
+<script>
+    let moein_account_id = parseInt("{{moein_account.id}}")
+</script>
+{% if add_moein_account_form %}
+{% include "accounting/includes/moein-account-app/add-script.html" %}
+{% endif %}
+
+
+{% if add_tafsili_account_form %}
+{% include "accounting/includes/tafsili-account-app/add-script.html" %}
+{% endif %}
+{% include "accounting/includes/moein-account-app/list-script.html" %}
+{% include "accounting/includes/tafsili-account-app/list-script.html" %}
+
+{% endblock script %}

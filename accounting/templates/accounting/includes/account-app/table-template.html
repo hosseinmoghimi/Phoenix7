@@ -1,0 +1,48 @@
+<div id="accounts-table-app">
+    <div class="my-2">
+
+        <input type="text" class="form-control" v-model="search_for" @input="filter()">
+    </div>
+    <div class="table-responsive farsi">
+        <table class="table table-striped">
+            <thead>
+
+            </thead>
+            <tbody>
+                <th>
+                    نام
+                </th>
+
+                <th>
+                    کد
+                </th>
+
+
+                <th>
+                    نوع
+                </th>
+
+
+            </tbody>
+            <tbody>
+                <tr v-for="account in accounts">
+                    <td>
+                        <a href="account.get_absolute_url">
+                            
+                            <span v-text="account.name"></span>
+                        </a>
+                    </td>
+
+                    <td>
+                        <span v-text="account.code"></span>
+
+                    </td>
+
+                    <td>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
