@@ -25,13 +25,13 @@ class AddMoeinAccountForm(forms.Form):
     name=forms.CharField(max_length=100, required=True)
     code=forms.CharField(max_length=100, required=True)
     basic_account_id=forms.IntegerField(required=False)
-    parent_id=forms.IntegerField(required=False)
+    moein_account_id=forms.IntegerField(required=False)
 
 class AddTafsiliAccountForm(forms.Form):
     name=forms.CharField(max_length=100, required=True)
     code=forms.CharField(max_length=100, required=True)
     moein_account_id=forms.IntegerField(required=False)
-    parent_id=forms.IntegerField(required=False)
+    tafsili_account_id=forms.IntegerField(required=False)
 
 
 class AddAccountTagForm(forms.Form):

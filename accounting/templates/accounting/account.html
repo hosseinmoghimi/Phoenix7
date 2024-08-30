@@ -38,11 +38,17 @@
     <div class="col-lg-12">
 
         <div class="card">
+            <div class="card-header">
+ریز اسناد حسابداری
+            </div>
             <div class="card-body">
                 <table class="table table-striped">
                     <thead>
                         <th>
                             شرح
+                        </th>
+                        <th>
+                            حساب
                         </th>
                         <th>
                             مبلغ
@@ -70,6 +76,20 @@
                             <td>
                                 <a href=" {{accounting_document_line.get_absolute_url}}">
                                     {{accounting_document_line.title}}
+                                    {{accounting_document_line.title}}
+                                </a>
+
+                            </td>
+                            <td>
+                                <a href="{{accounting_document_line.account.get_absolute_url}}">
+                                    <div>
+
+                                        {{accounting_document_line.account.title}}
+                                    </div>
+                                    <div class="small text-muted">
+
+                                        {{accounting_document_line.account.full_title}}
+                                    </div>
                                 </a>
 
                             </td>
@@ -105,6 +125,13 @@
         </div>
 
     </div>
+
+    <div class="col-lg-12">
+
+        {% include "accounting/includes/account-app/childs.html" %}
+ 
+     </div>
+
 </div>
 </div>
 {% endblock content %}

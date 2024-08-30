@@ -26,6 +26,7 @@ def get_account_context(account,*args, **kwargs):
     context={}
     context['account']=account
     
+    account.normalize_total()
     account_s=json.dumps(AccountSerializer(account).data)
     context['account_s']=account_s
 
@@ -100,13 +101,11 @@ class TafsiliAccountView(View):
 class AccountView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
-        tasili_account=TafsiliAccountRepo(request=request).account(*args, **kwargs)
-        context['tasili_account']=tasili_account
-        context.update(get_account_context(account=tasili_account))
-        account.normalize_total()
+        account=AccountRepo(request=request).account(*args, **kwargs)
+        context.update(get_account_context(account=account))
         accounting_document_lines=account.accountingdocumentline_set.all()
         context['accounting_document_lines']=accounting_document_lines
-
+ 
         account_s=json.dumps(AccountSerializer(account).data)
         context['account_s']=account_s
         return render(request,TEMPLATE_ROOT+"account.html",context)
@@ -327,15 +326,15 @@ class TreeChartView(View):
 
         context['account_groups']=account_groups
         pages=[]
-        pages.append({
-            'title': f"""گروه های حساب""",
-            'parent_id': 0,
-            'parent': 0,
-            'get_absolute_url':reverse("accounting:account_groups"),
-            'id': 1,
-            'pre_title': "",
-            'sub_title': "",
-            })
+        # pages.append({
+        #     'title': f"""گروه های حساب""",
+        #     'parent_id': -1,
+        #     'parent': -1,
+        #     'get_absolute_url':reverse("accounting:account_groups"),
+        #     'id': 1,
+        #     'pre_title': "",
+        #     'sub_title': "",
+        #     })
         AG=100
         BA=100000
         MA=100000000
@@ -344,8 +343,8 @@ class TreeChartView(View):
             page=account_group
             pages.append({
                 'title': f"""{page.code}<br>{page.title}""",
-                'parent_id': 1,
-                'parent': 1,
+                'parent_id': 0,
+                'parent': 0,
                 'get_absolute_url': page.get_absolute_url(),
                 'id': AG+page.id,
                 'pre_title': "",
@@ -357,8 +356,8 @@ class TreeChartView(View):
                 page=basic_account
                 pages.append({
                     'title': f"""{page.code}<br>{page.title}""",
-                    'parent_id': AG+page.account_group.id,
-                    'parent': AG+page.account_group.id,
+                    'parent_id': AG+page.parent.id,
+                    'parent': AG+page.parent.id,
                     'get_absolute_url': page.get_absolute_url(),
                     'id': BA+page.id,
                     'pre_title': "",
@@ -370,8 +369,8 @@ class TreeChartView(View):
                     page=moein_account
                     pages.append({
                         'title': f"""{page.title}""",
-                        'parent_id': BA+page.basic_account.id,
-                        'parent': BA+page.basic_account.id,
+                        'parent_id': BA+page.parent.id,
+                        'parent': BA+page.parent.id,
                         'get_absolute_url': page.get_absolute_url(),
                         'id': MA+page.id,
                         'pre_title': "",

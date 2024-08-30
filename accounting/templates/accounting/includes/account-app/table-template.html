@@ -23,11 +23,16 @@
                 </th>
 
 
+                <th>
+                    مانده
+                </th>
+
+
             </tbody>
             <tbody>
                 <tr v-for="account in accounts">
                     <td>
-                        <a href="account.get_absolute_url">
+                        <a :href="account.get_absolute_url">
                             
                             <span v-text="account.name"></span>
                         </a>
@@ -37,8 +42,13 @@
                         <span v-text="account.code"></span>
 
                     </td>
+                    <td>
+                        <span v-text="account.type"></span>
+
+                    </td>
 
                     <td>
+                        <span v-html="to_price(account.balance)"></span>
 
                     </td>
                 </tr>

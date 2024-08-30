@@ -1,4 +1,4 @@
-from .models import TafsiliAccount,AccountGroup,BasicAccount,BasicAccount,MoeinAccount,AccountingDocument,AccountingDocumentLine,Account
+from .models import Event,TafsiliAccount,AccountGroup,BasicAccount,BasicAccount,MoeinAccount,AccountingDocument,AccountingDocumentLine,Account
 from utility.constants import FAILED,SUCCEED
 from authentication.repo import ProfileRepo
 from .apps import APP_NAME
@@ -25,17 +25,20 @@ class AccountRepo():
             return self.objects.filter(pk=kwargs['id']).first() 
 
     def init_all_accounts(self,*args, **kwargs):
+        tafsili_accounts_counter=0 
+        basic_accounts_counter=0
+        moein_accounts_counter=0
+        account_group_counter=0
         account_groups,message,result=([],"",FAILED)
         if not self.request.user.has_perm(APP_NAME+".add_account"):
             message="دسترسی غیر مجاز"
             return tafsili_account,message,result
         
         account_groups=init_all_accounts_list()
-        tafsili_accounts_counter=0
-        basic_accounts_counter=0
         for account_group in account_groups:
             new_account_group=AccountGroup(name=account_group["name"],color=account_group["color"],code=account_group['code'])
             new_account_group.save()
+            account_group_counter+-1
             if 'basic_accounts' in account_group:
                 for basic_account in account_group["basic_accounts"]:
                     new_basic_account=BasicAccount(name=basic_account["name"],color=basic_account["color"],code=basic_account['code'],account_group=new_account_group)
@@ -45,28 +48,38 @@ class AccountRepo():
                             new_moein_account=MoeinAccount(name=moein_account["name"],color=moein_account["color"],code=moein_account['code'],basic_account=new_basic_account)
                             # new_moein_account=MoeinAccount(basic_account=new_basic_account,**moein_account)
                             new_moein_account.save()
+
+                            
+                            if 'tafsili_accounts' in moein_account:
+
+                                for tafsili_account in moein_account["tafsili_accounts"]:
+                                    new_tafsili_account=TafsiliAccount(name=tafsili_account["name"],color=tafsili_account["color"],code=tafsili_account['code'],moein_account=new_moein_account)
+                                    new_tafsili_account,result,message=new_tafsili_account.save()
+                                    if result==SUCCEED:
+                                        tafsili_accounts_counter+=1
+
+
                             if 'moein_accounts' in moein_account:
                                 for moein_account2 in moein_account["moein_accounts"]:
-                                    moein_accounts_counter=0
-                                    new_moein_account2=MoeinAccount(name=moein_account2["name"],parent=new_moein_account,color=moein_account2["color"],code=moein_account2['code'])
+                                    new_moein_account2=MoeinAccount(name=moein_account2["name"],moein_account=new_moein_account,color=moein_account2["color"],code=moein_account2['code'])
                                     # new_moein_account2=MoeinAccount(parent=new_moein_account,**moein_account2)
                                     new_moein_account2,result,message=new_moein_account2.save()
                                     if result==SUCCEED:
                                         moein_accounts_counter+=1
-                                        print(message)
-                            if 'tafsili_accounts' in moein_account:
-                                for tafsili_account in moein_account["tafsili_accounts"]:
-                                    tafsili_accounts_counter=0
-                                    new_tafsili_account=TafsiliAccount(title=tafsili_account["name"],color=tafsili_account["color"],code=account['code'],moein_account=new_moein_account)
-                                    new_tafsili_account,result,message=new_tafsili_account.save()
-                                    if result==SUCCEED:
-                                        tafsili_accounts_counter+=1
-                                        print(message)
+
+                                    if 'tafsili_accounts' in moein_account2:
+                                        for tafsili_account in moein_account2["tafsili_accounts"]:
+                                            new_tafsili_account=TafsiliAccount(name=tafsili_account["name"],color=tafsili_account["color"],code=tafsili_account['code'],moein_account=new_moein_account2)
+                                            new_tafsili_account,result,message=new_tafsili_account.save()
+                                            if result==SUCCEED:
+                                                tafsili_accounts_counter+=1
+
+
+
         result=SUCCEED
         message="با موفقیت اضافه گردید."
         message=f"{tafsili_accounts_counter} تفصیلی {message}" 
         message=f"{tafsili_accounts_counter} تفصیلی {message}" 
-        print(message)
         return account_groups,message,result
 
             
@@ -164,6 +177,9 @@ class AccountRepo():
         if not self.request.user.has_perm(APP_NAME+".delete_account"):
             message="دسترسی غیر مجاز"
             return message,result
+        AccountingDocumentLine.objects.all().delete()
+        AccountingDocument.objects.all().delete()
+        Event.objects.all().delete()
         TafsiliAccount.objects.all().delete()
         MoeinAccount.objects.all().delete()
         BasicAccount.objects.all().delete()
@@ -220,8 +236,8 @@ class TafsiliAccountRepo():
             tafsili_account.color=kwargs['color']
         if 'code' in kwargs:
             tafsili_account.code=kwargs['code']
-        if 'parent_id' in kwargs and kwargs["parent_id"]>0:
-            tafsili_account.parent_id=kwargs['parent_id']
+        if 'tafsili_account_id' in kwargs and kwargs["tafsili_account_id"]>0:
+            tafsili_account.tafsili_account_id=kwargs['tafsili_account_id']
        
         
         # if 'financial_year_id' in kwargs:
@@ -557,10 +573,10 @@ class MoeinAccountRepo():
             moein_account.tel=kwargs['tel']
         if 'mobile' in kwargs:
             moein_account.mobile=kwargs['mobile']
-        if 'parent_id' in kwargs and kwargs['parent_id']>0 :
-            moein_account.parent_id=kwargs['parent_id']
+        if 'moein_account_id' in kwargs and kwargs['moein_account_id']>0 :
+            moein_account.moein_account_id=kwargs['moein_account_id']
             
-            moein_account.color=MoeinAccount.objects.filter(pk=kwargs["parent_id"]).first().color
+            moein_account.color=MoeinAccount.objects.filter(pk=kwargs["moein_account_id"]).first().color
         if 'basic_account_id' in kwargs and kwargs['basic_account_id']>0 :
             moein_account.basic_account_id=kwargs['basic_account_id']
             moein_account.color=BasicAccount.objects.filter(pk=kwargs["basic_account_id"]).first().color

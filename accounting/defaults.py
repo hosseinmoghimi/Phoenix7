@@ -13,26 +13,30 @@ def init_all_accounts_list():
                     # {"name":"aaaaaaaaa",'color':'success','code':"102"},
                     # {"name":"aaaaaaaaa",'color':'success','code':"102"},
                 ]},
+   
+                {"name":"بانک",'color':'info','code':"111/11","moein_accounts":[
+ 
+                    {"name":"بانک ملی",'color':'info','code':"111/11/1","tafsili_accounts":[
+                        {"name":"حساب بانک ملی 0101581354009 به نام موسسه تست",'color':'info','code':"111/11/11"},
+                    ]},
 
+                    {"name":"بانک رفاه کارگران",'color':'warning','code':"111/11/2","tafsili_accounts":[
+    
+                    ]},
+
+                    {"name":"بانک صادرات",'color':'dark','code':"111/11/3","tafsili_accounts":[
+    
+                    ]},
+                    {"name":"بانک ملت",'color':'dark','code':"111/11/4","tafsili_accounts":[
+    
+                    ]},
+                    {"name":"بانک تجارت",'color':'success','code':"111/11/5","tafsili_accounts":[
+        
+                    ]},
+                ]},
                 
-                {"name":"بانک ملی",'color':'info','code':"111/11","accounts":[
- 
-                ]},
-
-                {"name":"بانک رفاه کارگران",'color':'warning','code':"111/12","accounts":[
- 
-                ]},
-
-                {"name":"بانک صادرات",'color':'dark','code':"111/13","accounts":[
-  
-                ]},
-                {"name":"بانک ملت",'color':'dark','code':"111/14","accounts":[
- 
-                ]},
-                 {"name":"بانک تجارت",'color':'success','code':"111/15","accounts":[
-     
-                ]},
-                 {"name":"تنخواه",'color':'success','code':"111/16","accounts":[
+               
+                 {"name":"تنخواه",'color':'success','code':"111/12","accounts":[
      
                 ]},
             ]},
@@ -44,35 +48,35 @@ def init_all_accounts_list():
                 ]}
             ]},
             {"name":"حساب ها و اسناد دریافتنی تجاری",'color':'success','code':"13","moein_accounts":[
-                {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102","accounts":[
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
+                {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"131","tafsili_accounts":[
+                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"1311"},
+                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"1312"},
+                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"1313"},
                 ]}
             ]},
             {"name":"سایر حساب های دریافتنی تجاری",'color':'success','code':"14","moein_accounts":[
-                {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102","accounts":[
+                {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102","tafsili_accounts":[
                     {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
                     {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
                     {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
                 ]}
             ]},
             {"name":"جاری شرکا",'color':'success','code':"15","moein_accounts":[
-                {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102","accounts":[
+                {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102","tafsili_accounts":[
                     {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
                     {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
                     {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
                 ]}
             ]},
             {"name":"موجودی مواد و کالا",'color':'success','code':"16","moein_accounts":[
-                {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102","accounts":[
+                {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102","tafsili_accounts":[
                     {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
                     {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
                     {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
                 ]}
             ]},
             {"name":"سفارشات و پیش پرداختها",'color':'success','code':"17","moein_accounts":[
-                {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102","accounts":[
+                {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102","tafsili_accounts":[
                     {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
                     {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
                     {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
@@ -83,7 +87,7 @@ def init_all_accounts_list():
             ]},
         {"name":"دارایی های غیر جاری",'color':'success','code':"2","basic_accounts":[
             {"name":"دارایی های ثابت مشهود",'color':'success','code':"21","moein_accounts":[
-                {"name":"زمین",'color':'success','code':"111/10","accounts":[
+                {"name":"زمین",'color':'success','code':"111/10","moein_accounts":[
                     {"name":"ریالی",'color':'success','code':"1111/10/01"},
                     # {"name":"aaaaaaaaa",'color':'success','code':"102"},
                     # {"name":"aaaaaaaaa",'color':'success','code':"102"},

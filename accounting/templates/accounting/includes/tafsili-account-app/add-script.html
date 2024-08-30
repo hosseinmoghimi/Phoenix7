@@ -30,7 +30,7 @@
                     name: this.name,
                     code: this.code,
                     moein_account_id: moein_account_id_for_add_2,
-                    parent_id: tafsili_account_id_for_add_2,
+                    tafsili_account_id: tafsili_account_id_for_add_2,
                 }
                 let url = "{% url 'accounting:add_tafsili_account' %}"
                 let posting = $.post(url, payload)

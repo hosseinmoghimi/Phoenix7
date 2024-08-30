@@ -1,0 +1,67 @@
+{% load to_price %}
+<div class="card">
+    <div class="card-header">
+        <h5>
+            زیر مجموعه ها
+        </h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+               
+                <th>
+                    حساب
+                </th>
+               
+                <th>
+                    بدهکار
+                </th>
+
+                <th>
+                    بستانکار
+                </th>
+
+                <th>
+                    مانده
+                </th>
+            </thead>
+            <tbody>
+                {% for account in account.childs %}
+
+                <tr>
+                   
+                    <td>
+                        <a href="{{account.get_absolute_url}}">
+                            <div>
+
+                                {{account.title}}
+                            </div>
+                            <div class="small text-muted">
+
+                                {{account.full_title}}
+                            </div>
+                        </a>
+
+                    </td>
+                    
+
+                    <td>
+                        {{account.bedehkar|to_price}}
+
+                    </td>
+                    <td>
+                        {{account.bestankar|to_price}}
+
+                    </td>
+
+                    <td>
+                        {{account.balance|to_price}}}
+
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>

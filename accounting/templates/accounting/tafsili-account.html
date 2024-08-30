@@ -51,12 +51,15 @@
                             شرح
                         </th>
                         <th>
-                            مبلغ
+                            حساب
                         </th>
-
                         <th>
                             تاریخ
                         </th>
+                        <th>
+                            مبلغ
+                        </th>
+
                         <th>
                             بدهکار
                         </th>
@@ -80,12 +83,30 @@
 
                             </td>
                             <td>
-                                {{accounting_document_line.balance|to_price}}
+                                <a href="{{accounting_document_line.account.get_absolute_url}}">
+                                    <div>
+
+                                        {{accounting_document_line.account.title}}
+                                    </div>
+                                    <div>
+
+                                        {{accounting_document_line.account.code}}
+                                    </div>
+                                    <div class="small text-muted">
+
+                                        {{accounting_document_line.account.full_title}}
+                                    </div>
+                                </a>
 
                             </td>
 
+
                             <td>
                                 {{accounting_document_line.event.event_datetime|to_persian_datetime|safe}}
+
+                            </td>
+                            <td>
+                                {{accounting_document_line.balance|to_price}}
 
                             </td>
 
@@ -111,6 +132,12 @@
         </div>
 
     </div>
+
+    <div class="col-lg-12">
+
+        {% include "accounting/includes/account-app/childs.html" %}
+ 
+     </div>
 </div>
 </div>
 {% endblock content %}

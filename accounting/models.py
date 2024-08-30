@@ -24,7 +24,7 @@ class Access(models.Model):
  
 class Account(models.Model,LinkHelper):
     class_name="account"
-    app_name=APP_NAME  
+    app_name=APP_NAME
     color=models.CharField(_("color") , choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
     profile=models.ForeignKey("authentication.profile",null=True,blank=True, verbose_name=_("profile"), on_delete=models.SET_NULL)
     type=models.CharField(_("type"), max_length=200,null=True,blank=True)
@@ -54,36 +54,35 @@ class Account(models.Model,LinkHelper):
     #     if 'description' in kwargs:
     #         self.description=kwargs['description']
     #     return super(Account,self).__init__(self)
+ 
     @property
-    def parent_account_id(self):
-        return 13476
-    @property
-    def parent_account(self):
+    def parent(self):
         if self.type==AccountTypeEnum.GROUP:
             return None
 
         
         if self.type==AccountTypeEnum.BASIC:
-            account=BasicAccount.objects.filter(pk=self.pk).first()
-            if account is not None:
-                return account.account_group 
+            basic_account=BasicAccount.objects.filter(pk=self.pk).first()
+            if basic_account is not None:
+                return basic_account.account_group 
 
         
         if self.type==AccountTypeEnum.MOEIN:
-            account=MoeinAccount.objects.filter(pk=self.pk).first()
-            if account is not None:
-                if account.parent is not None:
-                    return account.parent
-                if account.basic_account is not None:
-                    return account.basic_account
-
-
+            moein_account=MoeinAccount.objects.filter(pk=self.pk).first()
+            if moein_account is not None:
+                if moein_account.moein_account is not None:
+                    return moein_account.moein_account
+                if moein_account.basic_account is not None:
+                    return moein_account.basic_account
         
         if self.type==AccountTypeEnum.TAFSILI:
-            account=TafsiliAccount.objects.filter(pk=self.pk).first()
-            if account is not None:
-                return account.moein_account
-        
+            tafsili_account=TafsiliAccount.objects.filter(pk=self.pk).first()
+            if tafsili_account is not None:
+                if tafsili_account.tafsili_account is not None:
+                    return tafsili_account.tafsili_account
+                if tafsili_account.moein_account is not None:
+                    return tafsili_account.moein_account
+        return None
     @property
     def full_title(self):
 
@@ -147,20 +146,26 @@ class Account(models.Model,LinkHelper):
         f"{self.code} - {self.name}"
    
     def normalize_total(self):
+        # print(self.full_title)
         bedehkar=0
         bestankar=0
         balance=0
-        # for basic_account in self.basicaccount_set.all(): 
-        #     basic_account.normalize_total()
-           
-
-        #     bedehkar+=basic_account.bedehkar
-        #     bestankar+=basic_account.bestankar
+        for accounting_document_line in AccountingDocumentLine.objects.filter(account_id=self.pk): 
+            # basic_account.normalize_total()
+            bedehkar+=accounting_document_line.bedehkar
+            bestankar+=accounting_document_line.bestankar
+        childs=self.childs
+        if len(childs)>0:
+            for acc in childs:
+                bedehkar+=acc.bedehkar
+                bestankar+=acc.bestankar
         balance=bestankar-bedehkar
         self.bedehkar=bedehkar
         self.bestankar=bestankar
         self.balance=balance
         self.save() 
+        if self.parent is not None:
+            self.parent.normalize_total()
     @property
     def logo(self):
         if not self.logo_origin :
@@ -180,7 +185,26 @@ class Account(models.Model,LinkHelper):
         super(Account,self).save()
         return self,result,message
 
-        
+    @property
+    def childs(self):
+        childs=[]
+        if self.type==AccountTypeEnum.GROUP:
+            childs=BasicAccount.objects.filter(account_group_id=self.pk)
+            return childs
+        if self.type==AccountTypeEnum.BASIC:
+            childs=MoeinAccount.objects.filter(basic_account_id=self.pk)
+            return childs
+        if self.type==AccountTypeEnum.MOEIN:
+            childs1=MoeinAccount.objects.filter(moein_account_id=self.pk)
+            childs2=TafsiliAccount.objects.filter(moein_account_id=self.pk)
+            if len(childs1)>0:
+                childs=childs1
+            if len(childs2)>0:
+                childs=childs2 
+        if self.type==AccountTypeEnum.TAFSILI:
+            childs=TafsiliAccount.objects.filter(tafsili_account_id=self.pk)
+            return childs
+        return childs 
 class AccountGroup(Account):
     
     
@@ -188,24 +212,7 @@ class AccountGroup(Account):
     class_name="accountgroup"
     app_name=APP_NAME  
     
-
-    
-    def normalize_total(self):
-        bedehkar=0
-        bestankar=0
-        balance=0
-        for basic_account in self.basicaccount_set.all(): 
-            basic_account.normalize_total()
-           
-
-            bedehkar+=basic_account.bedehkar
-            bestankar+=basic_account.bestankar
-        balance=bestankar-bedehkar
-        self.bedehkar=bedehkar
-        self.bestankar=bestankar
-        self.balance=balance
-        self.save() 
-
+ 
   
     @property
     def basic_accounts(self):
@@ -240,22 +247,6 @@ class BasicAccount(Account):
         return self.moeinaccount_set.all()
    
 
-         
- 
-    def normalize_total(self):
-        bedehkar=0
-        bestankar=0
-        balance=0
-        for moein_account in self.moeinaccount_set.all():
-            moein_account.normalize_total()
-           
-            bedehkar+=moein_account.bedehkar
-            bestankar+=moein_account.bestankar
-        balance=bestankar-bedehkar
-        self.bedehkar=bedehkar
-        self.bestankar=bestankar
-        self.balance=balance
-        self.save() 
     class Meta:
         verbose_name = _("BasicAccount")
         verbose_name_plural = _("BasicAccounts")
@@ -272,28 +263,12 @@ class MoeinAccount(Account):
 
     class_name="moeinaccount"
     app_name=APP_NAME
-    parent=models.ForeignKey("moeinaccount", verbose_name=_("parent"), on_delete=models.SET_NULL,blank=True,null=True)
+    moein_account=models.ForeignKey("moeinaccount", verbose_name=_("parent"), on_delete=models.SET_NULL,blank=True,null=True)
    
     # accounts=models.ManyToManyField("account", verbose_name=_("حساب ها"))
     basic_account=models.ForeignKey("basicaccount", verbose_name=_("basicaccount"), on_delete=models.CASCADE,blank=True,null=True)
    
-    
-    def normalize_total(self):
-        bedehkar=0
-        bestankar=0
-        balance=0
-        for account in self.tafsiliaccount_set.all():
-            account.normalize_total()
-            
-            bedehkar+=account.bedehkar
-            bestankar+=account.bestankar
-        balance=bestankar-bedehkar
-        self.bedehkar=bedehkar
-        self.bestankar=bestankar
-        self.balance=balance
-        self.save() 
-
- 
+     
     @property
     def title(self):
         return self.code+" "+self.name
@@ -321,7 +296,7 @@ class MoeinAccount(Account):
         return basic_account_name+moein_account_name+self.code+" "+self.name
 
 class TafsiliAccount(Account):
-    parent=models.ForeignKey("tafsiliaccount", verbose_name=_("parent"), on_delete=models.SET_NULL,blank=True,null=True)
+    tafsili_account=models.ForeignKey("tafsiliaccount", verbose_name=_("parent"), on_delete=models.SET_NULL,blank=True,null=True)
     moein_account=models.ForeignKey("moeinaccount", verbose_name=_("moein account"), on_delete=models.CASCADE)
     
     mobile=models.CharField(_("mobile"),null=True,blank=True, max_length=50)
@@ -341,18 +316,7 @@ class TafsiliAccount(Account):
         verbose_name_plural = _("حساب های تفصیلی")
     def __str__(self):
         return self.moein_account.title+" " +self.title
-    def normalize_total(self):
-        balance=0
-        bestankar=0
-        bedehkar=0
-        for ac_doc_line in AccountingDocumentLine.objects.filter(account_id=self.id):
-            bedehkar+=ac_doc_line.bedehkar
-            bestankar+=ac_doc_line.bestankar
-        self.balance=bestankar-bedehkar
-        self.bedehkar=bedehkar
-        self.bestankar=bestankar
-        super(Account,self).save()
-   
+     
 
     def save(self):
         self.type=AccountTypeEnum.TAFSILI
@@ -394,7 +358,6 @@ class AccountingDocument(models.Model,LinkHelper):
     title=models.CharField(_("title"), max_length=500)
     # lines=models.ManyToManyField("accountingdocumentline",blank=True, verbose_name=_("accounting document lines "))
     # events=models.ManyToManyField("event",blank=True, verbose_name=_("events"))
-    
     @property 
     def lines(self):
         return self.accountingdocumentline_set.all()
@@ -420,6 +383,7 @@ class AccountingDocumentLine(models.Model,LinkHelper):
     bedehkar=models.IntegerField(_("بدهکار"),default=0)
     bestankar=models.IntegerField(_("بستانکار"),default=0)
     balance=models.IntegerField(_("بالانس"),default=0)
+
     def save(self):
         if self.account==self.event.pay_from:
             self.bestankar=self.event.amount
@@ -447,7 +411,7 @@ class AccountingDocumentLine(models.Model,LinkHelper):
         verbose_name_plural = _("AccountingDocumentLines")
 
     def __str__(self):
-        return f"{self.account.id} , {self.event.title} , {self.balance}"
+        return f"{self.account.id} , {self.event.title} , {self.account.name} , {self.balance}"
  
 class EventCategory(models.Model,LinkHelper):
     class_name="eventcategory"
@@ -494,22 +458,22 @@ class Event(Page):
  
     def save(self,*args, **kwargs):
         super(Event,self).save()
-        if self.accounting_document is not None:
-            AccountingDocumentLine.objects.filter(event=self).delete()
-            AccountingDocumentLineBestankar=AccountingDocumentLine()
-            AccountingDocumentLineBestankar.account=self.pay_from
-            AccountingDocumentLineBestankar.accounting_document=self.accounting_document
-            AccountingDocumentLineBestankar.event=self
-            AccountingDocumentLineBestankar.save()
-            AccountingDocumentLineBestankar.account.normalize_balance()
+        # if self is not None:
+        #     AccountingDocumentLine.objects.filter(event=self).delete()
+        #     AccountingDocumentLineBestankar=AccountingDocumentLine()
+        #     AccountingDocumentLineBestankar.account=self.pay_from
+        #     AccountingDocumentLineBestankar.accounting_document=self.accounting_document
+        #     AccountingDocumentLineBestankar.event=self
+        #     AccountingDocumentLineBestankar.save()
+        #     AccountingDocumentLineBestankar.account.normalize_balance()
 
             
-            AccountingDocumentLineBedehkar=AccountingDocumentLine()
-            AccountingDocumentLineBedehkar.account=self.pay_to
-            AccountingDocumentLineBedehkar.accounting_document=self.accounting_document
-            AccountingDocumentLineBedehkar.event=self
-            AccountingDocumentLineBedehkar.save()
-            AccountingDocumentLineBedehkar.account.normalize_balance()
+        #     AccountingDocumentLineBedehkar=AccountingDocumentLine()
+        #     AccountingDocumentLineBedehkar.account=self.pay_to
+        #     AccountingDocumentLineBedehkar.accounting_document=self.accounting_document
+        #     AccountingDocumentLineBedehkar.event=self
+        #     AccountingDocumentLineBedehkar.save()
+        #     AccountingDocumentLineBedehkar.account.normalize_balance()
 
 class EventPrint(models.Model):
     event=models.ForeignKey("event", verbose_name=_("تراکنش"), on_delete=models.CASCADE)
