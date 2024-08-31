@@ -6,10 +6,10 @@ from rest_framework.views import APIView
 
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import TafsiliAccountRepo,MoeinAccountRepo,BasicAccountRepo,AccountRepo
+from .repo import TafsiliAccountRepo,MoeinAccountRepo,BasicAccountRepo,AccountRepo,AccountingDocumentLineRepo
 from django.http import JsonResponse
 from .forms import *
-from .serializers import TafsiliAccountBriefSerializer,MoeinAccountBriefSerializer,BasicAccountBriefSerializer
+from .serializers import TafsiliAccountBriefSerializer,MoeinAccountBriefSerializer,BasicAccountBriefSerializer,AccountingDocumentLineSerializer
 
 class SelectAccountGroupApi(APIView):
     def post(self,request,*args, **kwargs):
@@ -20,7 +20,7 @@ class SelectAccountGroupApi(APIView):
         context['result']=FAILED
         if request.method=='POST':
             log=222
-            select_account_group_formSelectAccountGroupForm(request.POST)
+            select_account_group_form=SelectAccountGroupForm(request.POST)
             if add_moein_account_form.is_valid():
                 log=333
                 cd=add_moein_account_form.cleaned_data
@@ -136,6 +136,28 @@ class DeleteALLAccountsApi(APIView):
         context['log']=log
         return JsonResponse(context)
 
+
+class AddAccountingDocumentLineApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            log=222
+            message="پارامتر های ورودی صحیح نمی باشند."
+            _form=AddAccountingDocumentLineForm(request.POST)
+            if _form.is_valid():
+                log=333
+                cd=_form.cleaned_data
+                accounting_document_line,message,result=AccountingDocumentLineRepo(request=request).add_accounting_document_line(**cd)
+                if accounting_document_line is not None:
+                    context['accounting_document_line']=AccountingDocumentLineSerializer(accounting_document_line).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
 
 
 class AddAccountApi(APIView):

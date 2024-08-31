@@ -1,0 +1,36 @@
+
+<script>
+    let add_accounting_document_line_app = new Vue({
+        el: "#add-accounting-document-line-app",
+        data: {
+            event_id: 0,
+            title: "",
+            bedehkar: 10,
+            bestankar: 20,
+            account_code:0,
+        },
+        methods: {
+            add_accounting_document_line: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    title: this.title,
+                    bedehkar: parseInt(this.bedehkar),
+                    bestankar: parseInt(this.bestankar),
+                    account_code: (this.account_code),
+                    accounting_document_id: parseInt("{{accounting_document.id}}"),
+                }
+                console.log(payload)
+                let url="{% url 'accounting:add_accounting_document_line' %}"
+                let posting=$.post(url,payload)
+                posting.done(data=>{
+                    console.log(data)
+                    if(data.result==="SUCCEED"){
+                        if(typeof accounting_document_app != "undefined"){
+                            accounting_document_app.accounting_document_lines.push(data.accounting_document_line)
+                        }
+                    }
+                })
+            },
+        },
+    })
+</script>

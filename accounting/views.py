@@ -3,7 +3,7 @@ from .apps import APP_NAME
 from django.views import View
 from .repo import TafsiliAccountRepo,AccountGroupRepo,AccountingDocumentRepo,BasicAccountRepo,MoeinAccountRepo,AccountRepo
 from .serializers import TafsiliAccountSerializer,AccountGroupSerializer,BasicAccountSerializer,MoeinAccountSerializer,AccountSerializer
-from .serializers import AccountGroupBriefSerializer,BasicAccountBriefSerializer,MoeinAccountBriefSerializer,TafsiliAccountBriefSerializer
+from .serializers import AccountGroupBriefSerializer,BasicAccountBriefSerializer,MoeinAccountBriefSerializer,TafsiliAccountBriefSerializer,AccountingDocumentLineSerializer
 from .forms import *
 from core.views import CoreContext
 import json
@@ -11,6 +11,7 @@ from utility.currency import to_price
 from utility.templatetags.to_price import to_price_color
 from utility.log import leolog
 LAYOUT_PARENT = "phoenix/layout.html"
+WIDE_LAYOUT_PARENT = "phoenix/wide-layout.html"
 TEMPLATE_ROOT = "accounting/"
 
 
@@ -19,10 +20,12 @@ def getContext(request,app_name=APP_NAME, *args, **kwargs):
     context['search_form'] = SearchForm()
     context['me_account']=TafsiliAccountRepo(request=request).me
     context['search_action'] = reverse(APP_NAME+":search")
+    context['WIDE_LAYOUT_PARENT'] = WIDE_LAYOUT_PARENT
     context['LAYOUT_PARENT'] = LAYOUT_PARENT
     return context
 
 def get_account_context(account,*args, **kwargs):
+
     context={}
     context['account']=account
     
@@ -76,10 +79,17 @@ class AccountingDocumentView(View):
             context['SIMPLE_VIEW']=True
         accounting_document=AccountingDocumentRepo(request=request).accounting_document(*args, **kwargs)
         context['accounting_document']=accounting_document
-         
+        accounting_document_lines=accounting_document.accountingdocumentline_set.all()
+        accounting_document_lines_s=json.dumps(AccountingDocumentLineSerializer(accounting_document_lines,many=True).data)
+        context["accounting_document_lines_s"]=accounting_document_lines_s
         
         if request.user.has_perm(APP_NAME+".add_account"):
             context['add_account_form']=AddAccountingDocumentForm()
+        
+        if request.user.has_perm(APP_NAME+".add_accountingdocumentline"):
+            accounts_for_adding_accounting_document_line=AccountRepo(request=request).list().order_by("name")
+            context["accounts_for_adding_accounting_document_line"]=accounts_for_adding_accounting_document_line
+            context['add_accounting_document_line_form']=AddAccountingDocumentLineForm()
         return render(request,TEMPLATE_ROOT+"accounting-document.html",context)
 
 class TafsiliAccountView(View):
@@ -259,6 +269,22 @@ class AccountGroupView(View):
         if CAN_ADD_BASIC_ACCOUNT :
             context['add_basic_account_form']=AddBasicAccountForm()
         return render(request,TEMPLATE_ROOT+"account-group.html",context)
+
+
+class EventView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        account_group=AccountGroupRepo(request=request).account_group(*args, **kwargs)
+        context.update(get_account_context(account=account_group))
+        context['account_group']=account_group
+
+        basic_accounts=account_group.basicaccount_set.order_by('code')
+        context['basic_accounts_s']=json.dumps(BasicAccountBriefSerializer(basic_accounts,many=True).data)
+
+        CAN_ADD_BASIC_ACCOUNT=True
+        if CAN_ADD_BASIC_ACCOUNT :
+            context['add_basic_account_form']=AddBasicAccountForm()
+        return render(request,TEMPLATE_ROOT+"event.html",context)
 
 class SearchView(View):
     def get(self,request,*args, **kwargs):

@@ -1,0 +1,126 @@
+{% extends "accounting/layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row rtl">
+    <div class="col-md-3">
+        <a href="{% url 'accounting:accounts' %}">
+            <div class="text-center">
+                <img src="{% static 'accounting/img/accounts.png' %}" width="48" alt="">
+
+            </div>
+            <div class="text-center farsi">
+                حساب ها
+            </div>
+        </a>
+    </div>
+    <div class="col-md-3">
+        <a href="{% url 'accounting:account_groups' %}">
+            <h5 class="farsi text-center">
+
+                گروه های حساب
+            </h5>
+        </a>
+    </div>
+
+    <div class="col-md-3">
+        <a href="{% url 'accounting:accounting_documents' %}">
+            <h5 class="farsi text-center">
+
+                اسناد حسابداری
+ 
+            </h5>
+        </a>
+    </div>
+
+
+    <div class="col-md-3">
+        <a href="{% url 'accounting:basic_accounts' %}">
+            <h5 class="farsi text-center">
+
+                دفاتر کل حسابداری
+
+            </h5>
+        </a>
+    </div>
+
+    
+    <div class="col-md-3">
+        <a href="{% url 'accounting:moein_accounts' %}">
+            <h5 class="farsi text-center">
+
+                دفاتر معین حسابداری
+
+            </h5>
+        </a>
+    </div>
+    
+    <div class="col-md-3">
+        <a href="{% url 'accounting:selection' %}">
+            <h5 class="farsi text-center">
+
+              انتخاب دفاتر
+
+            </h5>
+        </a>
+    </div>
+
+
+    <div class="col-md-3">
+        <a href="{% url 'accounting:tree_chart' %}">
+            <h5 class="farsi text-center">
+                نمودار درختی
+            </h5>
+        </a>
+    </div>
+
+
+
+    <div class="col-md-3">
+        <a href="{% url 'accounting:add_event' %}">
+            <h5 class="farsi text-center">
+                افزودن رویداد مالی
+
+            </h5>
+        </a>
+    </div>
+
+
+    <div class="col-md-3">
+        <a href="{% url 'accounting:add_document' %}">
+            <h5 class="farsi text-center">
+                افزودن سند مالی
+
+            </h5>
+        </a>
+    </div>
+
+
+
+    <div class="col-md-3">
+        <a href="{% url 'accounting:settings' %}">
+            <h5 class="farsi text-center">
+                تنظیمات
+            </h5>
+        </a>
+    </div>
+
+    
+
+    <div class="col-md-3">
+        <a href="{% url 'accounting:tree_list' %}">
+            <h5 class="farsi text-center">
+                لیست درختی
+            </h5>
+        </a>
+    </div>
+
+
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+
+{% endblock script %}

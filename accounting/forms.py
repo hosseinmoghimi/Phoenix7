@@ -15,6 +15,14 @@ class AddAccountingDocumentForm(forms.Form):
 class AddAccountGroupForm(forms.Form):
     title=forms.CharField(max_length=100, required=True)
     code=forms.CharField(max_length=100, required=True)
+class AddAccountingDocumentLineForm(forms.Form):
+    title=forms.CharField(max_length=100, required=True)
+    account_code=forms.CharField(max_length=100, required=True)
+    bedehkar=forms.IntegerField(required=True)
+    account_id=forms.IntegerField(required=False)
+    bestankar=forms.IntegerField(required=True)
+    event_id=forms.IntegerField(required=False)
+    accounting_document_id=forms.IntegerField(required=True)
 
 class AddBasicAccountForm(forms.Form):
     name=forms.CharField(max_length=100, required=True)

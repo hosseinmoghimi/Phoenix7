@@ -379,30 +379,28 @@ class AccountingDocument(models.Model,LinkHelper):
 class AccountingDocumentLine(models.Model,LinkHelper):
     accounting_document=models.ForeignKey("accountingdocument", verbose_name=_("accountingdocument"), on_delete=models.CASCADE)
     account=models.ForeignKey("account", verbose_name=_("account"), on_delete=models.PROTECT)
-    event=models.ForeignKey("event", verbose_name=_("event"), on_delete=models.PROTECT)
+    event=models.ForeignKey("event", null=True,blank=True,verbose_name=_("event"), on_delete=models.PROTECT)
+    title=models.CharField(_("title"), max_length=500)
     bedehkar=models.IntegerField(_("بدهکار"),default=0)
     bestankar=models.IntegerField(_("بستانکار"),default=0)
     balance=models.IntegerField(_("بالانس"),default=0)
 
     def save(self):
-        if self.account==self.event.pay_from:
-            self.bestankar=self.event.amount
-            self.bedehkar=0
-            self.balance=self.event.amount
-        if self.account==self.event.pay_to:
-            self.bestankar=0
-            self.bedehkar=self.event.amount
-            self.balance=0-self.event.amount
+        # if self.account==self.event.pay_from:
+        #     self.bestankar=self.event.amount
+        #     self.bedehkar=0
+        #     self.balance=self.event.amount
+        # if self.account==self.event.pay_to:
+        #     self.bestankar=0
+        #     self.bedehkar=self.event.amount
+        #     self.balance=0-self.event.amount
         super(AccountingDocumentLine,self).save()
-    @property
-    def title(self):
-        return self.event.title 
     @property
     def rest(self):
         return 0
     @property
-    def amount(self):
-        return self.event.amount
+    def amount(self):  
+        return self.bedehkar+self.bestankar
     class_name="accountingdocumentline"
     app_name=APP_NAME 
 
@@ -411,7 +409,10 @@ class AccountingDocumentLine(models.Model,LinkHelper):
         verbose_name_plural = _("AccountingDocumentLines")
 
     def __str__(self):
-        return f"{self.account.id} , {self.event.title} , {self.account.name} , {self.balance}"
+        event=""
+        if self.event is not None :
+            event=self.event.title
+        return f"{self.account.id} , {event} , {self.account.name} , {self.balance}"
  
 class EventCategory(models.Model,LinkHelper):
     class_name="eventcategory"

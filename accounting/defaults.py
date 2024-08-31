@@ -41,45 +41,45 @@ def init_all_accounts_list():
                 ]},
             ]},
             {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"12","moein_accounts":[
-                {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102","accounts":[
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
+                {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102","tafsili_accounts":[
+                    # {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
                 ]}
             ]},
             {"name":"حساب ها و اسناد دریافتنی تجاری",'color':'success','code':"13","moein_accounts":[
                 {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"131","tafsili_accounts":[
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"1311"},
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"1312"},
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"1313"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"1311"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"1312"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"1313"},
                 ]}
             ]},
             {"name":"سایر حساب های دریافتنی تجاری",'color':'success','code':"14","moein_accounts":[
                 {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102","tafsili_accounts":[
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
                 ]}
             ]},
             {"name":"جاری شرکا",'color':'success','code':"15","moein_accounts":[
                 {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102","tafsili_accounts":[
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
                 ]}
             ]},
             {"name":"موجودی مواد و کالا",'color':'success','code':"16","moein_accounts":[
                 {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102","tafsili_accounts":[
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
                 ]}
             ]},
             {"name":"سفارشات و پیش پرداختها",'color':'success','code':"17","moein_accounts":[
                 {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102","tafsili_accounts":[
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
-                    {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
+                    # {"name":"سرمایه گذاری کوتاه مدت",'color':'success','code':"102"},
                 ]}
             ]},
             {"name":"سپرده هایمان نزد دیگران",'color':'success','code':"18"},
@@ -195,7 +195,12 @@ def init_all_accounts_list():
             ]},
         {"name":"حقوق صاحبان سهام",'color':'success','code':"5","basic_accounts":[
             {"name":"سرمایه",'color':'success','code':"51","moein_accounts":[
-                {"name":"سرمایه",'color':'success','code':"5101"},
+                {"name":"سرمایه",'color':'success','code':"5101","tafsili_accounts":[
+
+                    {"name":"حسین مقیمی",'color':'success','code':"51011"},
+                    # {"name":"aaaaaaaaa",'color':'success','code':"102"},
+                    # {"name":"aaaaaaaaa",'color':'success','code':"102"},
+                ],},
             ]},
             {"name":"افزایش سرمایه‌ی در جریان",'color':'success','code':"52",'moein_accounts':[
                 {"name":"افزایش سرمایه از محل مطالبات سهام‌داران",'color':'success','code':"5201",'tafsili_accounts':[

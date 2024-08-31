@@ -13,13 +13,6 @@ class TafsiliAccountSerializer(serializers.ModelSerializer):
         model = TafsiliAccount
         fields = ['id', 'title','get_absolute_url','get_edit_url','get_delete_url','balance','logo']
 
-class AccountingDocumentLineSerializer(serializers.ModelSerializer):
-    event=EventSerializer()
-    account=TafsiliAccountSerializer()
-    class Meta:
-        model = AccountingDocumentLine
-        fields = ['id', 'title','get_absolute_url','get_edit_url','get_delete_url','balance','logo']
-
 class AccountingDocumentSerializer(serializers.ModelSerializer):
     class Meta:
         model = AccountingDocument
@@ -60,13 +53,13 @@ class AccountGroupSerializer(serializers.ModelSerializer):
         fields = ['id', 'name','color','code','basic_accounts','get_absolute_url','get_edit_url','get_delete_url','balance']
 
 
-
+ 
 
 
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = ['id', 'name','type','balance_colored','color','code','get_absolute_url','get_edit_url','get_delete_url','balance']
+        fields = ['id', 'name',"full_title",'type','balance_colored','color','code','get_absolute_url','get_edit_url','get_delete_url','balance']
 
 
 
@@ -90,3 +83,10 @@ class TafsiliAccountBriefSerializer(serializers.ModelSerializer):
     class Meta:
         model = TafsiliAccount
         fields = ['id', 'name','color','code','moein_account_id','get_absolute_url','get_edit_url','get_delete_url','balance']
+
+class AccountingDocumentLineSerializer(serializers.ModelSerializer):
+    event=EventSerializer()
+    account=AccountSerializer()
+    class Meta:
+        model = AccountingDocumentLine
+        fields = ['id', 'title','amount','event','account','bedehkar','bestankar','get_absolute_url','get_edit_url','get_delete_url']

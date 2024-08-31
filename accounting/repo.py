@@ -4,7 +4,75 @@ from authentication.repo import ProfileRepo
 from .apps import APP_NAME
 from .defaults import init_all_accounts_list
 
+class AccountingDocumentLineRepo:
+    def __init__(self,request,*args, **kwargs):
+        self.request=request
+        self.me=None
+        profile=ProfileRepo(request=request).me
+        self.objects=Account.objects
+        if profile is not None:
+            self.me=self.objects.filter(profile=profile).first()
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            objects=objects.filter(title__contains=kwargs['search_for']) 
+        return objects.all()
+            
+    def add_accounting_document_line(self,*args, **kwargs):
+        accounting_document_line,message,result=(None,"",FAILED)
+        if not self.request.user.has_perm(APP_NAME+".add_accountingdocumentline"):
+            message="دسترسی غیر مجاز"
+            return accounting_document_line,message,result
+        
+        accounting_document_line=AccountingDocumentLine()
 
+        if 'title' in kwargs:
+            accounting_document_line.title=kwargs['title']
+        if 'accounting_document_id' in kwargs:
+            accounting_document_line.accounting_document_id=kwargs['accounting_document_id']
+        if 'description' in kwargs:
+            accounting_document_line.description=kwargs['description']
+        if 'bestankar' in kwargs  :
+            accounting_document_line.bestankar=kwargs['bestankar']
+        if 'bedehkar' in kwargs :
+            accounting_document_line.bedehkar=kwargs['bedehkar'] 
+        if 'account_code' in kwargs and kwargs['account_code'] is not None:
+            account=Account.objects.filter(code=kwargs['account_code']).first() 
+            print(kwargs)
+            print(100*"#")
+            print(account)
+            print(100*"#")
+            if account is not None:
+                accounting_document_line.account=account
+                print(account.id)
+                print(100*"*")
+        if 'account_id' in kwargs and kwargs['account_id'] is not None:
+            accounting_document_line.account_id=kwargs['account_id'] 
+        if 'tel' in kwargs:
+            accounting_document_line.tel=kwargs['tel']
+        if 'color' in kwargs:
+            accounting_document_line.color=kwargs['color']
+        if 'title' in kwargs:
+            accounting_document_line.title=kwargs['title']
+        if 'code' in kwargs:
+            accounting_document_line.code=kwargs['code']
+        if 'parent_id' in kwargs and kwargs["parent_id"]>0:
+            accounting_document_line.parent_id=kwargs['parent_id']
+       
+        
+        # if 'financial_year_id' in kwargs:
+        #     payment.financial_year_id=kwargs['financial_year_id']
+        # else:
+        #     payment.financial_year_id=FinancialYear.get_by_date(date=payment.transaction_datetime).id
+
+        accounting_document_line.save()
+        result=SUCCEED
+        message="با موفقیت اضافه گردید."
+         
+
+        return accounting_document_line,message,result
+
+    
 class AccountRepo():
     def __init__(self,request,*args, **kwargs):
         self.request=request
