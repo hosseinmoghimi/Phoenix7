@@ -22,7 +22,7 @@ class AccountingDocumentSerializer(serializers.ModelSerializer):
 class MoeinAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = MoeinAccount
-        fields = ['id', 'name','color','code','basic_account_id','get_absolute_url','get_edit_url','get_delete_url','balance']
+        fields = ['id', 'name','color','code','basic_account_id','moein_account_id','get_absolute_url','get_edit_url','get_delete_url','balance']
 
 class BasicAccountSerializer(serializers.ModelSerializer):
     moein_accounts=MoeinAccountSerializer(many=True)
@@ -76,7 +76,7 @@ class BasicAccountBriefSerializer(serializers.ModelSerializer):
 class MoeinAccountBriefSerializer(serializers.ModelSerializer):
     class Meta:
         model = MoeinAccount
-        fields = ['id', 'name','color','logo','code','basic_account_id','get_absolute_url','get_edit_url','get_delete_url','balance']
+        fields = ['id', 'name','color','logo','code','basic_account_id','moein_account_id','get_absolute_url','get_edit_url','get_delete_url','balance']
 
 
 class TafsiliAccountBriefSerializer(serializers.ModelSerializer):

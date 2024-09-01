@@ -3,7 +3,7 @@
     <img :src="account.logo" width="48" alt="">
     <div class="media-body mr-2">
         <a :href="account.get_absolute_url">
-            <h5>
+            <h5 :class="'text-'+accout.color">
                 <span v-text="account.name"></span>
 
             </h5>

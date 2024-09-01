@@ -1,9 +1,9 @@
 {% load to_price %}
 <div class="media mb-3">
-    <img src="{{account_group.logo}}" width="48" alt="">
+    <img :src="account_group.logo" width="48" alt="">
     <div class="media-body mr-2">
         <h5>
-            <a href="{{account_group.get_absolute_url}}" class="text-{{account_group.color}}">
+            <a :href="account_group.get_absolute_url"  :class="'text-'+account_group.color">
                 {{account_group.code}}
         &nbsp;
                 {{account_group.title}}
@@ -11,8 +11,8 @@
          </h5>
 
          <h6>
-            <a href="{{account_group.get_absolute_url}}">
-        
+            <a :href="account_group.get_absolute_url">
+        <span v-text="account_group.balance"></span>
                 {{account_group.balance|to_price_color|safe}}
             </a>
          </h6>

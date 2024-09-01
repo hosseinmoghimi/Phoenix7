@@ -1,11 +1,13 @@
 from django.shortcuts import render,reverse
 from .apps import APP_NAME
+from processmanagement.permission import Permission,OperationEnum
 from django.views import View
 from .repo import TafsiliAccountRepo,AccountGroupRepo,AccountingDocumentRepo,BasicAccountRepo,MoeinAccountRepo,AccountRepo
 from .serializers import TafsiliAccountSerializer,AccountGroupSerializer,BasicAccountSerializer,MoeinAccountSerializer,AccountSerializer
 from .serializers import AccountGroupBriefSerializer,BasicAccountBriefSerializer,MoeinAccountBriefSerializer,TafsiliAccountBriefSerializer,AccountingDocumentLineSerializer
 from .forms import *
 from core.views import CoreContext
+from core.enums import ColorEnum
 import json
 from utility.currency import to_price
 from utility.templatetags.to_price import to_price_color
@@ -273,9 +275,12 @@ class AccountGroupView(View):
         basic_accounts=account_group.basicaccount_set.order_by('code')
         context['basic_accounts_s']=json.dumps(BasicAccountBriefSerializer(basic_accounts,many=True).data)
 
-        CAN_ADD_BASIC_ACCOUNT=True
+        CAN_ADD_BASIC_ACCOUNT=False
+        if Permission(request=self.request).is_permitted(APP_NAME,OperationEnum.ADD,"basicaccount"):
+            CAN_ADD_BASIC_ACCOUNT=True
         if CAN_ADD_BASIC_ACCOUNT :
             context['add_basic_account_form']=AddBasicAccountForm()
+            context['colors']=(i[0] for i in ColorEnum.choices)
         return render(request,TEMPLATE_ROOT+"account-group.html",context)
 
 

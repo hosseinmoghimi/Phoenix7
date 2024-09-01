@@ -1,7 +1,7 @@
 from .models import Event,TafsiliAccount,AccountGroup,BasicAccount,BasicAccount,MoeinAccount,AccountingDocument,AccountingDocumentLine,Account
 from utility.constants import FAILED,SUCCEED
 from processmanagement.permission import Permission,OperationEnum
-
+from utility.log import leolog
 from authentication.repo import ProfileRepo
 from .apps import APP_NAME
 from .defaults import init_all_accounts_list
@@ -534,7 +534,7 @@ class BasicAccountRepo():
         if basic_account is not None:
             message="از قبل حسابی با همین کد ثبت شده است."
             return basic_account,message,result
-
+        leolog(kwargs=kwargs)
 
         basic_account=BasicAccount()
 
@@ -550,8 +550,6 @@ class BasicAccountRepo():
             basic_account.address=kwargs['address']
         if 'tel' in kwargs:
             basic_account.tel=kwargs['tel']
-        if 'color' in kwargs:
-            basic_account.color=kwargs['color']
         if 'mobile' in kwargs:
             basic_account.mobile=kwargs['mobile']
         if 'parent_id' in kwargs and kwargs['parent_id']>0 :
@@ -559,7 +557,8 @@ class BasicAccountRepo():
         if 'account_group_id' in kwargs and kwargs['account_group_id']>0 :
             basic_account.color=AccountGroup.objects.filter(pk=kwargs["account_group_id"]).first().color
             basic_account.account_group_id=kwargs['account_group_id']
-       
+        if 'color' in kwargs:
+            basic_account.color=kwargs['color']
         
         # if 'financial_year_id' in kwargs:
         #     payment.financial_year_id=kwargs['financial_year_id']

@@ -32,9 +32,16 @@
             <tbody>
                 <tr v-for="account in accounts">
                     <td>
-                        <a :href="account.get_absolute_url">
+                        <a :href="account.get_absolute_url" :class="'text-'+account.color">
+                            <div>
+
+                                <span v-text="account.name"></span>
+                            </div>
+                            <div>
+
+                                <small v-text="account.full_title"></small>
+                            </div>
                             
-                            <span v-text="account.name"></span>
                         </a>
                     </td>
 

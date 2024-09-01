@@ -15,6 +15,7 @@ class AddAccountingDocumentForm(forms.Form):
 class AddAccountGroupForm(forms.Form):
     title=forms.CharField(max_length=100, required=True)
     code=forms.CharField(max_length=100, required=True)
+    color=forms.CharField(max_length=100, required=False)
 class AddAccountingDocumentLineForm(forms.Form):
     title=forms.CharField(max_length=100, required=True)
     account_code=forms.CharField(max_length=100, required=True)
@@ -28,6 +29,7 @@ class AddBasicAccountForm(forms.Form):
     name=forms.CharField(max_length=100, required=True)
     code=forms.CharField(max_length=100, required=True)
     account_group_id=forms.IntegerField(required=True)
+    color=forms.CharField(max_length=100, required=False)
 
 class AddMoeinAccountForm(forms.Form):
     name=forms.CharField(max_length=100, required=True)

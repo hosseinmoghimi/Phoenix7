@@ -14,6 +14,7 @@
         el: "#add-basic-account-app",
         data: {
             name: "",
+            color: "{{account.color}}",
             code: "",
             message:{show:false}
         },
@@ -23,6 +24,7 @@
                     csrfmiddlewaretoken: csrfmiddlewaretoken,
                     name: this.name,
                     code: this.code,
+                    color: this.color,
                     message:{show:false},
                     account_group_id: account_group_id_for_add_2,
                 }

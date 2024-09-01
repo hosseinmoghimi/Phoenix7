@@ -25,7 +25,7 @@ class Access(models.Model):
 class Account(models.Model,LinkHelper): 
     class_name="account"
     app_name=APP_NAME
-    color=models.CharField(_("color") , choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
+    color=models.CharField(_("color"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
     profile=models.ForeignKey("authentication.profile",null=True,blank=True, verbose_name=_("profile"), on_delete=models.SET_NULL)
     type=models.CharField(_("type"), max_length=200,null=True,blank=True)
     name=models.CharField(_("name"), max_length=200)
