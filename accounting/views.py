@@ -33,6 +33,18 @@ def get_account_context(account,*args, **kwargs):
     account_s=json.dumps(AccountSerializer(account).data)
     context['account_s']=account_s
 
+    
+    accounting_document_lines=account.accountingdocumentline_set.all().order_by('-bedehkar')
+    context['accounting_document_lines']=accounting_document_lines
+
+
+
+    account.normalize_total()
+    all_sub_accounts_lines=account.all_sub_accounts_lines().order_by('-bedehkar')
+    all_sub_accounts_lines_s=json.dumps(AccountingDocumentLineSerializer(all_sub_accounts_lines,many=True).data)
+    context['all_sub_accounts_lines_s']=all_sub_accounts_lines_s
+    context['accounting_document_lines']=all_sub_accounts_lines
+    context['accounting_document_lines_s']=all_sub_accounts_lines_s
     return context
 
 class IndexView(View):
@@ -79,7 +91,7 @@ class AccountingDocumentView(View):
             context['SIMPLE_VIEW']=True
         accounting_document=AccountingDocumentRepo(request=request).accounting_document(*args, **kwargs)
         context['accounting_document']=accounting_document
-        accounting_document_lines=accounting_document.accountingdocumentline_set.all()
+        accounting_document_lines=accounting_document.accountingdocumentline_set.all().order_by('-bedehkar')
         accounting_document_lines_s=json.dumps(AccountingDocumentLineSerializer(accounting_document_lines,many=True).data)
         context["accounting_document_lines_s"]=accounting_document_lines_s
         
@@ -113,11 +125,7 @@ class AccountView(View):
         context=getContext(request=request)
         account=AccountRepo(request=request).account(*args, **kwargs)
         context.update(get_account_context(account=account))
-        accounting_document_lines=account.accountingdocumentline_set.all()
-        context['accounting_document_lines']=accounting_document_lines
- 
-        account_s=json.dumps(AccountSerializer(account).data)
-        context['account_s']=account_s
+  
         return render(request,TEMPLATE_ROOT+"account.html",context)
 
 class BasicAccountsView(View):

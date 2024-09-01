@@ -30,12 +30,16 @@
         {% endif %}
         {% include "accounting/includes/tafsili-account-app/list-template.html" %}
     </div>
-
+    
     <div class="col-lg-12">
 
         {% include "accounting/includes/account-app/childs.html" %}
  
      </div>
+     <div class="col-md-12">
+        {% include "accounting/includes/accounting-document-lines-app/template.html" %}
+
+    </div>
 
 </div>
 {% endblock content %}
@@ -53,5 +57,6 @@
 {% endif %}
 {% include "accounting/includes/moein-account-app/list-script.html" %}
 {% include "accounting/includes/tafsili-account-app/list-script.html" %}
+{% include "accounting/includes/accounting-document-lines-app/script.html" %}
 
 {% endblock script %}

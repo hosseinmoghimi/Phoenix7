@@ -66,6 +66,7 @@ class AccountingDocumentLineRepo:
         #     payment.financial_year_id=FinancialYear.get_by_date(date=payment.transaction_datetime).id
 
         accounting_document_line.save()
+        accounting_document_line.account.normalize_total()
         result=SUCCEED
         message="با موفقیت اضافه گردید."
          
@@ -91,6 +92,8 @@ class AccountRepo():
             return self.objects.filter(pk=kwargs['pk']).first() 
         if "id" in kwargs:
             return self.objects.filter(pk=kwargs['id']).first() 
+        if "code" in kwargs:
+            return self.objects.filter(code=kwargs['code']).first() 
 
     def init_all_accounts(self,*args, **kwargs):
         tafsili_accounts_counter=0 

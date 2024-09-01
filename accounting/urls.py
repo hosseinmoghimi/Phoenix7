@@ -22,6 +22,7 @@ urlpatterns = [
     path("add=accounting-document-line/",login_required(apis.AddAccountingDocumentLineApi.as_view()),name="add_accounting_document_line"),
     path("tafsili-account/<int:pk>/",login_required(views.TafsiliAccountView.as_view()),name="tafsiliaccount"),
     path("account/<int:pk>/",login_required(views.AccountView.as_view()),name="account"),
+    path("account/code/<code>/",login_required(views.AccountView.as_view()),name="account_by_code"),
     path("add-account/",login_required(apis.AddAccountApi.as_view()),name="add_account"),
     path("tree-chart/",login_required(views.TreeChartView.as_view()),name="tree_chart"),
     path("tree-list/",login_required(views.TreeListView.as_view()),name="tree_list"),

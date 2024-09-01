@@ -1,5 +1,5 @@
 from django.db import models
-from core.models import LinkHelper,Page
+from core.models import LinkHelper,Page,reverse
 from .apps import APP_NAME
 from django.utils.translation import gettext as _
 from .enums import *
@@ -22,7 +22,7 @@ class Access(models.Model):
     def __str__(self):
         return self.name
  
-class Account(models.Model,LinkHelper):
+class Account(models.Model,LinkHelper): 
     class_name="account"
     app_name=APP_NAME
     color=models.CharField(_("color") , choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
@@ -54,7 +54,27 @@ class Account(models.Model,LinkHelper):
     #     if 'description' in kwargs:
     #         self.description=kwargs['description']
     #     return super(Account,self).__init__(self)
- 
+    
+    def all_sub_accounts_id(self):
+        ids=[self.id]
+        for child in self.childs:
+            for id in child.all_sub_accounts_id():
+                ids.append(id)
+        return ids
+
+    def all_sub_accounts_lines(self):
+        ids=self.all_sub_accounts_id()
+        print(ids)
+        return AccountingDocumentLine.objects.filter(account_id__in=ids)
+    def get_absolute_url(self):
+        if self.type==AccountTypeEnum.GROUP:
+            return reverse("accounting:accountgroup",kwargs={"pk":self.pk})
+        if self.type==AccountTypeEnum.BASIC:
+            return reverse("accounting:basicaccount",kwargs={"pk":self.pk})
+        if self.type==AccountTypeEnum.MOEIN:
+            return reverse("accounting:moeinaccount",kwargs={"pk":self.pk})
+        if self.type==AccountTypeEnum.TAFSILI:
+            return reverse("accounting:tafsiliaccount",kwargs={"pk":self.pk})
     @property
     def parent(self):
         if self.type==AccountTypeEnum.GROUP:
@@ -205,6 +225,7 @@ class Account(models.Model,LinkHelper):
             childs=TafsiliAccount.objects.filter(tafsili_account_id=self.pk)
             return childs
         return childs 
+
 class AccountGroup(Account):
     
     
@@ -356,8 +377,10 @@ class FinancialDocument(LinkHelper,models.Model):
 
 class AccountingDocument(models.Model,LinkHelper):
     title=models.CharField(_("title"), max_length=500)
-    # lines=models.ManyToManyField("accountingdocumentline",blank=True, verbose_name=_("accounting document lines "))
-    # events=models.ManyToManyField("event",blank=True, verbose_name=_("events"))
+    date_added=models.DateTimeField(_("date_added"), auto_now=False, auto_now_add=True)
+    date_time=models.DateTimeField(_("date_time"), auto_now=True, auto_now_add=False)
+    date_modified=models.DateTimeField(_("date_modified "), auto_now=False, auto_now_add=False)
+
     @property 
     def lines(self):
         return self.accountingdocumentline_set.all()
@@ -381,6 +404,9 @@ class AccountingDocumentLine(models.Model,LinkHelper):
     account=models.ForeignKey("account", verbose_name=_("account"), on_delete=models.PROTECT)
     event=models.ForeignKey("event", null=True,blank=True,verbose_name=_("event"), on_delete=models.PROTECT)
     title=models.CharField(_("title"), max_length=500)
+    date_added=models.DateTimeField(_("date_added"), auto_now=False, auto_now_add=True)
+    date_time=models.DateTimeField(_("date_time"), auto_now=True, auto_now_add=False)
+    date_modified=models.DateTimeField(_("date_modified "),null=True, auto_now=False, auto_now_add=False)
     bedehkar=models.IntegerField(_("بدهکار"),default=0)
     bestankar=models.IntegerField(_("بستانکار"),default=0)
     balance=models.IntegerField(_("بالانس"),default=0)
