@@ -1,5 +1,7 @@
 from .models import Event,TafsiliAccount,AccountGroup,BasicAccount,BasicAccount,MoeinAccount,AccountingDocument,AccountingDocumentLine,Account
 from utility.constants import FAILED,SUCCEED
+from processmanagement.permission import Permission,OperationEnum
+
 from authentication.repo import ProfileRepo
 from .apps import APP_NAME
 from .defaults import init_all_accounts_list
@@ -20,7 +22,8 @@ class AccountingDocumentLineRepo:
             
     def add_accounting_document_line(self,*args, **kwargs):
         accounting_document_line,message,result=(None,"",FAILED)
-        if not self.request.user.has_perm(APP_NAME+".add_accountingdocumentline"):
+        if not Permission(request=self.request).is_permitted(APP_NAME,OperationEnum.ADD,"accountingdocumentline"):
+        # if not self.request.user.has_perm(APP_NAME+".add_accountingdocumentline"):
             message="دسترسی غیر مجاز"
             return accounting_document_line,message,result
         
@@ -38,14 +41,8 @@ class AccountingDocumentLineRepo:
             accounting_document_line.bedehkar=kwargs['bedehkar'] 
         if 'account_code' in kwargs and kwargs['account_code'] is not None:
             account=Account.objects.filter(code=kwargs['account_code']).first() 
-            print(kwargs)
-            print(100*"#")
-            print(account)
-            print(100*"#")
             if account is not None:
                 accounting_document_line.account=account
-                print(account.id)
-                print(100*"*")
         if 'account_id' in kwargs and kwargs['account_id'] is not None:
             accounting_document_line.account_id=kwargs['account_id'] 
         if 'tel' in kwargs:
@@ -73,7 +70,6 @@ class AccountingDocumentLineRepo:
 
         return accounting_document_line,message,result
 
-    
 class AccountRepo():
     def __init__(self,request,*args, **kwargs):
         self.request=request
@@ -258,6 +254,7 @@ class AccountRepo():
         result=SUCCEED
         message="همه حساب ها حذف شد."
         return result,message
+
 class TafsiliAccountRepo():
     def __init__(self,request,*args, **kwargs):
         self.request=request
@@ -280,7 +277,9 @@ class TafsiliAccountRepo():
             
     def add_tafsili_account(self,*args, **kwargs):
         tafsili_account,message,result=(None,"",FAILED)
-        if not self.request.user.has_perm(APP_NAME+".add_account"):
+        
+        if not Permission(request=self.request).is_permitted(APP_NAME,OperationEnum.ADD,"tafsiliaccount"):
+        # if not self.request.user.has_perm(APP_NAME+".add_account"):
             message="دسترسی غیر مجاز"
             return tafsili_account,message,result
         if len(TafsiliAccount.objects.filter(name=kwargs['name']))>0:
@@ -390,7 +389,8 @@ class AccountGroupRepo():
             
     def add_account_group(self,*args, **kwargs):
         account,message,result=(None,"",FAILED)
-        if not self.request.user.has_perm(APP_NAME+".add_account"):
+        if not Permission(request=self.request).is_permitted(APP_NAME,OperationEnum.ADD,"accountgroup"):
+        # if not self.request.user.has_perm(APP_NAME+".add_account"):
             message="دسترسی غیر مجاز"
             return account,message,result
         if len(Account.objects.filter(title=kwargs['title']))>0:
@@ -521,7 +521,8 @@ class BasicAccountRepo():
             
     def add_basic_account(self,*args, **kwargs):
         basic_account,message,result=(None,"",FAILED)
-        if not self.request.user.has_perm(APP_NAME+".add_account"):
+        if not Permission(request=self.request).is_permitted(APP_NAME,OperationEnum.ADD,"basicaccount"):
+        # if not self.request.user.has_perm(APP_NAME+".add_account"):
             message="دسترسی غیر مجاز"
             return account,message,result
         basic_account=Account.objects.filter(name=kwargs['name']).first()
@@ -612,7 +613,8 @@ class MoeinAccountRepo():
             
     def add_moein_account(self,*args, **kwargs):
         moein_account,message,result=(None,"",FAILED)
-        if not self.request.user.has_perm(APP_NAME+".add_account"):
+        if not Permission(request=self.request).is_permitted(APP_NAME,OperationEnum.ADD,"moeinaccount"):
+        # if not self.request.user.has_perm(APP_NAME+".add_account"):
             message="دسترسی غیر مجاز"
             return account,message,result
 
@@ -705,7 +707,8 @@ class AccountingDocumentRepo():
             
     def add_accounting_document(self,*args, **kwargs):
         account,message,result=(None,"",FAILED)
-        if not self.request.user.has_perm(APP_NAME+".add_account"):
+        if not Permission(request=self.request).is_permitted(APP_NAME,OperationEnum.ADD,"accountingdocument"):
+        # if not self.request.user.has_perm(APP_NAME+".add_account"):.
             message="دسترسی غیر مجاز"
             return account,message,result
         if len(Account.objects.filter(title=kwargs['title']))>0:
