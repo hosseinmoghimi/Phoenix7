@@ -1,6 +1,4 @@
-{% extends "accounting/layout.html" %}
-
-{% block content %}
+  
   <div class="card rtl" id="add-event-app">
     <div class="card-header">
         <h4>
@@ -17,8 +15,20 @@
                         <input type="text" placeholder="" id="title" v-model="title">
                     </div>
                 </div>
+
+
+                
+                <div class="col-md-4">
+                    <div class="form-group">
+
+                        <label for="amount">مبلغ</label>
+                        <input type="number" placeholder="" id="amount" v-model="amount">
+                    </div>
+                </div>
+
+
             </div>
         </form>
     </div>
-  </div>
-{% endblock content %}
+  </div> 
+
