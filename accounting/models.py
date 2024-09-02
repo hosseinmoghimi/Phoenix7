@@ -64,7 +64,6 @@ class Account(models.Model,LinkHelper):
 
     def all_sub_accounts_lines(self):
         ids=self.all_sub_accounts_id()
-        print(ids)
         return AccountingDocumentLine.objects.filter(account_id__in=ids)
     def get_absolute_url(self):
         if self.type==AccountTypeEnum.GROUP:
