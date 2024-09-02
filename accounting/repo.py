@@ -471,6 +471,7 @@ class AccountGroupRepo():
         return result,message,account_tags
    
 class BasicAccountRepo():
+    
     def __init__(self,request,*args, **kwargs):
         self.request=request
         self.me=None
@@ -478,18 +479,18 @@ class BasicAccountRepo():
         self.objects=BasicAccount.objects
         # if profile is not None:
         #     self.me=self.objects.filter(profile=profile).first()
+    
     def list(self,*args, **kwargs):
         objects=self.objects
         if "search_for" in kwargs:
             objects=objects.filter(title__contains=kwargs['search_for']) 
         return objects.all()
+    
     def basic_account(self,*args, **kwargs):
         if "pk" in kwargs:
             return self.objects.filter(pk=kwargs['pk']).first() 
         if "id" in kwargs:
             return self.objects.filter(pk=kwargs['id']).first() 
-
-            
             
     def add_account_tag(self,*args, **kwargs):
         result,message,account_tags=FAILED,"",[]
@@ -517,7 +518,6 @@ class BasicAccountRepo():
         result=SUCCEED
 
         return result,message,account_tags
-        
             
     def add_basic_account(self,*args, **kwargs):
         basic_account,message,result=(None,"",FAILED)
@@ -534,7 +534,6 @@ class BasicAccountRepo():
         if basic_account is not None:
             message="از قبل حسابی با همین کد ثبت شده است."
             return basic_account,message,result
-        leolog(kwargs=kwargs)
 
         basic_account=BasicAccount()
 
