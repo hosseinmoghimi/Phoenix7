@@ -6,10 +6,10 @@ from rest_framework.views import APIView
 
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import TafsiliAccountRepo,MoeinAccountRepo,BasicAccountRepo,AccountRepo,AccountingDocumentLineRepo
+from .repo import TafsiliAccountRepo,MoeinAccountRepo,BasicAccountRepo,AccountRepo,AccountingDocumentLineRepo,EventRepo
 from django.http import JsonResponse
 from .forms import *
-from .serializers import TafsiliAccountBriefSerializer,MoeinAccountBriefSerializer,BasicAccountBriefSerializer,AccountingDocumentLineSerializer
+from .serializers import TafsiliAccountBriefSerializer,MoeinAccountBriefSerializer,BasicAccountBriefSerializer,AccountingDocumentLineSerializer,AccountSerializer,EventSerializer
 
 class SelectAccountGroupApi(APIView):
     def post(self,request,*args, **kwargs):
@@ -55,6 +55,28 @@ class AddMoeinAccountApi(APIView):
         return JsonResponse(context)
 
 
+class AddEventApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            log=222
+            add_event_form=AddEventForm(request.POST)
+            if add_event_form.is_valid():
+                log=333
+                cd=add_event_form.cleaned_data
+                event,message,result=EventRepo(request=request).add_event(**cd)
+                if event is not None:
+                    context['event']=EventSerializer(event).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
 
 
 class AddBasicAccountApi(APIView):
@@ -78,6 +100,30 @@ class AddBasicAccountApi(APIView):
         context['log']=log
         return JsonResponse(context)
 
+
+
+class SelectAccountApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            log=222
+            select_account_form=SelectAccountForm(request.POST)
+            if select_account_form.is_valid():
+                log=333
+                cd=select_account_form.cleaned_data
+                account=AccountRepo(request=request).account(**cd)
+                if account is not None:
+                    result=SUCCEED
+                    message="موفقیت آمیز"
+                    context['account']=AccountSerializer(account).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
 
 
 

@@ -6,7 +6,17 @@
         </h4>
     </div>
     <div class="card-body">
-        <form action="">
+        <h5>
+
+            <a href="{% url 'accounting:selection' %}" target="_blank"> همه حساب ها</a>
+        </h5>
+
+        <h5>
+
+            <a href="{% url 'accounting:tree_chart' %}" target="_blank"> درخت حساب ها</a>
+        </h5>
+
+        <form @submit.prevent="add_event()">
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -25,6 +35,45 @@
                         <input type="number" placeholder="" id="amount" v-model="amount">
                     </div>
                 </div>
+
+
+                
+                <div class="col-md-12">
+                    <div class="form-group">
+
+                        <label for="bedehkar_code">بدهکار</label>
+                        <input type="text" placeholder="" id="bedehkar_code" @input="select_bedehkar()" v-model="bedehkar.code">
+                        <h5 v-if="bedehkar.name">
+                            <a :href="bedehkar.get_absolute_url">
+                                <span :class="'text-'+bedehkar.color" v-text="bedehkar.full_title"></span>
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+
+
+                
+                <div class="col-md-12">
+                    <div class="form-group">
+
+                        <label for="bestankar_code">بستانکار</label>
+                        <input type="text" placeholder="" id="bestankar_code" @input="select_bestankar()" v-model="bestankar.code">
+                        <h5 v-if="bestankar.name">
+                            <a :href="bestankar.get_absolute_url">
+                                <span :class="'text-'+bestankar.color" v-text="bestankar.full_title"></span>
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+
+                
+                <div class="col-md-12">
+                   <button class="btn btn-success" type="submit">
+                    <i class="fa fa-plus"></i>
+                    افزودن رویداد مالی
+                   </button>
+                </div>
+
 
 
             </div>

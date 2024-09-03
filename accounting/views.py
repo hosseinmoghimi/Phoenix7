@@ -2,8 +2,8 @@ from django.shortcuts import render,reverse
 from .apps import APP_NAME
 from processmanagement.permission import Permission,OperationEnum
 from django.views import View
-from .repo import TafsiliAccountRepo,AccountGroupRepo,AccountingDocumentRepo,BasicAccountRepo,MoeinAccountRepo,AccountRepo
-from .serializers import TafsiliAccountSerializer,AccountGroupSerializer,BasicAccountSerializer,MoeinAccountSerializer,AccountSerializer
+from .repo import TafsiliAccountRepo,AccountGroupRepo,AccountingDocumentRepo,BasicAccountRepo,MoeinAccountRepo,AccountRepo,EventRepo
+from .serializers import TafsiliAccountSerializer,AccountGroupSerializer,BasicAccountSerializer,MoeinAccountSerializer,AccountSerializer,EventSerializer
 from .serializers import AccountGroupBriefSerializer,BasicAccountBriefSerializer,MoeinAccountBriefSerializer,TafsiliAccountBriefSerializer,AccountingDocumentLineSerializer
 from .forms import *
 from core.views import CoreContext
@@ -283,6 +283,17 @@ class AccountGroupView(View):
             context['colors']=(i[0] for i in ColorEnum.choices)
         return render(request,TEMPLATE_ROOT+"account-group.html",context)
 
+class EventsView(View):
+    
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        events=EventRepo(request=request).list(*args, **kwargs)
+        context['events']=events
+        events_s=json.dumps(EventSerializer(events,many=True).data)
+        context['events_s']=events_s
+ 
+        return render(request,TEMPLATE_ROOT+"events.html",context)
+
 
 class EventView(View):
     def get(self,request,*args, **kwargs):
@@ -322,6 +333,9 @@ class TreeListView(View):
         return render(request,TEMPLATE_ROOT+"tree-list.html",context)
 
 class AddEventView(View):
+    def post(self,request,*args, **kwargs):
+        from .apis import AddEventApi
+        return AddEventApi().post(request,*args, **kwargs)
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
         account_groups=AccountGroupRepo(request=request).list(*args, **kwargs)

@@ -3,10 +3,13 @@ from rest_framework import serializers
 
 
 
-class EventSerializer(serializers.ModelSerializer):
+
+
+class EventBriefSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ['id', 'title','get_absolute_url','get_edit_url','get_delete_url','amount','persian_event_datetime']
+
 
 class TafsiliAccountSerializer(serializers.ModelSerializer):
     class Meta:
@@ -85,8 +88,17 @@ class TafsiliAccountBriefSerializer(serializers.ModelSerializer):
         fields = ['id', 'name','color','code','moein_account_id','get_absolute_url','get_edit_url','get_delete_url','balance']
 
 class AccountingDocumentLineSerializer(serializers.ModelSerializer):
-    event=EventSerializer()
+    event=EventBriefSerializer()
     account=AccountSerializer()
     class Meta:
         model = AccountingDocumentLine
         fields = ['id', 'title','amount','event','account','bedehkar','bestankar','get_absolute_url','get_edit_url','get_delete_url']
+
+class EventSerializer(serializers.ModelSerializer): 
+    pay_to=AccountSerializer()
+    pay_from=AccountSerializer()
+    class Meta:
+        model = Event
+        fields = ['id','pay_to','pay_from', 'title','get_absolute_url','get_edit_url','get_delete_url','amount','persian_event_datetime']
+
+        

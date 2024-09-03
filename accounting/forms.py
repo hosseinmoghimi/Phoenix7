@@ -16,6 +16,26 @@ class AddAccountGroupForm(forms.Form):
     title=forms.CharField(max_length=100, required=True)
     code=forms.CharField(max_length=100, required=True)
     color=forms.CharField(max_length=100, required=False)
+
+
+class AddEventForm(forms.Form):
+    title=forms.CharField(max_length=100, required=True)
+    event_datetime=forms.CharField(max_length=100, required=True)
+    bedehkar_id=forms.IntegerField(required=False)
+    bestankar_id=forms.IntegerField(required=False)
+    amount=forms.IntegerField(required=False)
+
+
+class SelectAccountForm(forms.Form):
+    pk=forms.IntegerField(required=False)
+    pk=forms.IntegerField(required=False)
+    pk=forms.IntegerField(required=False)
+    id=forms.IntegerField(required=False)
+    code=forms.CharField(max_length=100, required=False)
+    title=forms.CharField(max_length=100, required=False)
+
+
+
 class AddAccountingDocumentLineForm(forms.Form):
     title=forms.CharField(max_length=100, required=True)
     account_code=forms.CharField(max_length=100, required=True)

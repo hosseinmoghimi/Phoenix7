@@ -12,6 +12,7 @@ urlpatterns = [
     path("accounts/<int:sv>/",login_required(views.AccountsView.as_view()),name="accounts_simple_view"),
     path("basic-account/<int:pk>/",login_required(views.BasicAccountView.as_view()),name="basicaccount"),
     path("event/<int:pk>/",login_required(views.EventView.as_view()),name="event"),
+    path("events/",login_required(views.EventsView.as_view()),name="events"),
     path("moein-account/<int:pk>/",login_required(views.MoeinAccountView.as_view()),name="moeinaccount"),
     path("moein-accounts/",login_required(views.MoeinAccountsView.as_view()),name="moein_accounts"),
     path("accounting-documents/",login_required(views.AccountingDocumentsView.as_view()),name="accounting_documents"),
@@ -38,5 +39,6 @@ urlpatterns = [
     path("delete_all_accounts/",login_required(apis.DeleteALLAccountsApi.as_view()),name="delete_all_accounts"),
     path("select_account_group/",login_required(apis.SelectAccountGroupApi.as_view()),name="select_account_group"),
     path("selection/",login_required(views.SelectionView.as_view()),name="selection"),
+    path("select-account/",login_required(apis.SelectAccountApi.as_view()),name="select_account"),
     path("settings/",login_required(views.SettingsView.as_view()),name="settings"),
 ]

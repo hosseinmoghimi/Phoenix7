@@ -2,11 +2,50 @@
     let add_event_app=new Vue({
         el:"#add-event-app",
         data:{
-            title:"25465",
-            amount:0,
-            bedehkar:{},
-            bestankar:{},
+            title:"واریز فیش",
+            event_datetime:current_datetime,
+            amount:15000,
+            bedehkar:{code:"11",},
+            bestankar:{code:"510111",},
             datetime:current_datetime,
+        },
+        methods:{
+            add_event:function(){
+                let payload={
+                    csrfmiddlewaretoken:csrfmiddlewaretoken,
+                    bestankar_id:this.bestankar.id,
+                    bedehkar_id:this.bedehkar.id,
+                    amount:parseInt(this.amount),
+                    event_datetime:(this.event_datetime),
+                    title:(this.title),
+                }
+                console.log(payload)
+                let url="{% url 'accounting:add_event' %}"
+                let posting=$.post(url,payload)
+                posting.done(data=>{
+                    console.log(data)
+                })
+            
+            },
+            select_bedehkar:function(){
+                select_account_by_code(this.bedehkar.code).done(data=>{
+                    console.log(data)
+                    if(data.result==="SUCCEED"){
+                        console.log(data.account)
+                        add_event_app.bedehkar=data.account
+                    }
+                })
+            },
+            select_bestankar:function(){
+                select_account_by_code(this.bestankar.code).done(data=>{
+                    console.log(data)
+                    if(data.result==="SUCCEED"){
+                        console.log(data.account)
+                        add_event_app.bestankar=data.account
+                    }
+                })
+            }
+
         },
     })
 </script>

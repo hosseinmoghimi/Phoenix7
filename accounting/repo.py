@@ -5,6 +5,69 @@ from utility.log import leolog
 from authentication.repo import ProfileRepo
 from .apps import APP_NAME
 from .defaults import init_all_accounts_list
+from utility.calendar import PersianCalendar
+
+class EventRepo:
+    def __init__(self,request,*args, **kwargs):
+        self.request=request
+        self.me=None
+        profile=ProfileRepo(request=request).me
+        self.objects=Event.objects
+        # if profile is not None:
+        #     self.me=self.objects.filter(profile=profile).first()
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            objects=objects.filter(title__contains=kwargs['search_for']) 
+        return objects.all()
+    def event(self,*args, **kwargs):
+        if "pk" in kwargs:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs:
+            return self.objects.filter(pk=kwargs['id']).first() 
+
+            
+    def add_event(self,*args, **kwargs):
+        event,message,result=(None,"",FAILED)
+        if not Permission(request=self.request).is_permitted(APP_NAME,OperationEnum.ADD,"event"):
+        # if not self.request.user.has_perm(APP_NAME+".add_account"):
+            message="دسترسی غیر مجاز"
+            return account,message,result
+        # if len(Account.objects.filter(title=kwargs['title']))>0:
+        #     message="از قبل حسابی با همین عنوان ثبت شده است."
+        #     return event,message,result
+
+        event=Event()
+        
+        if 'event_datetime' in kwargs:
+            year=kwargs['event_datetime'][:2]
+            if year=="13" or year=="14":
+                kwargs['event_datetime']=PersianCalendar().to_gregorian(kwargs["event_datetime"])
+            event.event_datetime=kwargs['event_datetime']
+        if 'title' in kwargs:
+            event.title=kwargs['title']
+        if 'bedehkar_id' in kwargs:
+            event.pay_to_id=kwargs['bedehkar_id']
+        if 'bestankar_id' in kwargs:
+            event.pay_from_id=kwargs['bestankar_id']
+        if 'amount' in kwargs:
+            event.amount=kwargs['amount']
+        if 'tel' in kwargs:
+            event.tel=kwargs['tel']
+        if 'mobile' in kwargs:
+            event.mobile=kwargs['mobile']
+       
+        
+        # if 'financial_year_id' in kwargs:
+        #     payment.financial_year_id=kwargs['financial_year_id']
+        # else:
+        #     payment.financial_year_id=FinancialYear.get_by_date(date=payment.transaction_datetime).id
+
+        event.save()
+        result=SUCCEED
+        message="با موفقیت اضافه گردید."
+         
+        return event,message,result
 
 class AccountingDocumentLineRepo:
     def __init__(self,request,*args, **kwargs):
@@ -84,11 +147,11 @@ class AccountRepo():
             objects=objects.filter(title__contains=kwargs['search_for']) 
         return objects.all()
     def account(self,*args, **kwargs):
-        if "pk" in kwargs:
+        if "pk" in kwargs and kwargs["pk"] is not None:
             return self.objects.filter(pk=kwargs['pk']).first() 
-        if "id" in kwargs:
+        if "id" in kwargs and kwargs["id"] is not None:
             return self.objects.filter(pk=kwargs['id']).first() 
-        if "code" in kwargs:
+        if "code" in kwargs and kwargs["code"] is not None:
             return self.objects.filter(code=kwargs['code']).first() 
 
     def init_all_accounts(self,*args, **kwargs):
@@ -148,71 +211,7 @@ class AccountRepo():
         message=f"{tafsili_accounts_counter} تفصیلی {message}" 
         message=f"{tafsili_accounts_counter} تفصیلی {message}" 
         return account_groups,message,result
-
-            
-    def add_tafsili_account(self,*args, **kwargs):
-        tafsili_account,message,result=(None,"",FAILED)
-        if not self.request.user.has_perm(APP_NAME+".add_account"):
-            message="دسترسی غیر مجاز"
-            return tafsili_account,message,result
-        if len(TafsiliAccount.objects.filter(name=kwargs['name']))>0:
-            message="از قبل حسابی با همین عنوان ثبت شده است."
-            return tafsili_account,message,result
-        if len(TafsiliAccount.objects.filter(code=kwargs['code']))>0:
-            message="از قبل حسابی با همین کد ثبت شده است."
-            return tafsili_account,message,result
-
-        tafsili_account=TafsiliAccount()
-
-        if 'name' in kwargs:
-            tafsili_account.name=kwargs['name']
-        if 'profile_id' in kwargs:
-            account.profile_id=kwargs['profile_id']
-        if 'description' in kwargs:
-            account.description=kwargs['description']
-        if 'moein_account_id' in kwargs and kwargs["moein_account_id"]>0:
-            tafsili_account.moein_account_id=kwargs['moein_account_id']
-            tafsili_account.color=MoeinAccount.objects.filter(pk=kwargs["moein_account_id"]).first().color
-        if 'tel' in kwargs:
-            tafsili_account.tel=kwargs['tel']
-        if 'color' in kwargs:
-            tafsili_account.color=kwargs['color']
-        if 'code' in kwargs:
-            tafsili_account.code=kwargs['code']
-        if 'parent_id' in kwargs and kwargs["parent_id"]>0:
-            tafsili_account.parent_id=kwargs['parent_id']
-       
-        
-        # if 'financial_year_id' in kwargs:
-        #     payment.financial_year_id=kwargs['financial_year_id']
-        # else:
-        #     payment.financial_year_id=FinancialYear.get_by_date(date=payment.transaction_datetime).id
-
-        tafsili_account.save()
-        result=SUCCEED
-        message="با موفقیت اضافه گردید."
-        
-        if 'balance' in kwargs and kwargs['balance'] is not None and not kwargs['balance']==0:
-            me_account=self.me
-            if me_account is not None:
-                balance=kwargs['balance']
-                payment=Payment()
-                payment.amount=balance if balance>0 else (0-balance)
-                payment.title="مانده از قبل"
-                payment.creator_id=me_account.profile.id
-                payment.status=TransactionStatusEnum.FROM_PAST
-                payment.payment_method=PaymentMethodEnum.FROM_PAST
-                payment.transaction_datetime=PersianCalendar().date
-                if balance>0:
-                    payment.pay_to_id=me_account.id
-                    payment.pay_from_id=account.id
-                if balance<0:
-                    payment.pay_from_id=me_account.id
-                    payment.pay_to_id=account.id
-                payment.save()
-
-        return tafsili_account,message,result
-
+ 
     def add_account_tag(self,*args, **kwargs):
         result,message,account_tags=FAILED,"",[]
         if not self.request.user.has_perm(APP_NAME+".change_account"):

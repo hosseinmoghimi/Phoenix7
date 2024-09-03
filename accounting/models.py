@@ -7,6 +7,7 @@ from utility.constants import SUCCEED,FAILED
 from utility.currency import to_price_colored
 from utility.calendar import PersianCalendar
 IMAGE_FOLDER=APP_NAME+"/images/"
+from utility.currency import to_price
 from phoenix.server_settings import MEDIA_URL,STATIC_URL 
 # Create your models here.
 from django.contrib.auth.models import User,Group
@@ -437,7 +438,7 @@ class AccountingDocumentLine(models.Model,LinkHelper):
         event=""
         if self.event is not None :
             event=self.event.title
-        return f"{self.account.id} , {event} , {self.account.name} , {self.balance}"
+        return f"{self.account.id} , {event} , {self.account.name} , {self.balance}, {self.bestankar}, {self.bedehkar}"
  
 class EventCategory(models.Model,LinkHelper):
     class_name="eventcategory"
@@ -469,7 +470,7 @@ class Event(Page):
     amount=models.IntegerField(_("مبلغ"),default=0)
     payment_method=models.CharField(_("نوع پرداخت"),choices=PaymentMethodEnum.choices,default=PaymentMethodEnum.DRAFT, max_length=50)
     event_datetime=models.DateTimeField(_("تاریخ تراکنش"), auto_now=False, auto_now_add=False)
-    
+     
 
     @property 
     def persian_event_datetime(self):
@@ -480,7 +481,7 @@ class Event(Page):
         verbose_name_plural = _("Events")
 
     def __str__(self):
-        return self.title
+        return f"{self.title} , {self.pay_from},  {self.pay_to} , {to_price(self.amount)}"
  
     def save(self,*args, **kwargs):
         super(Event,self).save()
