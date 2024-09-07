@@ -116,3 +116,10 @@ def to_tartib(value):
         ])[value-1]
     return to_horuf(value-1)+"م"
     
+
+def filter_number(s):
+    i=""
+    for ch in s:
+        if ch=="0" or ch=="1" or ch=="2" or ch=="3" or ch=="4" or ch=="5" or ch=="6" or ch=="7" or ch=="8" or ch=="9"  :
+            i+=ch
+    return int(i)

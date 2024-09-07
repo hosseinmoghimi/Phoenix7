@@ -83,7 +83,16 @@ class AccountingDocumentsView(View):
 
 class AccountingDocumentLineView(View):
     def get(self,requets,*args, **kwargs):
-        pass
+        
+        context=getContext(request=request)
+        context['expand_accounts']=True
+        if 'sv' in kwargs:
+            context['SIMPLE_VIEW']=True
+        accounting_document_line=AccountingDocumentLineRepo(request=request).accounting_document_line()
+        context['accounting_document_line']=accounting_document_line
+         
+         
+        return render(request,TEMPLATE_ROOT+"accounting-document-line.html",context)
 
 class AccountingDocumentView(View):
     def get(self,request,*args, **kwargs):
@@ -298,16 +307,10 @@ class EventsView(View):
 class EventView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
-        account_group=AccountGroupRepo(request=request).account_group(*args, **kwargs)
-        context.update(get_account_context(account=account_group))
-        context['account_group']=account_group
-
-        basic_accounts=account_group.basicaccount_set.order_by('code')
-        context['basic_accounts_s']=json.dumps(BasicAccountBriefSerializer(basic_accounts,many=True).data)
-
-        CAN_ADD_BASIC_ACCOUNT=True
-        if CAN_ADD_BASIC_ACCOUNT :
-            context['add_basic_account_form']=AddBasicAccountForm()
+        event=EventRepo(request=request).event(*args, **kwargs)
+        context['event']=event
+        event_s=json.dumps(EventSerializer(event).data)
+        context['event_s']=event_s
         return render(request,TEMPLATE_ROOT+"event.html",context)
 
 class SearchView(View):
@@ -324,6 +327,20 @@ class AccountGroupsView(View):
         account_groups_s=json.dumps(AccountGroupSerializer(account_groups,many=True).data)
         context['account_groups_s']=account_groups_s
         return render(request,TEMPLATE_ROOT+"account-groups.html",context)
+
+class AddAccountingDocumentView(View):
+    def post(self,request,*args, **kwargs):
+        from .apis import AddAccountingDocumentApi
+        return AddAccountingDocumentApi().post(request,*args, **kwargs) 
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        account_groups=AccountGroupRepo(request=request).list(*args, **kwargs)
+        context['account_groups']=account_groups
+        for account_group in account_groups:
+            account_group.normalize_total()
+        account_groups_s=json.dumps(AccountGroupSerializer(account_groups,many=True).data)
+        context['account_groups_s']=account_groups_s
+        return render(request,TEMPLATE_ROOT+"add-document.html",context)
 
 class TreeListView(View):
     def get(self,request,*args, **kwargs):
@@ -357,18 +374,7 @@ class EditDocumentView(View):
         # context['account_groups_s']=account_groups_s
         
         return render(request,TEMPLATE_ROOT+"edit-document.html",context)
-
-class AddDocumentView(View):
-    def get(self,request,*args, **kwargs):
-        context=getContext(request=request)
-        account_groups=AccountGroupRepo(request=request).list(*args, **kwargs)
-        context['account_groups']=account_groups
-        for account_group in account_groups:
-            account_group.normalize_total()
-        account_groups_s=json.dumps(AccountGroupSerializer(account_groups,many=True).data)
-        context['account_groups_s']=account_groups_s
-        return render(request,TEMPLATE_ROOT+"add-document.html",context)
-
+ 
 class TreeChartView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)

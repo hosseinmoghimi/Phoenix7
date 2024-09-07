@@ -1,6 +1,6 @@
 {% load to_persian_date %}
 {% load to_price %}
- 
+
 
 
 
@@ -16,7 +16,7 @@
 
 
     <div class="card-body">
-        
+
         <div class="table-responsive">
 
             <table class="table table-striped">
@@ -52,12 +52,26 @@
                 <tbody>
                     <tr v-for="accounting_document_line in accounting_document_lines">
                         <td>
-                            <a :href="accounting_document_line.get_absolute_url">
-                                <span v-text="accounting_document_line.title"></span>
-                            </a>
+                            <div>
+                                ریز سند
+                                <a :href="accounting_document_line.get_absolute_url">
+                                    <span v-text="accounting_document_line.title"></span>
+                                </a>
+
+                            </div>
+                            <div class="text-warning">
+                                سند :
+                                <a class="text-warning"
+                                    :href="accounting_document_line.accounting_document.get_absolute_url">
+                                    <span v-text="accounting_document_line.accounting_document.title"></span>
+                                </a>
+                            </div>
+
+
                         </td>
                         <td>
                             <a :href="accounting_document_line.account.get_absolute_url">
+                                <span v-text="accounting_document_line.account.code"></span>
                                 <span v-text="accounting_document_line.account.name"></span>
                                 <div>
 
@@ -92,10 +106,67 @@
                             </span>
                         </td>
                         <td>
-
+                            <a target="_blank" :href="accounting_document_line.get_edit_url" title="ویرایش"
+                                class=" text-warning">
+                                <i class="fa fa-edit text-warning">
+                                </i>
+                                ویرایش
+                            </a>
+                            <a target="_blank" :href="accounting_document_line.get_delete_url" title="حذف"
+                                class=" text-danger">
+                                <i class="fa fa-trash text-danger">
+                                </i>
+                                حذف
+                            </a>
                         </td>
                     </tr>
                 </tbody>
+                <tfoot>
+                    <th colspan="4">
+
+                    </th>
+                    <th>
+                        <span class="text-danger">
+                            <span v-text="to_price(total.bedehkar)"></span>
+
+                        </span>
+                    </th>
+                    <th>
+                        <span class="text-success">
+                            <span v-text="to_price(total.bestankar)"></span>
+
+                        </span>
+                    </th>
+                    <th>
+                        <div v-if="total.bestankar>total.bedehkar">
+                            <span class="badge badge-success">
+                                <span v-text="to_price(total.bestankar-total.bedehkar)">
+
+                                </span>
+                                بستانکار
+                            </span>
+                        </div>
+                        <div v-if="total.bedehkar>total.bestankar">
+
+                            <span class="badge badge-danger">
+                                <span v-text="to_price(total.bedehkar-total.bestankar)">
+
+                                </span>
+                                بدهکار
+                            </span>
+
+                        </div>
+
+                        <div v-if="total.bedehkar==total.bestankar">
+
+                            <span class="badge badge-primary">
+                            تراز
+                            </span>
+
+                        </div>
+
+                    </th>
+                </tfoot>
             </table>
         </div>
     </div>

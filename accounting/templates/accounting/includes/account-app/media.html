@@ -3,7 +3,7 @@
     <img :src="account.logo" width="48" alt="">
     <div class="media-body mr-2">
         <a :href="account.get_absolute_url">
-            <h5 :class="'text-'+accout.color">
+            <h5 :class="'text-'+account.color">
                 <span v-text="account.name"></span>
 
             </h5>
@@ -12,19 +12,19 @@
             <small class="text-muted">
                 <span v-text="account.code"></span>
 
-                
+
             </small>
             <span class="mr-2">
                 <span v-html="to_price(account.balance)"></span>
 
-               
+
             </span>
         </h6>
-        <a href="">
+        <a :href="account.get_absolute_url">
 
             <h6>
-                <span v-text="account.parent_account"></span>
-                </h6>
+                <span v-text="account.full_title"></span>
+            </h6>
         </a>
     </div>
 </div>

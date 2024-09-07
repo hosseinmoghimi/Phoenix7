@@ -31,6 +31,7 @@ class Account(models.Model,LinkHelper):
     type=models.CharField(_("type"), max_length=200,null=True,blank=True)
     name=models.CharField(_("name"), max_length=200)
     code=models.CharField(_("code"), max_length=200)
+    pure_code=models.IntegerField(_("pure_code"), default=0)
     bedehkar=models.IntegerField(_("bedehkar"),default=0)
     bestankar=models.IntegerField(_("bestankar"),default=0)
     balance=models.IntegerField("balance",default=0)
@@ -202,6 +203,8 @@ class Account(models.Model,LinkHelper):
         if len(Account.objects.filter(name=self.name).exclude(pk=self.pk))>0:
             result=FAILED
             message="نام تکراری"
+        from utility.num import filter_number
+        self.pure_code=filter_number(  self.code)
         super(Account,self).save()
         return self,result,message
 
@@ -379,7 +382,7 @@ class AccountingDocument(models.Model,LinkHelper):
     title=models.CharField(_("title"), max_length=500)
     date_added=models.DateTimeField(_("date_added"), auto_now=False, auto_now_add=True)
     date_time=models.DateTimeField(_("date_time"), auto_now=True, auto_now_add=False)
-    date_modified=models.DateTimeField(_("date_modified "), auto_now=False, auto_now_add=False)
+    date_modified=models.DateTimeField(_("date_modified "), auto_now=True, auto_now_add=False)
 
     @property 
     def lines(self):

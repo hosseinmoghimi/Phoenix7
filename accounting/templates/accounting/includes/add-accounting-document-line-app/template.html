@@ -11,8 +11,25 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="">حساب</label>
-                            <input class="form-control" v-model="account_code" type="text">
+                            <input class="form-control" v-model="account_code" @input="select_account()" type="text">
+                            <!-- <div class="my-2" v-if="">
+                                <a :href="account.get_absolute_url">
+                                    <div class="media">
+                                        <img :src="account.logo" class="rounded" width="48" alt="">
+                                        <div class="media-body mr-2">
+                                            <h5> <span v-text="account.code"></span></h5>
+                                            <h5> <span v-text="account.name"></span></h5>
+                                            <h5> <span v-text="to_price(account.balance)"></span></h5>
+                                            <h5></h5>
+                                        </div>
+                                    </div>
 
+                                </a>
+                            </div> -->
+                            <div class="my-2">
+
+                                {% include "accounting/includes/account-app/media.html" %}
+                            </div>
                             <select class="form-control" v-model="account_code">
                                 {% for account in accounts_for_adding_accounting_document_line %}
 

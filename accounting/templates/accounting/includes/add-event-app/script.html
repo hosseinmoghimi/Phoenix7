@@ -8,6 +8,7 @@
             bedehkar:{code:"11",},
             bestankar:{code:"510111",},
             datetime:current_datetime,
+            message:{show:false},
         },
         methods:{
             add_event:function(){
@@ -24,6 +25,14 @@
                 let posting=$.post(url,payload)
                 posting.done(data=>{
                     console.log(data)
+                    if(data.result==="SUCCEED"){
+                        add_event_app.message={
+                            show:true,
+                            header:"موفقیت آمیز",
+                            body:`<p>${data.message}</p><a target="_blank" href="${data.event.get_absolute_url}">${data.event.title}</a>`,
+                            color:"success",
+                        }
+                    }
                 })
             
             },

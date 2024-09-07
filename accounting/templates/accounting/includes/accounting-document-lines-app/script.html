@@ -1,11 +1,30 @@
-
-
 <script>
     let accounting_document_lines = JSON.parse("{{accounting_document_lines_s|escapejs}}")
     let accounting_document_app = new Vue({
         el: "#accounting-document-app",
         data: {
             accounting_document_lines: accounting_document_lines,
+            total: { bestankar: 0, bedehkar: 0 }
+
+        },
+        mounted: function () {
+            this.calc_total()
+        },
+        methods: {
+            add_accounting_document_line: function (accounting_document_line) {
+                this.accounting_document_lines.push(accounting_document_line)
+                this.calc_total()
+            },
+            calc_total: function () {
+                bestankar = 0
+                bedehkar = 0
+                this.accounting_document_lines.forEach(accounting_document_line => {
+                    bedehkar += accounting_document_line.bedehkar
+                    bestankar += accounting_document_line.bestankar
+                })
+                this.total = { bedehkar: bedehkar, bestankar: bestankar }
+            },
+
         },
 
     })

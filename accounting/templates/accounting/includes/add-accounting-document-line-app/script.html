@@ -5,8 +5,9 @@
         data: {
             event_id: 0,
             title: "",
-            bedehkar: 10,
-            bestankar: 20,
+            bedehkar: 0,
+            bestankar: 0,
+            account:{},
             account_code:0,
         },
         methods: {
@@ -17,6 +18,7 @@
                     bedehkar: parseInt(this.bedehkar),
                     bestankar: parseInt(this.bestankar),
                     account_code: (this.account_code),
+                    account_id: (this.account.id),
                     accounting_document_id: parseInt("{{accounting_document.id}}"),
                 }
                 console.log(payload)
@@ -26,11 +28,22 @@
                     console.log(data)
                     if(data.result==="SUCCEED"){
                         if(typeof accounting_document_app != "undefined"){
-                            accounting_document_app.accounting_document_lines.push(data.accounting_document_line)
+                            accounting_document_app.add_accounting_document_line(data.accounting_document_line)
                         }
                     }
                 })
             },
+            select_account:function(){
+                select_account_by_code(this.account_code).done(data=>{
+                    console.log(data)
+                    if(data.result==="SUCCEED"){
+                        console.log(data.account)
+                        add_accounting_document_line_app.account=data.account
+                    }
+                })
+            },
+             
+
         },
     })
 </script>

@@ -7,23 +7,20 @@
 
 {% block content %}
 <div class="row rtl">
-    <div class="col-md-12">
-        {% include "accounting/includes/accounting-document-app/card.html" %}
-    </div>
     {% if add_accounting_document_line_form %}
     <div class="col-md-12">
         {% include "accounting/includes/add-accounting-document-line-app/template.html" %}
     </div>
     {% endif %}
     <div class="col-md-12">
-        {% include "accounting/includes/accounting-document-lines-app/template.html" %}
+        
+        
     </div>
 </div>
     {% endblock content %}
 
 
     {% block script %}
-    {% include "accounting/includes/account-app/select-script.html" %}
 
     {% if add_accounting_document_line_form %}
     {% include "accounting/includes/add-accounting-document-line-app/script.html" %}

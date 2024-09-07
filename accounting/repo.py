@@ -65,7 +65,7 @@ class EventRepo:
 
         event.save()
         result=SUCCEED
-        message="با موفقیت اضافه گردید."
+        message="رویداد مالی جدید با موفقیت اضافه گردید."
          
         return event,message,result
 
@@ -103,7 +103,7 @@ class AccountingDocumentLineRepo:
         if 'bedehkar' in kwargs :
             accounting_document_line.bedehkar=kwargs['bedehkar'] 
         if 'account_code' in kwargs and kwargs['account_code'] is not None:
-            account=Account.objects.filter(code=kwargs['account_code']).first() 
+            account=AccountRepo(request=self.request).account(code=kwargs['account_code']) 
             if account is not None:
                 accounting_document_line.account=account
         if 'account_id' in kwargs and kwargs['account_id'] is not None:
@@ -152,7 +152,17 @@ class AccountRepo():
         if "id" in kwargs and kwargs["id"] is not None:
             return self.objects.filter(pk=kwargs['id']).first() 
         if "code" in kwargs and kwargs["code"] is not None:
-            return self.objects.filter(code=kwargs['code']).first() 
+            a= self.objects.filter(code=kwargs['code']).first() 
+            if a is not None:
+                return a
+            else:
+                try:
+                    a= self.objects.filter(pure_code=int(kwargs['code'])).first() 
+                    if a is not None:
+                        return a
+                except:
+                    pass
+
 
     def init_all_accounts(self,*args, **kwargs):
         tafsili_accounts_counter=0 
@@ -703,29 +713,27 @@ class AccountingDocumentRepo():
 
             
     def add_accounting_document(self,*args, **kwargs):
-        account,message,result=(None,"",FAILED)
+        accounting_document,message,result=(None,"",FAILED)
         if not Permission(request=self.request).is_permitted(APP_NAME,OperationEnum.ADD,"accountingdocument"):
         # if not self.request.user.has_perm(APP_NAME+".add_account"):.
             message="دسترسی غیر مجاز"
-            return account,message,result
-        if len(Account.objects.filter(title=kwargs['title']))>0:
-            message="از قبل حسابی با همین عنوان ثبت شده است."
-            return account,message,result
+            return accounting_document,message,result
+        
 
-        account=Account()
+        accounting_document=AccountingDocument()
 
         if 'title' in kwargs:
-            account.title=kwargs['title']
+            accounting_document.title=kwargs['title']
         if 'profile_id' in kwargs:
-            account.profile_id=kwargs['profile_id']
+            accounting_document.profile_id=kwargs['profile_id']
         if 'description' in kwargs:
-            account.description=kwargs['description']
+            accounting_document.description=kwargs['description']
         if 'address' in kwargs:
-            account.address=kwargs['address']
+            accounting_document.address=kwargs['address']
         if 'tel' in kwargs:
-            account.tel=kwargs['tel']
+            accounting_document.tel=kwargs['tel']
         if 'mobile' in kwargs:
-            account.mobile=kwargs['mobile']
+            accounting_document.mobile=kwargs['mobile']
        
         
         # if 'financial_year_id' in kwargs:
@@ -733,28 +741,10 @@ class AccountingDocumentRepo():
         # else:
         #     payment.financial_year_id=FinancialYear.get_by_date(date=payment.transaction_datetime).id
 
-        account.save()
+        accounting_document.save()
         result=SUCCEED
         message="با موفقیت اضافه گردید."
-        
-        if 'balance' in kwargs and kwargs['balance'] is not None and not kwargs['balance']==0:
-            me_account=self.me
-            if me_account is not None:
-                balance=kwargs['balance']
-                payment=Payment()
-                payment.amount=balance if balance>0 else (0-balance)
-                payment.title="مانده از قبل"
-                payment.creator_id=me_account.profile.id
-                payment.status=TransactionStatusEnum.FROM_PAST
-                payment.payment_method=PaymentMethodEnum.FROM_PAST
-                payment.transaction_datetime=PersianCalendar().date
-                if balance>0:
-                    payment.pay_to_id=me_account.id
-                    payment.pay_from_id=account.id
-                if balance<0:
-                    payment.pay_from_id=me_account.id
-                    payment.pay_to_id=account.id
-                payment.save()
+       
 
-        return account,message,result
+        return accounting_document,message,result
  

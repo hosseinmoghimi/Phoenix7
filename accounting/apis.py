@@ -6,10 +6,10 @@ from rest_framework.views import APIView
 
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import TafsiliAccountRepo,MoeinAccountRepo,BasicAccountRepo,AccountRepo,AccountingDocumentLineRepo,EventRepo
+from .repo import TafsiliAccountRepo,MoeinAccountRepo,BasicAccountRepo,AccountRepo,AccountingDocumentLineRepo,EventRepo,AccountingDocumentRepo
 from django.http import JsonResponse
 from .forms import *
-from .serializers import TafsiliAccountBriefSerializer,MoeinAccountBriefSerializer,BasicAccountBriefSerializer,AccountingDocumentLineSerializer,AccountSerializer,EventSerializer
+from .serializers import AccountingDocumentSerializer,TafsiliAccountBriefSerializer,MoeinAccountBriefSerializer,BasicAccountBriefSerializer,AccountingDocumentLineSerializer,AccountSerializer,EventSerializer
 
 class SelectAccountGroupApi(APIView):
     def post(self,request,*args, **kwargs):
@@ -77,6 +77,26 @@ class AddEventApi(APIView):
         return JsonResponse(context)
 
 
+class AddAccountingDocumentApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            log=222
+            add_accounting_document_form=AddAccountingDocumentForm(request.POST)
+            if add_accounting_document_form.is_valid():
+                log=333
+                cd=add_accounting_document_form.cleaned_data
+                accounting_document,message,result=AccountingDocumentRepo(request=request).add_accounting_document(**cd)
+                if accounting_document is not None:
+                    context['accounting_document']=AccountingDocumentSerializer(accounting_document).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
 
 
 class AddBasicAccountApi(APIView):
