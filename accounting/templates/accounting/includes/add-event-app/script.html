@@ -7,8 +7,12 @@
             amount:15000,
             bedehkar:{code:"11",},
             bestankar:{code:"510111",},
-            datetime:current_datetime,
+            event_datetime:current_datetime,
             message:{show:false},
+        },
+        components: {
+            DatePicker: VuePersianDatetimePicker
+
         },
         methods:{
             add_event:function(){
@@ -29,7 +33,7 @@
                         add_event_app.message={
                             show:true,
                             header:"موفقیت آمیز",
-                            body:`<p>${data.message}</p><a target="_blank" href="${data.event.get_absolute_url}">${data.event.title}</a>`,
+                            body:`<div  class="text-right farsi"><p>${data.message}</p><a target="_blank" href="${data.event.get_absolute_url}">${data.event.title}</a></div>`,
                             color:"success",
                         }
                     }

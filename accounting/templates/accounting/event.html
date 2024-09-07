@@ -1,5 +1,7 @@
 {% extends "accounting/layout.html" %}
+{% load to_price %}
 {% load static %}
+{% load to_persian_date %}
 
 {% block content %}
 <div class="row rtl" id="event-app">
@@ -16,6 +18,80 @@
             <div class="card-body">
                 <h5>
 
+                    {{event.title}}
+                </h5>
+
+
+
+                <hr>
+
+
+                <h4>بدهکار</h4>
+                <div class="media">
+                    <a href="{{event.pay_to.get_absolute_url}}">
+                        <img src="{{event.pay_to.logo}}" width="72" alt="">
+                    </a>
+                    <div class="media-body mr-2">
+                        <div>
+                            <a href="{{event.pay_to.get_absolute_url}}">
+                                <h4>{{event.pay_to.name}}
+                                </h4>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="{{event.pay_to.parent.get_absolute_url}}">
+                                <h6>{{event.pay_to.parent.full_title}}
+                                </h6>
+                            </a>
+                        </div>
+                        <h6 class="text-{{event.pay_to.color}}">
+                            <small class="text-muted">
+                                {{event.pay_to.code}}
+                            </small>
+                        </h6>
+                        <h6 class="text-{{event.pay_to.color}}">
+                            <span class="mr-2">
+                                {{event.pay_to.balance|to_price_color|safe}}
+                            </span>
+                        </h6>
+                    </div>
+                </div>
+
+
+                <h4>بستانکار</h4>
+                <div class="media">
+                    <a href="{{event.pay_from.get_absolute_url}}">
+                        <img src="{{event.pay_from.logo}}" width="72" alt="">
+                    </a>
+                    <div class="media-body mr-2">
+                        <div>
+                            <a href="{{event.pay_from.get_absolute_url}}">
+                                <h4>{{event.pay_from.name}}
+                                </h4>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="{{event.pay_from.parent.get_absolute_url}}">
+                                <h6>{{event.pay_from.parent.full_title}}
+                                </h6>
+                            </a>
+                        </div>
+                        <h6 class="text-{{event.pay_from.color}}">
+                            <small class="text-muted">
+                                {{event.pay_from.code}}
+                            </small>
+                        </h6>
+                        <h6 class="text-{{event.pay_from.color}}">
+                            <span class="mr-2">
+                                {{event.pay_from.balance|to_price_color|safe}}
+                            </span>
+                        </h6>
+                    </div>
+                </div>
+
+
+                <h5>
+
                     بدهکار
 
                     <a :href="event.pay_to.get_absolute_url">
@@ -23,6 +99,7 @@
                         {{event.pay_to.name}}
                     </a>
                 </h5>
+
 
                 <h5>
 
@@ -32,9 +109,22 @@
                         <span v-text="event.pay_from.name"></span>
                     </a>
                 </h5>
+                <hr>
+                <h5>
+
+                    تاریخ :
+
+                    {{event.event_datetime|to_persian_datetime|safe}}
+                </h5>
 
 
-                
+                <h5>
+
+                    مبلغ :
+
+                    {{event.amount|to_price|safe}}
+                </h5>
+
 
 
 
@@ -51,13 +141,13 @@
 
 {% block script %}
 <script>
-    let event=JSON.parse("{{event_s|escapejs}}")
-    let event_app=new Vue({
-        el:"#event-app",
-        data:{
-                event:event,
+    let event = JSON.parse("{{event_s|escapejs}}")
+    let event_app = new Vue({
+        el: "#event-app",
+        data: {
+            event: event,
         },
-        methods:{
+        methods: {
 
         },
     })

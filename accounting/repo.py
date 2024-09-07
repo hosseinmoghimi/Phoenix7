@@ -4,6 +4,7 @@ from processmanagement.permission import Permission,OperationEnum
 from utility.log import leolog
 from authentication.repo import ProfileRepo
 from .apps import APP_NAME
+from utility.num import filter_number
 from .defaults import init_all_accounts_list
 from utility.calendar import PersianCalendar
 
@@ -38,7 +39,6 @@ class EventRepo:
         #     return event,message,result
 
         event=Event()
-        
         if 'event_datetime' in kwargs:
             year=kwargs['event_datetime'][:2]
             if year=="13" or year=="14":
@@ -62,7 +62,6 @@ class EventRepo:
         #     payment.financial_year_id=kwargs['financial_year_id']
         # else:
         #     payment.financial_year_id=FinancialYear.get_by_date(date=payment.transaction_datetime).id
-
         event.save()
         result=SUCCEED
         message="رویداد مالی جدید با موفقیت اضافه گردید."
@@ -157,7 +156,7 @@ class AccountRepo():
                 return a
             else:
                 try:
-                    a= self.objects.filter(pure_code=int(kwargs['code'])).first() 
+                    a= self.objects.filter(pure_code=filter_number(kwargs['code'])).first() 
                     if a is not None:
                         return a
                 except:

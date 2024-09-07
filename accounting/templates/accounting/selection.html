@@ -6,9 +6,10 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                    
-        
-                        <a  class="btn btn-primary farsi"  href="{% url 'accounting:tree_chart' %}" target="_blank"> درخت حساب ها</a>
+
+
+                <a class="btn btn-primary farsi" href="{% url 'accounting:tree_chart' %}" target="_blank"> درخت حساب
+                    ها</a>
 
             </div>
         </div>
@@ -45,6 +46,8 @@
                                 <div>
 
                                     <span v-text="account_group.name"></span>
+                                    <span v-html="to_price(account_group.balance)"></span>
+
                                 </div>
                             </button>
 
@@ -96,6 +99,8 @@
                                 <div>
 
                                     <span v-text="basic_account.name"></span>
+                                    
+                                    <span v-html="to_price(basic_account.balance)"></span>
                                 </div>
 
                             </button>
@@ -144,6 +149,8 @@
                                 <div>
 
                                     <span v-text="moein_account.name"></span>
+                                    
+                                    <span v-html="to_price(moein_account.balance)"></span>
                                 </div>
 
                             </button>
@@ -175,7 +182,8 @@
 
 
 
-                    <a :class="'farsi mb-2 btn w-100 btn-'+moein_account2.color" :href="moein_account2.get_absolute_url">
+                    <a :class="'farsi mb-2 btn w-100 btn-'+moein_account2.color"
+                        :href="moein_account2.get_absolute_url">
 
 
                         <div>
@@ -185,6 +193,8 @@
                         <div>
 
                             <span v-text="moein_account2.name"></span>
+                            
+                            <span v-html="to_price(moein_account2.balance)"></span>
                         </div>
 
 
@@ -224,6 +234,18 @@
             selected_moein_account_id: 0,
         },
         methods: {
+            to_price: function (val) {
+                if(val==0){
+                    return ""
+                }
+                let price = to_price(val)
+                let color = "primary"
+                if (val > 0)
+                    color = "success"
+                if (val < 0)
+                    color = "danger"
+                return `<span class="farsi badge badge-${color}">${price}</span>`
+            },
             select_account_group: function (account_group_id) {
                 // let url = "{% url 'accounting:select_account_group' %}"
                 // let payload = {

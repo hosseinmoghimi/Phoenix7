@@ -20,18 +20,25 @@
                 <div class="col-md-4">
                     <div class="form-group">
 
-                        <label for="title">نام</label>
-                        <input type="text" placeholder="" id="title" v-model="title">
+                        <label for="title">عنوان رویداد مالی جدید</label>
+                        <input type="text" placeholder="" id="title" class="form-control" v-model="title">
                     </div>
                 </div>
 
-
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputDate">تاریخ</label>
+                        <date-picker v-model="event_datetime"></date-picker>
+    
+                        
+                    </div>
+                </div>
 
                 <div class="col-md-4">
                     <div class="form-group">
 
                         <label for="amount">مبلغ</label>
-                        <input type="number" placeholder="" id="amount" v-model="amount">
+                        <input type="number" class="form-control" placeholder="" id="amount" v-model="amount">
                     </div>
                 </div>
 
@@ -41,9 +48,9 @@
                     <div class="form-group">
 
                         <label for="bedehkar_code">بدهکار</label>
-                        <input type="text" placeholder="" id="bedehkar_code" @input="select_bedehkar()"
+                        <input type="text" placeholder="" class="form-control" id="bedehkar_code" @input="select_bedehkar()"
                             v-model="bedehkar.code">
-                        <h5 v-if="bedehkar.name">
+                        <h5 v-if="bedehkar.name" class="my-2">
                             <a :href="bedehkar.get_absolute_url">
                                 <span :class="'text-'+bedehkar.color" v-text="bedehkar.full_title"></span>
                             </a>
@@ -57,9 +64,9 @@
                     <div class="form-group">
 
                         <label for="bestankar_code">بستانکار</label>
-                        <input type="text" placeholder="" id="bestankar_code" @input="select_bestankar()"
+                        <input type="text" placeholder="" class="form-control" id="bestankar_code" @input="select_bestankar()"
                             v-model="bestankar.code">
-                        <h5 v-if="bestankar.name">
+                        <h5 v-if="bestankar.name" class="my-2">
                             <a :href="bestankar.get_absolute_url">
                                 <span :class="'text-'+bestankar.color" v-text="bestankar.full_title"></span>
                             </a>

@@ -340,7 +340,7 @@ class AddAccountingDocumentView(View):
             account_group.normalize_total()
         account_groups_s=json.dumps(AccountGroupSerializer(account_groups,many=True).data)
         context['account_groups_s']=account_groups_s
-        return render(request,TEMPLATE_ROOT+"add-document.html",context)
+        return render(request,TEMPLATE_ROOT+"add-accounting-document.html",context)
 
 class TreeListView(View):
     def get(self,request,*args, **kwargs):

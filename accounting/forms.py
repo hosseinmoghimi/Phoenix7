@@ -20,7 +20,7 @@ class AddAccountGroupForm(forms.Form):
 
 class AddEventForm(forms.Form):
     title=forms.CharField(max_length=100, required=True)
-    event_datetime=forms.CharField(max_length=100, required=True)
+    event_datetime=forms.CharField(max_length=50, required=True)
     bedehkar_id=forms.IntegerField(required=False)
     bestankar_id=forms.IntegerField(required=False)
     amount=forms.IntegerField(required=False)
