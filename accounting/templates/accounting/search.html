@@ -1,0 +1,31 @@
+{% extends "accounting/layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row rtl">
+
+
+
+    {% if accounts %}
+    <div class="col-md-12">
+
+        {% include "accounting/includes/account-app/table-template.html" %}
+    </div>
+
+    {% endif %}
+
+    {% if accounting_documents %}
+    <div class="col-md-12">
+        {% include "accounting/includes/accounting-document-app/list.html" %}
+    </div>
+    {% endif %}
+
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+{% include "accounting/includes/account-app/table-script.html" %}
+
+{% endblock script %}

@@ -1,11 +1,15 @@
 {% load to_persian_date %}
 {% load to_price %}
+<style>
+    .bg-success4 {
+        background-color: rgb(221, 255, 248);
+    }
+</style>
 
 
 
 
-
-<div class="card" id="accounting-document-app">
+<div class="card bg-success4 farsi" id="accounting-document-app">
     <div class="card-header">
         <h5 class="text-center farsi">
             ریز اسناد حسابداری
@@ -170,6 +174,14 @@
                     </th>
                 </tfoot>
             </table>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="text-right">
+            <a class="btn btn-info">
+                <i class="fa fa-print"></i>
+                چاپ
+            </a>
         </div>
     </div>
 </div>

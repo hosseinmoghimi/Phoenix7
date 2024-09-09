@@ -34,6 +34,7 @@ urlpatterns = [
     path("add-tafsili-account/",login_required(apis.AddTafsiliAccountApi.as_view()),name="add_tafsili_account"),
     path("add-basic-account/",login_required(apis.AddBasicAccountApi.as_view()),name="add_basic_account"),
     path("edit-document/",login_required(views.EditDocumentView.as_view()),name="edit_document"),
+    path("report/",login_required(views.ReportView.as_view()),name="report"),
     path("search/",login_required(views.SearchView.as_view()),name="search"),
     path("init_all_accounts/",login_required(apis.InitALLAccountsApi.as_view()),name="init_all_accounts"),
     path("delete_all_accounts/",login_required(apis.DeleteALLAccountsApi.as_view()),name="delete_all_accounts"),

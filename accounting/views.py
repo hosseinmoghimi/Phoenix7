@@ -3,7 +3,7 @@ from .apps import APP_NAME
 from processmanagement.permission import Permission,OperationEnum
 from django.views import View
 from .repo import TafsiliAccountRepo,AccountGroupRepo,AccountingDocumentRepo,BasicAccountRepo,MoeinAccountRepo,AccountRepo,EventRepo
-from .serializers import TafsiliAccountSerializer,AccountGroupSerializer,BasicAccountSerializer,MoeinAccountSerializer,AccountSerializer,EventSerializer
+from .serializers import TafsiliAccountSerializer,AccountGroupSerializer,BasicAccountSerializer,MoeinAccountSerializer,AccountSerializer,EventSerializer,AccountingDocumentSerializer
 from .serializers import AccountGroupBriefSerializer,BasicAccountBriefSerializer,MoeinAccountBriefSerializer,TafsiliAccountBriefSerializer,AccountingDocumentLineSerializer
 from .forms import *
 from core.views import CoreContext
@@ -304,6 +304,20 @@ class EventsView(View):
         return render(request,TEMPLATE_ROOT+"events.html",context)
 
 
+class ReportView(View):
+    
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        events=EventRepo(request=request).list(*args, **kwargs)
+        context['events']=events
+        events_s=json.dumps(EventSerializer(events,many=True).data)
+        context['events_s']=events_s
+ 
+        return render(request,TEMPLATE_ROOT+"report.html",context)
+    def post(self,request,*args, **kwargs):
+        from .apis import GetReportApi
+        return GetReportApi().post(request=request)
+
 class EventView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
@@ -316,6 +330,24 @@ class EventView(View):
 class SearchView(View):
     def get(self,request,*args, **kwargs):
         pass
+    def post(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        search_form=SearchForm(request.POST)
+        if search_form.is_valid():
+            search_for=search_form.cleaned_data['search_for']
+
+            accounts=AccountRepo(request=request).list(search_for=search_for,*args, **kwargs)
+            context['accounts']=accounts
+            accounts_s=json.dumps(AccountSerializer(accounts,many=True).data)
+            context['accounts_s']=accounts_s
+
+            accounting_documents=AccountingDocumentRepo(request=request).list(search_for=search_for,*args, **kwargs)
+            context['accounting_documents']=accounting_documents
+            accounting_documents_s=json.dumps(AccountingDocumentSerializer(accounting_documents,many=True).data)
+            context['accounting_documents_s']=accounting_documents_s
+
+
+        return render(request,TEMPLATE_ROOT+"search.html",context)
 
 class AccountGroupsView(View):
     def get(self,request,*args, **kwargs):

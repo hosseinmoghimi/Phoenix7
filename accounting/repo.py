@@ -1,6 +1,7 @@
 from .models import Event,TafsiliAccount,AccountGroup,BasicAccount,BasicAccount,MoeinAccount,AccountingDocument,AccountingDocumentLine,Account
 from utility.constants import FAILED,SUCCEED
 from processmanagement.permission import Permission,OperationEnum
+from django.db.models import Q
 from utility.log import leolog
 from authentication.repo import ProfileRepo
 from .apps import APP_NAME
@@ -73,13 +74,27 @@ class AccountingDocumentLineRepo:
         self.request=request
         self.me=None
         profile=ProfileRepo(request=request).me
-        self.objects=Account.objects
-        if profile is not None:
-            self.me=self.objects.filter(profile=profile).first()
+        self.objects=AccountingDocumentLine.objects
+        
     def list(self,*args, **kwargs):
         objects=self.objects
-        if "search_for" in kwargs:
+        if "search_for" in kwargs and kwargs["search_for"] is not None and len(kwargs["search_for"])>0 :
+            leolog(search_for=kwargs['search_for'])
             objects=objects.filter(title__contains=kwargs['search_for']) 
+        if "amount" in kwargs and kwargs["amount"] is not None and kwargs["amount"]>0 :
+            leolog(amount=kwargs['amount'])
+            objects=objects.filter(amount=kwargs['amount']) 
+        if "account_code" in kwargs:
+            leolog(account_code=kwargs['account_code'])
+            account_code=kwargs["account_code"]
+            account=AccountRepo(request=self.request).account(code=account_code)
+            if account is not None:
+                objects=objects.filter(account_id=account.id)
+        if "account_id" in kwargs:
+            leolog(account_id=kwargs['account_id'])
+            account_id=kwargs["account_id"]
+            objects=objects.filter(account_id=account_id)
+        leolog(kw=objects.all())
         return objects.all()
             
     def add_accounting_document_line(self,*args, **kwargs):
@@ -143,7 +158,8 @@ class AccountRepo():
     def list(self,*args, **kwargs):
         objects=self.objects
         if "search_for" in kwargs:
-            objects=objects.filter(title__contains=kwargs['search_for']) 
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for) | Q(pure_code=search_for ) )
         return objects.all()
     def account(self,*args, **kwargs):
         if "pk" in kwargs and kwargs["pk"] is not None:
@@ -151,17 +167,31 @@ class AccountRepo():
         if "id" in kwargs and kwargs["id"] is not None:
             return self.objects.filter(pk=kwargs['id']).first() 
         if "code" in kwargs and kwargs["code"] is not None:
-            a= self.objects.filter(code=kwargs['code']).first() 
+            a= self.objects.filter(Q(code=kwargs['code'])|Q(pure_code=kwargs['code'])).first()
+            leolog(a=a)
             if a is not None:
                 return a
             else:
                 try:
-                    a= self.objects.filter(pure_code=filter_number(kwargs['code'])).first() 
+                    pure_code=filter_number(kwargs['code'])
+                    leolog(pure_code=pure_code)
+                    a= self.objects.filter(pure_code=pure_coed).first() 
                     if a is not None:
                         return a
                 except:
                     pass
-
+        if "account_code" in kwargs and kwargs["account_code"] is not None:
+            a= self.objects.filter(code=kwargs['account_code']).first() 
+            if a is not None:
+                return a
+            else:
+                try:
+                    a= self.objects.filter(pure_code=filter_number(kwargs['account_code'])).first() 
+                    if a is not None:
+                        return a
+                except:
+                    pass
+                    
 
     def init_all_accounts(self,*args, **kwargs):
         tafsili_accounts_counter=0 

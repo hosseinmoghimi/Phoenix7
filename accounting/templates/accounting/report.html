@@ -1,0 +1,164 @@
+{% extends "accounting/wide-layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row rtl">
+    <div class="col-md-12">
+        <div class="card" id="report-app">
+            <div class="card-header">
+                <h5>
+                    گزارش حسابداری
+                </h5>
+            </div>
+            <div class="card-body">
+            
+                    <form @submit.prevent="get_report()">
+                        <div class="row rtl">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="">حساب</label>
+                                    <input class="form-control" v-model="account_code" @input="select_account()"
+                                        type="text">
+                                    <!-- <div class="my-2" v-if="">
+                                    <a :href="account.get_absolute_url">
+                                        <div class="media">
+                                            <img :src="account.logo" class="rounded" width="48" alt="">
+                                            <div class="media-body mr-2">
+                                                <h5> <span v-text="account.code"></span></h5>
+                                                <h5> <span v-text="account.name"></span></h5>
+                                                <h5> <span v-text="to_price(account.balance)"></span></h5>
+                                                <h5></h5>
+                                            </div>
+                                        </div>
+    
+                                    </a>
+                                </div> -->
+                                    <div class="my-2">
+
+                                        {% include "accounting/includes/account-app/media.html" %}
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="exampleInputDate">تاریخ شروع</label>
+                                    <date-picker v-model="start_date"></date-picker>
+
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="exampleInputDate">تاریخ پایان</label>
+                                    <date-picker v-model="end_date"></date-picker>
+
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">جستجو برای </label>
+                                    <input class="form-control" v-model="search_for" type="text">
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fa fa-plus"></i>تهیه گزارش
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+               
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        {% include "accounting/includes/accounting-document-lines-app/template.html" %}
+
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block script %}
+
+
+{% include "accounting/includes/accounting-document-lines-app/script.html" %}
+{% include "accounting/includes/account-app/select-script.html" %}
+
+<script>
+
+    let report_app = new Vue({
+        el: "#report-app",
+        data: {
+            account: { id: 0 },
+            account_code: "",
+            search_for: "",
+            start_date: current_date,
+            end_date: current_date,
+        },
+
+        components: {
+            DatePicker: VuePersianDatetimePicker
+
+        },
+
+        methods: {
+            get_report: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    search_for: this.search_for,
+                    account_code: this.account_code,
+                    start_date: this.start_date,
+                    end_date: this.end_date,
+                }
+                console.log(payload)
+                let url = "{% url 'accounting:report' %}"
+                let posting = $.post(url, payload)
+
+                posting.done(data => {
+                    console.log(data)
+                    if (data.result === "SUCCEED") {
+                        if (typeof accounting_document_lines_app != "undefined") {
+                            data.accounting_document_lines.forEach(accounting_document_line => {
+                                accounting_document_lines_app.add_accounting_document_line(accounting_document_line)
+                            });
+                        }
+                    }
+                })
+            },
+            to_price: function (val) {
+                if (val == 0) {
+                    return ""
+                }
+                let price = to_price(val)
+                let color = "primary"
+                if (val > 0)
+                    color = "success"
+                if (val < 0)
+                    color = "danger"
+                return `<span class="farsi badge badge-${color}">${price}</span>`
+            },
+            select_account: function () {
+                select_account_by_code(this.account_code).done(data => {
+                    console.log(data)
+                    if (data.result === "SUCCEED") {
+                        console.log(data.account)
+                        report_app.account = data.account
+                    }
+                })
+            },
+
+        }
+    })
+</script>
+{% endblock script %}

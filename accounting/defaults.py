@@ -7,36 +7,36 @@ def init_all_accounts_list():
             
         {"name":"دارایی جاری",'color':'success','code':"1","basic_accounts":[
             {"name":"	موجودی نقد و بانک",'color':'success','code':"11","moein_accounts":[
-                {"name":"صندوق",'color':'success','code':"111/10","moein_accounts":[
-                    {"name":"ریالی",'color':'success','code':"1111/10/01"},
+                {"name":"صندوق",'color':'success','code':"11-1","moein_accounts":[
+                    {"name":"ریالی",'color':'success','code':"11-1-1"},
                     # {"name":"aaaaaaaaa",'color':'success','code':"102"},
                     # {"name":"aaaaaaaaa",'color':'success','code':"102"},
                     # {"name":"aaaaaaaaa",'color':'success','code':"102"},
                 ]},
    
-                {"name":"بانک",'color':'info','code':"111/11","moein_accounts":[
+                {"name":"بانک",'color':'info','code':"11-2","moein_accounts":[
  
-                    {"name":"بانک ملی",'color':'info','code':"111/11/1","tafsili_accounts":[
-                        {"name":"حساب بانک ملی 0101581354009 به نام موسسه تست",'color':'info','code':"111/11/11"},
+                    {"name":"بانک ملی",'color':'info','code':"11-2-1","tafsili_accounts":[
+                        {"name":"حساب بانک ملی 0101581354009 به نام موسسه تست",'color':'info','code':"11-2-1-1"},
                     ]},
 
-                    {"name":"بانک رفاه کارگران",'color':'warning','code':"111/11/2","tafsili_accounts":[
+                    {"name":"بانک رفاه کارگران",'color':'warning','code':"11-2-2","tafsili_accounts":[
     
                     ]},
 
-                    {"name":"بانک صادرات",'color':'dark','code':"111/11/3","tafsili_accounts":[
+                    {"name":"بانک صادرات",'color':'dark','code':"11-2-3","tafsili_accounts":[
     
                     ]},
-                    {"name":"بانک ملت",'color':'dark','code':"111/11/4","tafsili_accounts":[
+                    {"name":"بانک ملت",'color':'dark','code':"11-2-4","tafsili_accounts":[
     
                     ]},
-                    {"name":"بانک تجارت",'color':'success','code':"111/11/5","tafsili_accounts":[
+                    {"name":"بانک تجارت",'color':'success','code':"11-2-5","tafsili_accounts":[
         
                     ]},
                 ]},
                 
                
-                 {"name":"تنخواه",'color':'success','code':"111/12","accounts":[
+                 {"name":"تنخواه",'color':'success','code':"11-3","accounts":[
      
                 ]},
             ]},

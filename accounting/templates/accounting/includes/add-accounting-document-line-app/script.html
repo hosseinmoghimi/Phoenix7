@@ -27,8 +27,8 @@
                 posting.done(data=>{
                     console.log(data)
                     if(data.result==="SUCCEED"){
-                        if(typeof accounting_document_app != "undefined"){
-                            accounting_document_app.add_accounting_document_line(data.accounting_document_line)
+                        if(typeof accounting_document_lines_app != "undefined"){
+                            accounting_document_lines_app.add_accounting_document_line(data.accounting_document_line)
                         }
                     }
                 })

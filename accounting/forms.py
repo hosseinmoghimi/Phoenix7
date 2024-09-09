@@ -26,6 +26,14 @@ class AddEventForm(forms.Form):
     amount=forms.IntegerField(required=False)
 
 
+class GetReportForm(forms.Form):
+    search_for=forms.CharField(max_length=100, required=False)
+    account_code=forms.CharField(max_length=100, required=True)
+    start_date=forms.CharField(max_length=50, required=False)
+    end_date=forms.CharField(max_length=50, required=False)
+    amount=forms.IntegerField(required=False)
+    
+
 class SelectAccountForm(forms.Form):
     pk=forms.IntegerField(required=False)
     pk=forms.IntegerField(required=False)
@@ -140,18 +148,7 @@ class RollBackTransactionForm(forms.Form):
 
 class AddServiceForm(forms.Form):
     title=forms.CharField(max_length=500,required=True)
-
-    
-class GetReportForm(forms.Form):
-    account_id=forms.IntegerField(required=False)
-    amount=forms.IntegerField(required=False)
-    search_for=forms.CharField(max_length=50, required=False)
-    payment_method=forms.CharField(max_length=50, required=False)
-    status=forms.CharField(max_length=50, required=False)
-    start_date=forms.CharField(max_length=50, required=False)
-    end_date=forms.CharField(max_length=50, required=False)
-
-
+ 
 class AddFinancialDocumentForm(forms.Form):
     title=forms.CharField( max_length=200, required=True)
     bestankar=forms.IntegerField(required=True)

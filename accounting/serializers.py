@@ -14,46 +14,38 @@ class EventBriefSerializer(serializers.ModelSerializer):
 class TafsiliAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = TafsiliAccount
-        fields = ['id', 'title','get_absolute_url','get_edit_url','get_delete_url','balance','logo']
+        fields = ['id','type','pure_code', 'title','get_absolute_url','get_edit_url','get_delete_url','balance','logo']
 
 class AccountingDocumentSerializer(serializers.ModelSerializer):
     class Meta:
         model = AccountingDocument
-        fields = ['id', 'title', 'get_absolute_url','get_edit_url','get_delete_url']
+        fields = ['id','title', 'get_absolute_url','get_edit_url','get_delete_url']
 
  
 class MoeinAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = MoeinAccount
-        fields = ['id', 'name','color','code','basic_account_id','moein_account_id','get_absolute_url','get_edit_url','get_delete_url','balance']
-
-class BasicAccountSerializer(serializers.ModelSerializer):
-    moein_accounts=MoeinAccountSerializer(many=True)
-    class Meta:
-        model = BasicAccount
-        fields = ['id', 'name','color','code','moein_accounts','get_absolute_url','get_edit_url','get_delete_url','balance']
-
+        fields = ['id', 'name','pure_code','type','color','code','basic_account_id','moein_account_id','get_absolute_url','get_edit_url','get_delete_url','balance']
  
-class AccountGroupSerializer(serializers.ModelSerializer):
-    basic_accounts=BasicAccountSerializer(many=True)
+class AccountGroupBriefSerializer(serializers.ModelSerializer):
     class Meta:
         model = AccountGroup
-        fields = ['id', 'name','color','code','basic_accounts','get_absolute_url','get_edit_url','get_delete_url','balance']
+        fields = ['id', 'name','pure_code','type','color','code','get_absolute_url','get_edit_url','get_delete_url','balance']
 
 
 
 class BasicAccountSerializer(serializers.ModelSerializer):
     moein_accounts=MoeinAccountSerializer(many=True)
-    account_group=AccountGroupSerializer()
+    account_group=AccountGroupBriefSerializer()
     class Meta:
         model = BasicAccount
-        fields = ['id', 'name','color','account_group','code','moein_accounts','get_absolute_url','get_edit_url','get_delete_url','balance']
+        fields = ['id', 'name','type','color','pure_code','account_group','code','moein_accounts','get_absolute_url','get_edit_url','get_delete_url','balance']
 
 class AccountGroupSerializer(serializers.ModelSerializer):
     basic_accounts=BasicAccountSerializer(many=True)
     class Meta:
         model = AccountGroup
-        fields = ['id', 'name','color','code','basic_accounts','get_absolute_url','get_edit_url','get_delete_url','balance']
+        fields = ['id', 'name','type','pure_code','color','code','basic_accounts','get_absolute_url','get_edit_url','get_delete_url','balance']
 
 
  
@@ -62,30 +54,30 @@ class AccountGroupSerializer(serializers.ModelSerializer):
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = ['id', 'name',"full_title",'logo','type','balance_colored','color','code','get_absolute_url','get_edit_url','get_delete_url','balance']
+        fields = ['id', 'name','pure_code',"full_title",'logo','type','balance_colored','color','code','get_absolute_url','get_edit_url','get_delete_url','balance']
 
 
 
 class AccountGroupBriefSerializer(serializers.ModelSerializer):
     class Meta:
         model = AccountGroup
-        fields = ['id', 'name','color','code','get_absolute_url','get_edit_url','get_delete_url','balance']
+        fields = ['id', 'name','pure_code','color','code','get_absolute_url','get_edit_url','get_delete_url','balance']
 
 class BasicAccountBriefSerializer(serializers.ModelSerializer):
     class Meta:
         model = BasicAccount
-        fields = ['id','balance_colored', 'name','color','account_group_id','logo','code','get_absolute_url','get_edit_url','get_delete_url','balance']
+        fields = ['id','balance_colored','pure_code', 'name','color','account_group_id','logo','code','get_absolute_url','get_edit_url','get_delete_url','balance']
 
 class MoeinAccountBriefSerializer(serializers.ModelSerializer):
     class Meta:
         model = MoeinAccount
-        fields = ['id', 'name','color','logo','code','basic_account_id','moein_account_id','get_absolute_url','get_edit_url','get_delete_url','balance']
+        fields = ['id', 'name','color','pure_code','logo','code','basic_account_id','moein_account_id','get_absolute_url','get_edit_url','get_delete_url','balance']
 
 
 class TafsiliAccountBriefSerializer(serializers.ModelSerializer):
     class Meta:
         model = TafsiliAccount
-        fields = ['id', 'name','color','code','moein_account_id','get_absolute_url','get_edit_url','get_delete_url','balance']
+        fields = ['id', 'name','color','pure_code','code','moein_account_id','get_absolute_url','get_edit_url','get_delete_url','balance']
 
 class AccountingDocumentBriefSerializer(serializers.ModelSerializer):
     class Meta:

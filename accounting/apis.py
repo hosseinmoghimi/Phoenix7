@@ -248,3 +248,28 @@ class AddAccountApi(APIView):
         return JsonResponse(context)
 
  
+
+class GetReportApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            log=222
+            get_report_form=GetReportForm(request.POST)
+            if get_report_form.is_valid():
+                log=333
+                cd=get_report_form.cleaned_data
+                leolog(cd=cd)
+                accounting_document_lines=AccountingDocumentLineRepo(request=request).list(**cd)
+                if accounting_document_lines is not None:
+                    result=SUCCEED
+                    context['accounting_document_lines']=AccountingDocumentLineSerializer(accounting_document_lines,many=True).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+ 

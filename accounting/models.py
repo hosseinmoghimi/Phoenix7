@@ -204,7 +204,7 @@ class Account(models.Model,LinkHelper):
             result=FAILED
             message="نام تکراری"
         from utility.num import filter_number
-        self.pure_code=filter_number(  self.code)
+        self.pure_code=filter_number(self.code)
         super(Account,self).save()
         return self,result,message
 
@@ -409,7 +409,7 @@ class AccountingDocumentLine(models.Model,LinkHelper):
     title=models.CharField(_("title"), max_length=500)
     date_added=models.DateTimeField(_("date_added"), auto_now=False, auto_now_add=True)
     date_time=models.DateTimeField(_("date_time"), auto_now=True, auto_now_add=False)
-    date_modified=models.DateTimeField(_("date_modified "),null=True, auto_now=False, auto_now_add=False)
+    date_modified=models.DateTimeField(_("date_modified "),null=True, auto_now=True, auto_now_add=False)
     bedehkar=models.IntegerField(_("بدهکار"),default=0)
     bestankar=models.IntegerField(_("بستانکار"),default=0)
     balance=models.IntegerField(_("بالانس"),default=0)

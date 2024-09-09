@@ -41,13 +41,18 @@
 
                                 <small v-text="account.full_title"></small>
                             </div>
-                            
+
                         </a>
                     </td>
 
                     <td>
-                        <span v-text="account.code"></span>
 
+                        <div>
+                            <span v-text="account.code"></span>
+                        </div>
+                        <div>
+                            <small class="text-muted" v-text="account.pure_code"></small>
+                        </div>
                     </td>
                     <td>
                         <span v-text="account.type"></span>
