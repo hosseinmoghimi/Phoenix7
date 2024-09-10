@@ -19,15 +19,16 @@
         {% include "accounting/includes/accounting-document-lines-app/template.html" %}
     </div>
 </div>
-    {% endblock content %}
+{% endblock content %}
 
 
-    {% block script %}
-    {% include "accounting/includes/account-app/select-script.html" %}
+{% block script %} 
+ 
+{% include "accounting/includes/account-app/select-script.html" %}
 
-    {% if add_accounting_document_line_form %}
-    {% include "accounting/includes/add-accounting-document-line-app/script.html" %}
-    {% endif %}
-    {% include "accounting/includes/accounting-document-lines-app/script.html" %}
+{% if add_accounting_document_line_form %}
+{% include "accounting/includes/add-accounting-document-line-app/script.html" %}
+{% endif %}
+{% include "accounting/includes/accounting-document-lines-app/script.html" %}
 
-    {% endblock script %}
+{% endblock script %}

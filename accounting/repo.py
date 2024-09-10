@@ -168,13 +168,11 @@ class AccountRepo():
             return self.objects.filter(pk=kwargs['id']).first() 
         if "code" in kwargs and kwargs["code"] is not None:
             a= self.objects.filter(Q(code=kwargs['code'])|Q(pure_code=kwargs['code'])).first()
-            leolog(a=a)
             if a is not None:
                 return a
             else:
                 try:
                     pure_code=filter_number(kwargs['code'])
-                    leolog(pure_code=pure_code)
                     a= self.objects.filter(pure_code=pure_coed).first() 
                     if a is not None:
                         return a

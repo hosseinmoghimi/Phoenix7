@@ -59,12 +59,23 @@
                         <div class="form-group">
                             <label for="">بدهکار</label>
                             <input class="form-control" v-model="bedehkar" type="number">
+                            <div class="farsi text-right my-2">
+                                <span v-text="to_price(bedehkar)"></span>
+                                ریال
+
+                            </div>
+                            
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="">بستانکار</label>
                             <input class="form-control" v-model="bestankar" type="number">
+                            <div class="farsi text-right my-2">
+                                <span  v-text="to_price(bestankar)"></span>
+                                ریال
+                            </div>
+                             
                         </div>
                     </div>
 
