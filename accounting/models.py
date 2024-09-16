@@ -255,7 +255,6 @@ class AccountGroup(Account):
         self.type=AccountTypeEnum.GROUP
         super(AccountGroup,self).save()
 
-
 class BasicAccount(Account):
    
     account_group=models.ForeignKey("accountgroup", verbose_name=_("account group"), on_delete=models.CASCADE)
@@ -280,7 +279,6 @@ class BasicAccount(Account):
     def save(self):
         self.type=AccountTypeEnum.BASIC
         return super(BasicAccount,self).save()
-
 
 class MoeinAccount(Account):
 
@@ -345,7 +343,6 @@ class TafsiliAccount(Account):
     def save(self):
         self.type=AccountTypeEnum.TAFSILI
         return super(TafsiliAccount,self).save()
-        
         
 class FinancialDocument(LinkHelper,models.Model):
     account=models.ForeignKey("account", verbose_name=_("account"), on_delete=models.PROTECT)
@@ -413,7 +410,7 @@ class AccountingDocumentLine(models.Model,LinkHelper):
     bedehkar=models.IntegerField(_("بدهکار"),default=0)
     bestankar=models.IntegerField(_("بستانکار"),default=0)
     balance=models.IntegerField(_("بالانس"),default=0)
-
+    
     def save(self):
         # if self.account==self.event.pay_from:
         #     self.bestankar=self.event.amount
@@ -516,7 +513,6 @@ class EventPrint(models.Model):
     def __str__(self):
         print_datetime=PersianCalendar().from_gregorian(self.print_datetime)
         return f"{self.event}   @  {print_datetime} "
-  
    
 class Person(models.Model,LinkHelper):
     class_name="person"
@@ -535,8 +531,6 @@ class Person(models.Model,LinkHelper):
     @property
     def full_name(self):
         return f"{self.prefix} {self.first_name} {self.last_name}"
-
-
         
 class Thing(Page,LinkHelper):
     
@@ -544,7 +538,6 @@ class Thing(Page,LinkHelper):
         verbose_name = _("Thing")
         verbose_name_plural = _("Thingس")
  
-
 class Material(Thing):
     barcode=models.CharField(_("بارکد"),null=True,blank=True, max_length=100)
     class_name="material"
@@ -561,6 +554,7 @@ class Material(Thing):
         if self.app_name is None or self.app_name=="":
             self.app_name=APP_NAME
         return super(Service,self).save(*args, **kwargs)
+
 class Service(Thing): 
 
     class Meta:
