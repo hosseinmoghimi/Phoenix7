@@ -1,0 +1,7 @@
+<script>
+    select_accounting_document_by_id = function (accounting_document_id) {
+        let payload2 = { csrfmiddlewaretoken: csrfmiddlewaretoken, accounting_document_id: accounting_document_id }
+        console.log(payload2)
+        return $.post("{% url 'accounting:select_accounting_document' %}", payload2)
+    }
+</script>

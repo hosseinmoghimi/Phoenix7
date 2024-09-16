@@ -1,12 +1,12 @@
-{% extends "accounting/layout.html" %}
+{% extends "accounting/wide-layout.html" %}
 {% load to_price %}
 {% load static %}
 {% load to_persian_date %}
 
 {% block content %}
-<div class="row rtl" id="event-app">
+<div class="row rtl">
     <div class="col-md-12">
-        <div class="card">
+        <div class="card" id="event-app">
             <div class="card-header">
                 <h5>
                     رویداد مالی
@@ -135,11 +135,66 @@
 
 
 
+    <div class="col-md-12">
+        <div class="card" id="add-event-to-accounting-document-app">
+            <div class="card-header">
+                <h5>
+                    افزودن به سند
+                </h5>
+
+            </div>
+            <div class="card-body">
+
+
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="">
+                                شماره سند
+                            </label>
+                            <input type="number" @input="get_accounting_document()" class="form-control"
+                                v-model="accounting_document.id">
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" v-if="accounting_document.id==0">
+                            <label for="">
+                                عنوان سند
+                            </label>
+                            <input type="text" class="form-control" v-model="accounting_document.title">
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-12 my-2">
+                        <div :class="'alert alert-'+message.color">
+                            <div v-html="message.body"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12">
+        {% include "accounting/includes/accounting-document-lines-app/template.html" %}
+
+    </div>
 </div>
 {% endblock content %}
 
 
 {% block script %}
+{% include "accounting/includes/accounting-document-app/select-script.html" %}
 <script>
     let event = JSON.parse("{{event_s|escapejs}}")
     let event_app = new Vue({
@@ -152,4 +207,47 @@
         },
     })
 </script>
+<script>
+    let add_event_to_accounting_document_app = new Vue({
+        el: "#add-event-to-accounting-document-app",
+        data: {
+            accounting_document: { id: 0, title: "" },
+            message: { show: false },
+        },
+        methods: {
+            get_accounting_document: function () {
+                console.log(this.accounting_document.id)
+                select_accounting_document_by_id(this.accounting_document.id).done(data => {
+                    console.log(data)
+                    console.log(data.result === "SUCCEED")
+                    if (data.result === "FAILED") {
+                        add_event_to_accounting_document_app.message.body = `
+                        <p class="farsi text-right">
+                           ${data.message}
+                            </p>
+                        `
+
+
+                        add_event_to_accounting_document_app.message.show = true
+                        add_event_to_accounting_document_app.message.color = "danger"
+                    }
+                    if (data.result === "SUCCEED") {
+                        add_event_to_accounting_document_app.message.body = `
+                        <p class="farsi text-right">
+                            <a href="${data.accounting_document.get_absolute_url}">
+                            ${data.accounting_document.title}
+                            </a>
+                        </p>`
+
+
+                        add_event_to_accounting_document_app.message.show = true
+                        add_event_to_accounting_document_app.message.color = "success"
+                    }
+                })
+            }
+        },
+    })
+</script>
+{% include "accounting/includes/accounting-document-lines-app/script.html" %}
+
 {% endblock script %}

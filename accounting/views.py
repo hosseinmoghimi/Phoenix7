@@ -2,7 +2,7 @@ from django.shortcuts import render,reverse
 from .apps import APP_NAME
 from processmanagement.permission import Permission,OperationEnum
 from django.views import View
-from .repo import TafsiliAccountRepo,AccountGroupRepo,AccountingDocumentRepo,BasicAccountRepo,MoeinAccountRepo,AccountRepo,EventRepo
+from .repo import AccountingDocumentLineRepo,TafsiliAccountRepo,AccountGroupRepo,AccountingDocumentRepo,BasicAccountRepo,MoeinAccountRepo,AccountRepo,EventRepo
 from .serializers import TafsiliAccountSerializer,AccountGroupSerializer,BasicAccountSerializer,MoeinAccountSerializer,AccountSerializer,EventSerializer,AccountingDocumentSerializer
 from .serializers import AccountGroupBriefSerializer,BasicAccountBriefSerializer,MoeinAccountBriefSerializer,TafsiliAccountBriefSerializer,AccountingDocumentLineSerializer
 from .forms import *
@@ -82,7 +82,7 @@ class AccountingDocumentsView(View):
         return render(request,TEMPLATE_ROOT+"accounting-documents.html",context)
 
 class AccountingDocumentLineView(View):
-    def get(self,requets,*args, **kwargs):
+    def get(self,request,*args, **kwargs):
         
         context=getContext(request=request)
         context['expand_accounts']=True
@@ -118,15 +118,15 @@ class AccountingDocumentView(View):
 class TafsiliAccountView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
-        tasili_account=TafsiliAccountRepo(request=request).account(*args, **kwargs)
-        context['tasili_account']=tasili_account
-        context.update(get_account_context(account=tasili_account))
-        tasili_account.normalize_total()
-        accounting_document_lines=tasili_account.accountingdocumentline_set.all()
+        tafsili_account=TafsiliAccountRepo(request=request).tafsili_account(*args, **kwargs)
+        context['tafsili_account']=tafsili_account
+        context.update(get_account_context(account=tafsili_account))
+        tafsili_account.normalize_total()
+        accounting_document_lines=tafsili_account.accountingdocumentline_set.all()
         context['accounting_document_lines']=accounting_document_lines
 
-        tasili_account_s=json.dumps(TafsiliAccountSerializer(tasili_account).data)
-        context['tasili_account_s']=tasili_account_s
+        tafsili_account_s=json.dumps(TafsiliAccountSerializer(tafsili_account).data)
+        context['tafsili_account_s']=tafsili_account_s
         
 
         return render(request,TEMPLATE_ROOT+"tafsili-account.html",context)
@@ -301,8 +301,8 @@ class EventsView(View):
         events_s=json.dumps(EventSerializer(events,many=True).data)
         context['events_s']=events_s
  
+        context['expand_events']=True
         return render(request,TEMPLATE_ROOT+"events.html",context)
-
 
 class ReportView(View):
     
@@ -325,6 +325,14 @@ class EventView(View):
         context['event']=event
         event_s=json.dumps(EventSerializer(event).data)
         context['event_s']=event_s
+
+
+        
+        accounting_document_lines=AccountingDocumentLineRepo(request=request).list(event_id=event.id).order_by('-bedehkar')
+        accounting_document_lines_s=json.dumps(AccountingDocumentLineSerializer(accounting_document_lines,many=True).data)
+        context["accounting_document_lines_s"]=accounting_document_lines_s
+
+
         return render(request,TEMPLATE_ROOT+"event.html",context)
 
 class SearchView(View):

@@ -39,6 +39,7 @@ urlpatterns = [
     path("init_all_accounts/",login_required(apis.InitALLAccountsApi.as_view()),name="init_all_accounts"),
     path("delete_all_accounts/",login_required(apis.DeleteALLAccountsApi.as_view()),name="delete_all_accounts"),
     path("select_account_group/",login_required(apis.SelectAccountGroupApi.as_view()),name="select_account_group"),
+    path("select_accounting_document/",login_required(apis.SelectAccountingDocumentApi.as_view()),name="select_accounting_document"),
     path("selection/",login_required(views.SelectionView.as_view()),name="selection"),
     path("select-account/",login_required(apis.SelectAccountApi.as_view()),name="select_account"),
     path("settings/",login_required(views.SettingsView.as_view()),name="settings"),

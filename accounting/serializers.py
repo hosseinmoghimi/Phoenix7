@@ -90,7 +90,7 @@ class AccountingDocumentLineSerializer(serializers.ModelSerializer):
     account=AccountSerializer()
     class Meta:
         model = AccountingDocumentLine
-        fields = ['id', 'title','accounting_document','amount','event','account','bedehkar','bestankar','get_absolute_url','get_edit_url','get_delete_url']
+        fields = ['id', 'title','persian_date_time','accounting_document','amount','event','account','bedehkar','bestankar','get_absolute_url','get_edit_url','get_delete_url']
 
 class EventSerializer(serializers.ModelSerializer): 
     pay_to=AccountSerializer()

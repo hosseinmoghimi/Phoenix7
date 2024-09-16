@@ -25,6 +25,8 @@ class AddEventForm(forms.Form):
     bestankar_id=forms.IntegerField(required=False)
     amount=forms.IntegerField(required=False)
 
+class SelectAccountingDocumentForm(forms.Form):
+    accounting_document_id=forms.IntegerField(required=True)
 
 class GetReportForm(forms.Form):
     search_for=forms.CharField(max_length=100, required=False)

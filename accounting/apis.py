@@ -273,3 +273,28 @@ class GetReportApi(APIView):
         return JsonResponse(context)
 
  
+class SelectAccountingDocumentApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            log=222
+            select_accounting_document_form=SelectAccountingDocumentForm(request.POST)
+            if select_accounting_document_form.is_valid():
+                log=333
+                cd=select_accounting_document_form.cleaned_data
+                accounting_document=AccountingDocumentRepo(request=request).accounting_document(**cd)
+                if accounting_document is not None:
+                    context['accounting_document']=AccountingDocumentSerializer(accounting_document).data
+                    result=SUCCEED
+                else:
+                    message="سند حسابداری با این شناسه پیدا نشد."
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+ 

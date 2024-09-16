@@ -28,18 +28,33 @@
                     <th>
                         شرح
                     </th>
+                    {% if not accounting_document %}
+                    <th>
+                        سند
+                    </th>
+                    {% endif %}
+                    {% if not account %}
+
                     <th>
                         حساب
                     </th>
+                    {% endif %}
 
+
+                    <th>
+                        تاریخ
+                    </th>
 
                     <th>
                         مبلغ
                     </th>
 
+                    {% if not event %}
+
                     <th>
                         رویداد
                     </th>
+                    {% endif %}
 
                     <th>
                         بدهکار
@@ -56,23 +71,43 @@
                 <tbody>
                     <tr v-for="accounting_document_line in accounting_document_lines">
                         <td>
-                            <div>
+                            <!-- <div>
                                 ریز سند
+                              
+
+                            </div> -->
+
+
+
+                            <div>
                                 <a :href="accounting_document_line.get_absolute_url">
                                     <span v-text="accounting_document_line.title"></span>
                                 </a>
 
                             </div>
-                            <div class="text-warning">
+
+                            {% if not accounting_document %}
+
+                            <!-- <div class="text-warning">
                                 سند :
                                 <a class="text-warning"
                                     :href="accounting_document_line.accounting_document.get_absolute_url">
                                     <span v-text="accounting_document_line.accounting_document.title"></span>
                                 </a>
-                            </div>
+                            </div> -->
+                            {% endif %}
 
 
                         </td>
+                        {% if not accounting_document %}
+                        <td>
+                            <a :href="accounting_document_line.accounting_document.get_absolute_url">
+                                <span v-text="accounting_document_line.accounting_document.title"></span>
+                            </a>
+                        </td>
+                        {% endif %}
+                        {% if not account %}
+
                         <td>
                             <a :href="accounting_document_line.account.get_absolute_url">
                                 <span v-text="accounting_document_line.account.code"></span>
@@ -85,10 +120,19 @@
 
                             </a>
                         </td>
+                        {% endif %}
+
+                        <td>
+                            <span v-html="accounting_document_line.persian_date_time"></span>
+
+                        </td>
                         <td>
                             <span v-text="to_price(accounting_document_line.amount)"></span>
 
                         </td>
+
+                        {% if not event %}
+
                         <td>
                             <a v-if="accounting_document_line.event"
                                 :href="accounting_document_line.event.get_absolute_url">
@@ -96,6 +140,7 @@
                                 <span v-text="accounting_document_line.event.title"></span>
                             </a>
                         </td>
+                        {% endif %}
                         <td>
                             <span class="text-danger" v-if="accounting_document_line.bedehkar!='0'">
                                 <span v-text="to_price(accounting_document_line.bedehkar)"></span>
@@ -126,7 +171,7 @@
                     </tr>
                 </tbody>
                 <tfoot>
-                    <th colspan="4">
+                    <th colspan="5">
                         <div class="text-left farsi">
                             جمع
                         </div>

@@ -23,6 +23,8 @@ class EventRepo:
             objects=objects.filter(title__contains=kwargs['search_for']) 
         return objects.all()
     def event(self,*args, **kwargs):
+        if "event_id" in kwargs:
+            return self.objects.filter(pk=kwargs['event_id']).first() 
         if "pk" in kwargs:
             return self.objects.filter(pk=kwargs['pk']).first() 
         if "id" in kwargs:
@@ -79,24 +81,33 @@ class AccountingDocumentLineRepo:
     def list(self,*args, **kwargs):
         objects=self.objects
         if "search_for" in kwargs and kwargs["search_for"] is not None and len(kwargs["search_for"])>0 :
-            leolog(search_for=kwargs['search_for'])
             objects=objects.filter(title__contains=kwargs['search_for']) 
         if "amount" in kwargs and kwargs["amount"] is not None and kwargs["amount"]>0 :
-            leolog(amount=kwargs['amount'])
             objects=objects.filter(amount=kwargs['amount']) 
         if "account_code" in kwargs:
-            leolog(account_code=kwargs['account_code'])
             account_code=kwargs["account_code"]
             account=AccountRepo(request=self.request).account(code=account_code)
             if account is not None:
                 objects=objects.filter(account_id=account.id)
         if "account_id" in kwargs:
-            leolog(account_id=kwargs['account_id'])
             account_id=kwargs["account_id"]
             objects=objects.filter(account_id=account_id)
-        leolog(kw=objects.all())
+        if "event_id" in kwargs:
+            event_id=kwargs["event_id"]
+            objects=objects.filter(event_id=event_id)
         return objects.all()
             
+
+    def accounting_document_line(self,*args, **kwargs):
+        if "accounting_document_line_id" in kwargs and kwargs["accounting_document_line_id"] is not None:
+            return self.objects.filter(pk=kwargs['accounting_document_line_id']).first() 
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+                    
+
     def add_accounting_document_line(self,*args, **kwargs):
         accounting_document_line,message,result=(None,"",FAILED)
         if not Permission(request=self.request).is_permitted(APP_NAME,OperationEnum.ADD,"accountingdocumentline"):
@@ -162,6 +173,8 @@ class AccountRepo():
             objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for) | Q(pure_code=search_for ) )
         return objects.all()
     def account(self,*args, **kwargs):
+        if "account_id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['account_id']).first() 
         if "pk" in kwargs and kwargs["pk"] is not None:
             return self.objects.filter(pk=kwargs['pk']).first() 
         if "id" in kwargs and kwargs["id"] is not None:
@@ -304,7 +317,9 @@ class TafsiliAccountRepo():
         if "search_for" in kwargs:
             objects=objects.filter(title__contains=kwargs['search_for']) 
         return objects.all()
-    def account(self,*args, **kwargs):
+    def tafsili_account(self,*args, **kwargs):
+        if "tafsili_account_id" in kwargs:
+            return self.objects.filter(pk=kwargs['tafsili_account_id']).first() 
         if "pk" in kwargs:
             return self.objects.filter(pk=kwargs['pk']).first() 
         if "id" in kwargs:
@@ -417,6 +432,8 @@ class AccountGroupRepo():
             objects=objects.filter(title__contains=kwargs['search_for']) 
         return objects.all()
     def account_group(self,*args, **kwargs):
+        if "account_group_id" in kwargs:
+            return self.objects.filter(pk=kwargs['account_group_id']).first() 
         if "pk" in kwargs:
             return self.objects.filter(pk=kwargs['pk']).first() 
         if "id" in kwargs:
@@ -523,6 +540,8 @@ class BasicAccountRepo():
         return objects.all()
     
     def basic_account(self,*args, **kwargs):
+        if "basic_account_id" in kwargs:
+            return self.objects.filter(pk=kwargs['basic_account_id']).first() 
         if "pk" in kwargs:
             return self.objects.filter(pk=kwargs['pk']).first() 
         if "id" in kwargs:
@@ -639,6 +658,8 @@ class MoeinAccountRepo():
             objects=objects.filter(title__contains=kwargs['search_for']) 
         return objects.all()
     def moein_account(self,*args, **kwargs):
+        if "moein_account_id" in kwargs:
+            return self.objects.filter(pk=kwargs['moein_account_id']).first() 
         if "pk" in kwargs:
             return self.objects.filter(pk=kwargs['pk']).first() 
         if "id" in kwargs:
@@ -733,6 +754,8 @@ class AccountingDocumentRepo():
             objects=objects.filter(title__contains=kwargs['search_for']) 
         return objects.all()
     def accounting_document(self,*args, **kwargs):
+        if "accounting_document_id" in kwargs:
+            return self.objects.filter(pk=kwargs['accounting_document_id']).first() 
         if "pk" in kwargs:
             return self.objects.filter(pk=kwargs['pk']).first() 
         if "id" in kwargs:

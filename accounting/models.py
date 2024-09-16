@@ -410,7 +410,14 @@ class AccountingDocumentLine(models.Model,LinkHelper):
     bedehkar=models.IntegerField(_("بدهکار"),default=0)
     bestankar=models.IntegerField(_("بستانکار"),default=0)
     balance=models.IntegerField(_("بالانس"),default=0)
-    
+    @property
+    def persian_date_time(self):
+        a= PersianCalendar().from_gregorian(self.date_time)    
+        return f"""
+                    <span>{a[:11]}</span>
+                    <small class="text-muted mr-1">{a[11:]}</small>
+
+                """
     def save(self):
         # if self.account==self.event.pay_from:
         #     self.bestankar=self.event.amount
