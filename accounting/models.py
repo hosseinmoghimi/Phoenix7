@@ -6,11 +6,10 @@ from .enums import *
 from utility.constants import SUCCEED,FAILED
 from utility.currency import to_price_colored
 from utility.calendar import PersianCalendar
-IMAGE_FOLDER=APP_NAME+"/images/"
-from utility.currency import to_price
-from phoenix.server_settings import MEDIA_URL,STATIC_URL 
-# Create your models here.
 from django.contrib.auth.models import User,Group
+from phoenix.server_settings import MEDIA_URL,STATIC_URL 
+
+IMAGE_FOLDER=APP_NAME+"/images/"
 ACCOUNT_NAME_SEPERATOR=" - "
 class Access(models.Model):
 
