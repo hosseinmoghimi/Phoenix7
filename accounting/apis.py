@@ -180,7 +180,7 @@ class InitALLAccountsApi(APIView):
         log=111
         context['result']=FAILED
         if request.method=='POST':
-            (account_groups,result,message)=AccountRepo(request=request).init_all_accounts() 
+            (result,message)=AccountRepo(request=request).init_all_accounts() 
         context['message']=message
         context['result']=result
         context['log']=log

@@ -10,6 +10,11 @@
         methods: {
             filter:function(){
                 this.accounts = accounts_table_app_accounts.filter(account=> account.name.indexOf(this.search_for) > -1 || account.code.indexOf(this.search_for) > -1  )
+                if(typeof accounts_list_app != "undefined"){
+                    accounts_list_app.search_for=this.search_for
+                    accounts_list_app.filter()
+                }
+           
             },
             to_price: function (vall) {
                 let color='primary'

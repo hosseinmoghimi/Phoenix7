@@ -73,6 +73,8 @@ class Account(models.Model,LinkHelper):
             return reverse("accounting:basicaccount",kwargs={"pk":self.pk})
         if self.type==AccountTypeEnum.MOEIN:
             return reverse("accounting:moeinaccount",kwargs={"pk":self.pk})
+        if self.type==AccountTypeEnum.MOEIN_2:
+            return reverse("accounting:moeinaccount",kwargs={"pk":self.pk})
         if self.type==AccountTypeEnum.TAFSILI:
             return reverse("accounting:tafsiliaccount",kwargs={"pk":self.pk})
     @property
@@ -202,6 +204,9 @@ class Account(models.Model,LinkHelper):
         if len(Account.objects.filter(name=self.name).exclude(pk=self.pk))>0:
             result=FAILED
             message="نام تکراری"
+        if len(Account.objects.filter(code=self.code).exclude(pk=self.pk))>0:
+            result=FAILED
+            message="کد تکراری"
         from utility.num import filter_number
         self.pure_code=filter_number(self.code)
         super(Account,self).save()
@@ -223,6 +228,9 @@ class Account(models.Model,LinkHelper):
                 childs=childs1
             if len(childs2)>0:
                 childs=childs2 
+        if self.type==AccountTypeEnum.MOEIN_2:
+            childs=TafsiliAccount.objects.filter(moein_account_id=self.pk)
+            return childs
         if self.type==AccountTypeEnum.TAFSILI:
             childs=TafsiliAccount.objects.filter(tafsili_account_id=self.pk)
             return childs
@@ -300,6 +308,8 @@ class MoeinAccount(Account):
 
     def save(self):
         self.type=AccountTypeEnum.MOEIN
+        if self.moein_account is not None:
+            self.type=AccountTypeEnum.MOEIN_2
         return super(MoeinAccount,self).save()
     class Meta:
         verbose_name = _("MoeinAccount")

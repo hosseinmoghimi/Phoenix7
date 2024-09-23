@@ -2,12 +2,14 @@
 <div class="media">
     <img :src="account.logo" width="48" alt="">
     <div class="media-body mr-2">
-        <a :href="account.get_absolute_url">
-            <h5 :class="'text-'+account.color">
+        <h5 :class="'text-'+account.color">
+                <a :href="account.get_absolute_url">
                 <span v-text="account.name"></span>
-
+                <span :class="'badge badge-'+account.color" v-text="account.type"></span>
+            </a>
             </h5>
-        </a>
+
+            
         <h6 :class="'text-'+account.color">
             <small class="text-muted">
                 <span v-text="account.code"></span>

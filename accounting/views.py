@@ -12,6 +12,7 @@ import json
 from utility.currency import to_price
 from utility.templatetags.to_price import to_price_color
 from utility.log import leolog
+from phoenix.server_settings import CURRENCY
 LAYOUT_PARENT = "phoenix/layout.html"
 WIDE_LAYOUT_PARENT = "phoenix/wide-layout.html"
 TEMPLATE_ROOT = "accounting/"
@@ -24,6 +25,7 @@ def getContext(request,app_name=APP_NAME, *args, **kwargs):
     context['search_action'] = reverse(APP_NAME+":search")
     context['WIDE_LAYOUT_PARENT'] = WIDE_LAYOUT_PARENT
     context['LAYOUT_PARENT'] = LAYOUT_PARENT
+    context['CURRENCY'] = CURRENCY
     return context
 
 def get_account_context(account,*args, **kwargs):

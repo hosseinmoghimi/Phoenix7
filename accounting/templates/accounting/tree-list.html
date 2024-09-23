@@ -14,19 +14,19 @@
             <div class="card-body">
                 {% for account_group in account_groups %}
                 <div>
-                    <h4 class="text-danger">
+                    <h4 class="text-{{account_group.color}}">
 
-                        <a  class="text-danger" href="{{account_group.get_absolute_url}}">
+                        <a  class="text-{{account_group.color}}" href="{{account_group.get_absolute_url}}">
 
                             {{account_group.code}} -
                             {{account_group.name}}
                             <small>
-                                <small class="text-muted">
+                                <span class="badge badge-{{account_group.color}}">
 
-                            (
+                             
                                 {{account_group.type}} 
-                            ) 
-                                </small>
+                             
+                                </span>
                             </small>
                         </a>
                     </h4>
@@ -34,17 +34,17 @@
                     <div class="mr-5">
                         <h5>
 
-                            <a class="text-success" href="{{basic_account.get_absolute_url}}">
+                            <a class="text-{{basic_account.color}}" href="{{basic_account.get_absolute_url}}">
 
                                 {{basic_account.code}} -
                                 {{basic_account.name}}
                             <small>
-                                <small  class="text-muted">
+                                <span  class="badge badge-{{basic_account.color}}">
                                         
-                                (
+                                
                                     {{basic_account.type}} 
-                                ) 
-                                </small>
+                             
+                                </span>
                             </small>
                             </a>
                         </h5>
@@ -52,33 +52,33 @@
                         <div class="mr-5">
                             <h6>
 
-                                <a href="{{moein_account.get_absolute_url}}">
+                                <a class="text-{{moein_account.color}}" href="{{moein_account.get_absolute_url}}">
  
                                     {{moein_account.code}} - {{moein_account.name}}
                                     <small>
-                                        <small class="text-muted">
+                                        <span class="badge badge-{{moein_account.color}}">
                                                 
-                                    (
+                                   
                                         {{moein_account.type}} 
-                                    ) 
-                                        </small>
+                                 
+                                        </span>
                                     </small>
                                 </a>
                             </h6>
                          
-                        {% for moein_account in moein_account.moeinaccount_set.all %}
+                        {% for moein2_account in moein_account.moeinaccount_set.all %}
                         <div class="mr-5">
                             <h6>
 
-                                <a href="{{moein_account.get_absolute_url}}">
+                                <a class="text-{{moein2_account.color}}" href="{{moein2_account.get_absolute_url}}">
  
-                                    {{moein_account.code}} - {{moein_account.name}}
+                                    {{moein2_account.code}} - {{moein2_account.name}}
                                     <small>
-                                        <small  class="text-muted">
-                                                 (
-                                        {{moein_account.type}} 2
-                                    ) 
-                                        </small>
+                                        <span   class="badge badge-{{moein2_account.color}}">
+                                             
+                                        {{moein2_account.type}}  
+ 
+                                        </span>
                                     </small>
                                    
                                 </a>

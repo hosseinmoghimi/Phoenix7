@@ -458,7 +458,7 @@ def init_all_accounts_list():
     account_groups=[
         
         {"name":"دارایی جاری",'color':'success','code':"1",},
-        {"name":"دارایی های غیر جاری",'color':'success','code':"2" },
+        {"name":"دارایی های غیر جاری",'color':'primary','code':"2" },
         {"name":"بدهی های جاری	",'color':'danger','code':"3" },
         {"name":"بدهی های بلند مدت (غیرجاری)",'color':'success','code':"4"  },
         {"name":"حقوق صاحبان سهام",'color':'success','code':"5" },  
@@ -483,16 +483,56 @@ def init_all_accounts_list():
 
 
 
-            {"name":"دارایی های ثابت مشهود",'code':"201",'color':'success','account_group_code':2 }, 
-            {"name":"استهلاک انباشته دارایی های ثابت مشهود",'code':"202",'color':'success','account_group_code':2 }, 
-            {"name":"دارایی های در جریان تکمیل",'code':"203",'color':'success','account_group_code':2 }, 
-            {"name":"دارایی های نامشهود",'code':"204",'color':'success','account_group_code':2 }, 
-            {"name":"سرمایه گذاری های بلند مدت",'code':"205",'color':'success','account_group_code':2 },  
+            {"name":"دارایی های ثابت مشهود",'code':"201",'color':'primary','account_group_code':2 }, 
+            {"name":"استهلاک انباشته دارایی های ثابت مشهود",'code':"202",'color':'primary','account_group_code':2 }, 
+            {"name":"دارایی های در جریان تکمیل",'code':"203",'color':'primary','account_group_code':2 }, 
+            {"name":"دارایی های نامشهود",'code':"204",'color':'primary','account_group_code':2 }, 
+            {"name":"سرمایه گذاری های بلند مدت",'code':"205",'color':'primary','account_group_code':2 },  
+
+
+
             
-            
+            {"name":"ﺣﺴﺎب ﻫﺎ و اﺳﻨﺎد ﭘﺮداﺧﺘﻨﯽ ﺗﺠﺎری",'code':"301",'color':'danger','account_group_code':"3" },  
+            {"name":"ﺳﺎﯾﺮ ﺣﺴﺎب ﻫﺎ و اﺳﻨﺎد ﭘﺮداﺧﺘﻨﯽ",'code':"302",'color':'danger','account_group_code':"3" },  
+            {"name":"ﺳﻔﺎرﺷﺎت و ﭘﯿﺶ درﯾﺎﻓﺖ ﻫﺎ",'code':"303",'color':'danger','account_group_code':"3" },  
+            {"name":"ذﺧﯿﺮه ﻣﺎﻟﯿﺎت",'code':"304",'color':'danger','account_group_code':"3" },  
+            {"name":"ﺳﻮد ﺳﻬﺎم ﭘﺮداﺧﺘﻨﯽ",'code':"305",'color':'danger','account_group_code':"3" },  
+            {"name":"ﺳﭙﺮده ﻫﺎی ﭘﺮداﺧﺘﻨﯽ",'code':"306",'color':'danger','account_group_code':"3" },  
+            {"name":"ﺗﺴﻬﯿﻼت و اﻋﺘﺒﺎرات ﻣﺎﻟﯽ درﯾﺎﻓﺘﯽ ﮐﻮﺗﺎه ﻣﺪت",'code':"307",'color':'danger','account_group_code':"3" },  
+            {"name":"ذﺧﺎﯾﺮ",'code':"308",'color':'danger','account_group_code':"3" },  
+
+
+            {"name":"ﺣﺴﺎب ﻫﺎ و اﺳﻨﺎد ﭘﺮداﺧﺘﻨﯽ ﺑﻠﻨﺪ ﻣﺪت ﺗﺠﺎری",'code':"401",'color':'secondary','account_group_code':"4" },  
+            {"name":"ﺳﺎﯾﺮ ﺣﺴﺎب ﻫﺎ و اﺳﻨﺎد ﭘﺮداﺧﺘﻨﯽ ﺑﻠﻨﺪﻣﺪت",'code':"402",'color':'secondary','account_group_code':"4" },  
+            {"name":"ﺗﺴﻬﯿﻼت و اﻋﺘﺒﺎرات ﻣﺎﻟﯽ درﯾﺎﻓﺘﯽ ﺑﻠﻨﺪﻣﺪت",'code':"403",'color':'secondary','account_group_code':"4" },  
+            {"name":"ذﺧﯿﺮه ﻣﺰاﯾﺎی ﭘﺎﯾﺎن ﺧﺪﻣﺖ ﮐﺎرﮐﻨﺎن",'code':"404",'color':'secondary','account_group_code':"4" },  
+            {"name":"درآﻣﺪﻫﺎی اﻧﺘﻘﺎﻟﯽ ﺑﻪ دوره ﻫﺎی آﺗﯽ",'code':"405",'color':'secondary','account_group_code':"4" },  
+              
     ]  
-    moein_accounts=[]
-    moein2_accounts=[]
-    tafsili_accounts=[]
+    moein_accounts=[
+        
+            {"name":"صندوق",'code':"1011",'color':'success','basic_account_code':"101" },
+            {"name":"بانک",'code':"1012",'color':'success','basic_account_code':"101" },
+    ]
+    moein2_accounts=[
+        
+            {"name":"صندوق فروشگاه",'code':"1011/1",'color':'success','moein_account_code':"1011" },
+            {"name":"صندوق دفتر",'code':"1011/2",'color':'success','moein_account_code':"1011" },
+
+            {"name":"بانک ملی",'code':"1012/1",'color':'success','moein_account_code':"1012" },
+            {"name":"بانک رفاه",'code':"1012/2",'color':'success','moein_account_code':"1012" },
+            {"name":"بانک ملت",'code':"1012/3",'color':'success','moein_account_code':"1012" },
+            {"name":"بانک تجارت",'code':"1012/4",'color':'success','moein_account_code':"1012" },
+    ]
+    tafsili_accounts=[
+            {"name":"صندوق بی ضرر",'code':"1011/1/1",'color':'success','moein_account_code':"1011/1" },
+            {"name":"صندوق درست",'code':"1011/1/2",'color':'success','moein_account_code':"1011/1" },
+            {"name":"صندوق شرباف",'code':"1011/1/1",'color':'success','moein_account_code':"1011/2" },
+            {"name":"صندوق معتبر",'code':"1011/1/2",'color':'success','moein_account_code':"1011/2" },
+
+            {"name":"بانک ملی به شماره 0101581354009",'code':"1012/1/1",'color':'success','moein_account_code':"1012/1" },
+
+
+    ]
     return account_groups,basic_accounts,moein_accounts,moein2_accounts,tafsili_accounts
 

@@ -6,18 +6,85 @@
     </a>
     <div class="media-body mr-2">
         <div>
-            <a href="{{account.get_absolute_url}}">
-                <h4>{{account.name}}
+            {% if account.parent %}
+            {% if account.parent.parent %}
+            {% if account.parent.parent.parent %}
+            {% if account.parent.parent.parent.parent %}
+            {% if account.parent.parent.parent.parent.parent %}
+            <a href="{{account.parent.parent.parent.parent.parent.get_absolute_url}}">
+              <h6 class="text-{{account.parent.parent.parent.parent.parent.color}}">
 
-                </h4>
+                  {{account.parent.parent.parent.parent.parent.name}}
+                  <span class="badge badge-{{account.parent.parent.parent.parent.parent.color}}">
+                    {{account.parent.parent.parent.parent.parent.type}}
+                  </span>
+              </h6>
             </a>
+          {% endif %}
+
+            <a href="{{account.parent.parent.parent.parent.get_absolute_url}}">
+              <h6 class="text-{{account.parent.parent.parent.parent.color}}">
+
+                  {{account.parent.parent.parent.parent.name}}
+                  <span class="badge badge-{{account.parent.parent.parent.parent.color}}">
+                    {{account.parent.parent.parent.parent.type}}
+                  </span>
+              </h6>
+            </a>
+          {% endif %}
+
+
+            <a href="{{account.parent.parent.parent.get_absolute_url}}">
+              <h6 class="text-{{account.parent.parent.parent.color}}">
+
+                  {{account.parent.parent.parent.name}}
+                  <span class="badge badge-{{account.parent.parent.parent.color}}">
+                    {{account.parent.parent.parent.type}}
+                  </span>
+
+              </h6>
+            </a>
+          {% endif %}
+              <a href="{{account.parent.parent.get_absolute_url}}">
+                <h6 class="text-{{account.parent.parent.color}}">
+
+                    {{account.parent.parent.name}}
+                    <span class="badge badge-{{account.parent.parent.color}}">
+                        {{account.parent.parent.type}}
+                      </span>
+
+                </h6>
+              </a>
+            {% endif %}
+              <a href="{{account.parent.get_absolute_url}}">
+                <h6 class="text-{{account.parent.color}}">
+
+                    {{account.parent.name}}
+                    <span class="badge badge-{{account.parent.color}}"> 
+                        {{account.parent.type}}
+                      </span>
+                </h6>
+              </a>
+            {% endif %}
         </div>
         <div>
-            <a href="{{account.parent.get_absolute_url}}">
+            <h4>
+                <a href="{{account.get_absolute_url}}">
+                        {{account.name}}
+
+                    
+                    <span class="badge badge-{{account.color}}" >
+                        {{account.type}}
+                    </span>
+                </a>
+            </h4>
+        </div>
+        <div>
+            <!-- <a href="{{account.parent.get_absolute_url}}">
                 <h6>{{account.parent.full_title}}
 
                 </h6>
-            </a>
+            </a> -->
 
         </div>
         <h6 class="text-{{account.color}}">

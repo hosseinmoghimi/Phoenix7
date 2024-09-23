@@ -266,55 +266,74 @@ class AccountRepo():
         tafsili_accounts_counter=0 
         basic_accounts_counter=0
         moein_accounts_counter=0
+        moein2_accounts_counter=0
         account_group_counter=0
-        account_groups,message,result=([],"",FAILED)
+        result=SUCCEED
+        message=""  
         if not self.request.user.has_perm(APP_NAME+".add_account"):
             message="دسترسی غیر مجاز"
-            return tafsili_account,message,result
+            result=FAILED
+            return message,result
         
         account_groups,basic_accounts,moein_accounts,moein2_accounts,tafsili_accounts=init_all_accounts_list()
         for account_group in account_groups:
             new_account_group=AccountGroup(name=account_group["name"],color=account_group["color"],code=account_group['code'])
             new_account_group.save()
-            account_group_counter+-1
+            account_group_counter+=1
         for basic_account in basic_accounts:
             account_group=AccountGroup.objects.filter(code=basic_account["account_group_code"]).first()
             if account_group is not None:
                 new_basic_account=BasicAccount(name=basic_account["name"],color=basic_account["color"],code=basic_account['code'],account_group_id=account_group.id)
                 new_basic_account.save()
                 basic_accounts_counter+=1
+            else:
+                message="کد گروه حساب نامعتبر است ."
+                result=FAILED    
+
         for moein_account in moein_accounts:
-            basic_account=AccountGroup.objects.filter(code=basic_account["account_group_code"]).first()
+            basic_account=BasicAccount.objects.filter(code=moein_account["basic_account_code"]).first()
             if basic_account is not None: 
-                new_moein_account=MoeinAccount(name=moein_account["name"],color=moein_account["color"],code=moein_account['code'],basic_account=basic_account.id)
+                new_moein_account=MoeinAccount(name=moein_account["name"],color=moein_account["color"],code=moein_account['code'],basic_account_id=basic_account.id)
             # new_moein_account=MoeinAccount(basic_account=new_basic_account,**moein_account)
-            new_moein_account.save()
+                new_moein_account.save()
+                moein_accounts_counter+=1
+            else:
+                result=FAILED     
+                message="کد حساب کل نامعتبر است ."
 
-            
+
         for moein2_account in moein2_accounts:
-            new_moein2_account=MoeinAccount(name=moein_account["name"],color=moein_account["color"],code=moein_account['code'],basic_account=new_basic_account)
-            # new_moein_account=MoeinAccount(basic_account=new_basic_account,**moein_account)
-            new_moein2_account.save()
+            moein_account=MoeinAccount.objects.filter(code=moein2_account["moein_account_code"]).first()
+            if moein_account is not None: 
+                new_moein2_account=MoeinAccount(name=moein2_account["name"],color=moein2_account["color"],code=moein2_account['code'],moein_account_id=moein_account.id)
+                # new_moein_account=MoeinAccount(basic_account=new_basic_account,**moein_account)
+                new_moein2_account.save()
+                moein2_accounts_counter+=1
+            else:
+                result=FAILED          
+                message="کد حساب معین نامعتبر است ."      
 
-                            
-
-        for tafsili_account in tafsili_accounts:
-            new_tafsili_account=TafsiliAccount(name=tafsili_account["name"],color=tafsili_account["color"],code=tafsili_account['code'],moein_account=new_moein_account)
-            new_tafsili_account,result,message=new_tafsili_account.save()
-            if result==SUCCEED:
-                tafsili_accounts_counter+=1
-
- 
+        for tafsili_account in tafsili_accounts: 
+            moein_account=MoeinAccount.objects.filter(code=tafsili_account["moein_account_code"]).first()
+            if moein_account is not None: 
+                new_tafsili_account=TafsiliAccount(name=tafsili_account["name"],color=tafsili_account["color"],code=tafsili_account['code'],moein_account_id=moein_account.id)
+                new_tafsili_account,result,message=new_tafsili_account.save()
+                tafsili_accounts_counter+=1 
+            else:
+                result=FAILED          
+                message="کد حساب معین نامعتبر است ."  
 
                                   
 
 
-
-        result=SUCCEED
-        message="با موفقیت اضافه گردید."
-        message=f"{tafsili_accounts_counter} تفصیلی {message}" 
-        message=f"{tafsili_accounts_counter} تفصیلی {message}" 
-        return account_groups,message,result
+        if result==SUCCEED:
+            message="با موفقیت اضافه گردید."
+        message+=f"<br>{account_group_counter} ' گروه حساب' " 
+        message+=f"<br>{basic_accounts_counter} ' حساب  کل' " 
+        message+=f"<br>{moein_accounts_counter}  حساب معین " 
+        message+=f"<br>{moein2_accounts_counter} حساب معین دوم " 
+        message+=f"<br>{tafsili_accounts_counter} حساب تفصیلی " 
+        return result,message
  
     def add_account_tag(self,*args, **kwargs):
         result,message,account_tags=FAILED,"",[]
