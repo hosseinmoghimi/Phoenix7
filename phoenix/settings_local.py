@@ -3,9 +3,12 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = 'sth here ....'
+SECRET_KEY = 'django-insecure-e=r6(=1-$v62u+!!y@45c2s6w)=^20(r1eq*z_k2b2brp7x6#)'
+DATABASE_NAME="ghoghnus_db_2024_09_07__01_00_00"
 
- 
+MOEIN_ACCOUNT_LEVELS=2
+TAFSILI_ACCOUNT_LEVELS=6
+
 DEBUG = True
 ALLOWED_HOSTS = ['*']
 
@@ -20,18 +23,24 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
-
+INSTALLED_APPS.append("tinymce")
+INSTALLED_APPS.append("rest_framework")
+ 
 INSTALLED_APPS.append("core")
-
 INSTALLED_APPS.append("utility")
 INSTALLED_APPS.append("authentication")
+INSTALLED_APPS.append("market")
+INSTALLED_APPS.append("accounting")
+INSTALLED_APPS.append("processmanagement")
 
 ##########################################################
+
+DB_NAME=os.path.join(BASE_DIR,DATABASE_NAME+".sqlite3")
 #  databases
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': DB_NAME,
     }
 }
 ##########################################################
@@ -54,10 +63,12 @@ FILE_ROOT =os.path.join(PRIVATE_ROOT,"file")
 STATICFILES_DIRS=[os.path.join(BASE_DIR,'static')]
 
 ##########################################################
-CURRENCY="تومان"
+CURRENCY="ریال"
 
 ##########################################################
+# parameter
 
+CREATE_PROFILE_ON_USER_ADD=True
 ##########################################################
 
 ##########################################################
