@@ -2,7 +2,7 @@ from .models import TafsiliAccount,AccountGroup,BasicAccount,MoeinAccount
 from utility.constants import SUCCEED,FAILED
 
 
-def init_all_accounts_list():
+def init_all_accounts_list_1():
     account_groups=[
             
         {"name":"دارایی جاری",'color':'success','code':"1","basic_accounts":[
@@ -448,4 +448,51 @@ def init_all_accounts_list():
         
     ]       
     return account_groups
+
+
+
+
+
+def init_all_accounts_list():
+
+    account_groups=[
+        
+        {"name":"دارایی جاری",'color':'success','code':"1",},
+        {"name":"دارایی های غیر جاری",'color':'success','code':"2" },
+        {"name":"بدهی های جاری	",'color':'danger','code':"3" },
+        {"name":"بدهی های بلند مدت (غیرجاری)",'color':'success','code':"4"  },
+        {"name":"حقوق صاحبان سهام",'color':'success','code':"5" },  
+        {"name":"درآمد ها",'color':'info','code':"6" },
+        {"name":"بهای تمام شده کالای فروش رفته و خدمات ارائه شده",'color':'primary','code':"7" },
+        {"name":"هزینه ها",'color':'danger','code':"8" },
+        {"name":"سایر حسابها",'color':'success','code':"9" },
+        
+    ]   
+
+    basic_accounts=[
+            {"name":"موجودی نقد و بانک",'code':"101",'account_group_code':1,'color':'success' },
+            {"name":"سرمایه گذاری کوتاه مدت",'code':"102",'account_group_code':1,'color':'success'  },
+            {"name":"حساب ها و اسناد دریافتنی تجاری",'code':"103",'account_group_code':1,'color':'success' },
+            {"name":"سایر حساب های دریافتنی تجاری",'code':"104",'account_group_code':1,'color':'success'  },
+            {"name":"موجودی مواد و کالا",'code':"105",'account_group_code':1,'color':'success'  },
+            {"name":"جاری شرکا",'code':"106",'account_group_code':1,'color':'success'  },
+            {"name":"سفارشات و پیش پرداختها",'code':"107",'account_group_code':1,'color':'success' },
+            {"name":"سپرده هایمان نزد دیگران",'code':"108",'account_group_code':1,'color':'success'},
+            {"name":"دارایی های نگهداری شده برای فروش",'code':"109",'account_group_code':1,'color':'success'},
+
+
+
+
+            {"name":"دارایی های ثابت مشهود",'code':"201",'color':'success','account_group_code':2 }, 
+            {"name":"استهلاک انباشته دارایی های ثابت مشهود",'code':"202",'color':'success','account_group_code':2 }, 
+            {"name":"دارایی های در جریان تکمیل",'code':"203",'color':'success','account_group_code':2 }, 
+            {"name":"دارایی های نامشهود",'code':"204",'color':'success','account_group_code':2 }, 
+            {"name":"سرمایه گذاری های بلند مدت",'code':"205",'color':'success','account_group_code':2 },  
+            
+            
+    ]  
+    moein_accounts=[]
+    moein2_accounts=[]
+    tafsili_accounts=[]
+    return account_groups,basic_accounts,moein_accounts,moein2_accounts,tafsili_accounts
 

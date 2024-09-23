@@ -6,7 +6,7 @@ from utility.log import leolog
 from authentication.repo import ProfileRepo
 from .apps import APP_NAME
 from utility.num import filter_number
-from .defaults import init_all_accounts_list
+from .defaults import init_all_accounts_list,init_all_accounts_list_1
 from utility.calendar import PersianCalendar
 
 class EventRepo:
@@ -204,7 +204,7 @@ class AccountRepo():
                     pass
                     
 
-    def init_all_accounts(self,*args, **kwargs):
+    def init_all_accounts_1(self,*args, **kwargs):
         tafsili_accounts_counter=0 
         basic_accounts_counter=0
         moein_accounts_counter=0
@@ -253,6 +253,60 @@ class AccountRepo():
                                             new_tafsili_account,result,message=new_tafsili_account.save()
                                             if result==SUCCEED:
                                                 tafsili_accounts_counter+=1
+
+
+
+        result=SUCCEED
+        message="با موفقیت اضافه گردید."
+        message=f"{tafsili_accounts_counter} تفصیلی {message}" 
+        message=f"{tafsili_accounts_counter} تفصیلی {message}" 
+        return account_groups,message,result
+ 
+    def init_all_accounts(self,*args, **kwargs):
+        tafsili_accounts_counter=0 
+        basic_accounts_counter=0
+        moein_accounts_counter=0
+        account_group_counter=0
+        account_groups,message,result=([],"",FAILED)
+        if not self.request.user.has_perm(APP_NAME+".add_account"):
+            message="دسترسی غیر مجاز"
+            return tafsili_account,message,result
+        
+        account_groups,basic_accounts,moein_accounts,moein2_accounts,tafsili_accounts=init_all_accounts_list()
+        for account_group in account_groups:
+            new_account_group=AccountGroup(name=account_group["name"],color=account_group["color"],code=account_group['code'])
+            new_account_group.save()
+            account_group_counter+-1
+        for basic_account in basic_accounts:
+            account_group=AccountGroup.objects.filter(code=basic_account["account_group_code"]).first()
+            if account_group is not None:
+                new_basic_account=BasicAccount(name=basic_account["name"],color=basic_account["color"],code=basic_account['code'],account_group_id=account_group.id)
+                new_basic_account.save()
+                basic_accounts_counter+=1
+        for moein_account in moein_accounts:
+            basic_account=AccountGroup.objects.filter(code=basic_account["account_group_code"]).first()
+            if basic_account is not None: 
+                new_moein_account=MoeinAccount(name=moein_account["name"],color=moein_account["color"],code=moein_account['code'],basic_account=basic_account.id)
+            # new_moein_account=MoeinAccount(basic_account=new_basic_account,**moein_account)
+            new_moein_account.save()
+
+            
+        for moein2_account in moein2_accounts:
+            new_moein2_account=MoeinAccount(name=moein_account["name"],color=moein_account["color"],code=moein_account['code'],basic_account=new_basic_account)
+            # new_moein_account=MoeinAccount(basic_account=new_basic_account,**moein_account)
+            new_moein2_account.save()
+
+                            
+
+        for tafsili_account in tafsili_accounts:
+            new_tafsili_account=TafsiliAccount(name=tafsili_account["name"],color=tafsili_account["color"],code=tafsili_account['code'],moein_account=new_moein_account)
+            new_tafsili_account,result,message=new_tafsili_account.save()
+            if result==SUCCEED:
+                tafsili_accounts_counter+=1
+
+ 
+
+                                  
 
 
 
