@@ -1,0 +1,114 @@
+{% extends "utility/layout.html" %}
+{% load static %}
+{% block content %}
+<div class="row rtl">
+    <div class="col-md-6">
+
+        <div id="read-excel-file-app" class="card">
+            <div class="card-header" id="heading-page-downloads">
+                <h5 class="text-center">
+
+                    خواندن از اکسل
+
+                </h5>
+            </div>
+
+
+            <div class="card-body">
+
+
+
+                <form id="read-excel-file-form" @submit.prevent="read_excel()" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-12">
+
+
+
+                            <span class="btn btn-raised btn-round btn-default btn-file">
+                                <span class="fileinput-new farsi">انتخاب فایل</span>
+
+                                <input type="file" v-on:change="excel_file_selected=true" name="">
+                                <div class="ripple-container"></div>
+                            </span>
+
+
+                        </div>
+                        <div class="col-12">
+                            <img src="{% static 'leo/img/loading.gif' %}" width="32" v-if="waiting" alt="">
+
+                            <button class="farsi btn btn-primary btn-block" v-if="!waiting" type="submit">
+                                <i class="fa fa-plus mx-1"></i>
+                                خواندن</button>
+                            <button @click="excel_file_selected=false" v-if="!waiting"
+                                class="farsi btn btn-secondary btn-block" type="reset">انصراف</button>
+
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+            <div class="card-footer">
+
+
+
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block script %}
+<script>
+    let read_excel_file_app = new Vue({
+        el: "#read-excel-file-app",
+        data: {
+            waiting: false,
+            excel_file_selected: false,
+
+        },
+        methods: {
+            read_excel: function () {
+                console.log("read excel started.")
+
+                let url_read_excel_file = "{% url 'utility:read_excel_file' %}"
+
+                read_excel_file_app.waiting = true
+                let title = this.new_download_title
+                let formData = new FormData();
+                let file1 = $('#read-excel-file-form')[0].elements[0].files[0]
+                formData.append("file1", file1);
+                formData.append("title", "excel_file");
+                formData.append("csrfmiddlewaretoken", csrfmiddlewaretoken);
+
+                $.ajax({
+                    url: url_read_excel_file,
+                    type: 'post',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        read_excel_file_app.waiting = false
+
+                        if (data != 0) {
+                            // //console.log(data)
+                            if (data.result === 'SUCCEED') {
+                                console.log("read excel finished.")
+
+
+                            }
+                        }
+                        else {
+                        }
+                    },
+                });
+
+            },
+        }
+    })
+</script>
+{% endblock script %}

@@ -27,6 +27,13 @@ phoenix_apps=[
         'title':'فرآیند ها',
         'icon':'',
         'home_url':SITE_URL+'processmanagement/',
-    }
+    },
+    {
+        'priority':5,
+        'name':'utility',
+        'title':'کاربردی',
+        'icon':'',
+        'home_url':SITE_URL+'utility/',
+    },
     
 ]

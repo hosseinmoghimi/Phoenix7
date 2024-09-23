@@ -19,6 +19,12 @@ def getContext(request, *args, **kwargs):
     context['LAYOUT_PARENT'] = LAYOUT_PARENT
     return context
 
+class ExcelView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        return render(request,TEMPLATE_ROOT+"excel.html",context)
+
+
 
 class DateConverterView(View):
     def get(self,request,*args, **kwargs):
