@@ -204,7 +204,7 @@ class AccountRepo():
                     pass
                     
 
-    def init_all_accounts_1(self,*args, **kwargs):
+    def init_all_accounts_old(self,*args, **kwargs):
         tafsili_accounts_counter=0 
         basic_accounts_counter=0
         moein_accounts_counter=0
@@ -325,13 +325,15 @@ class AccountRepo():
 
                                   
 
-
+        account_group_counter=len(AccountGroup.objects.all())
+        basic_accounts_counter=len(BasicAccount.objects.all())
+        moein_accounts_counter=len(MoeinAccount.objects.all())
+        tafsili_accounts_counter=len(TafsiliAccount.objects.all())
         if result==SUCCEED:
             message="با موفقیت اضافه گردید."
-        message+=f"<br>{account_group_counter} ' گروه حساب' " 
-        message+=f"<br>{basic_accounts_counter} ' حساب  کل' " 
+        message+=f"<br>{account_group_counter}   گروه حساب" 
+        message+=f"<br>{basic_accounts_counter}   حساب  کل " 
         message+=f"<br>{moein_accounts_counter}  حساب معین " 
-        message+=f"<br>{moein2_accounts_counter} حساب معین دوم " 
         message+=f"<br>{tafsili_accounts_counter} حساب تفصیلی " 
         return result,message
  
@@ -376,7 +378,23 @@ class AccountRepo():
         result=SUCCEED
         message="همه حساب ها حذف شد."
         return result,message
+    def set_priority(self,*args, **kwargs):
+        result,message,priority=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".change_account"):
+            return result,message,account_tags
+        priority=kwargs['priority']
+        account_id=kwargs['account_id']
+        
+         
 
+        account=Account.objects.filter(pk=account_id).first()
+        if account is not None:
+            account.priority=priority
+            account.save()
+
+        result=SUCCEED
+
+        return result,message,priority
 class TafsiliAccountRepo():
     def __init__(self,request,*args, **kwargs):
         self.request=request

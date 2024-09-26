@@ -36,6 +36,7 @@ class Account(models.Model,LinkHelper):
     balance=models.IntegerField("balance",default=0)
     description=models.CharField(_("description"),null=True,blank=True, max_length=500)
     logo_origin=models.ImageField(_("logo"),blank=True,null=True, upload_to=IMAGE_FOLDER+"account", height_field=None, width_field=None, max_length=None)
+    priority=models.IntegerField(default=100)
     # def __init__(self,*args, **kwargs):
     #     if 'name' in kwargs:
     #         self.name=kwargs['name']
@@ -69,14 +70,15 @@ class Account(models.Model,LinkHelper):
     def get_absolute_url(self):
         if self.type==AccountTypeEnum.GROUP:
             return reverse("accounting:accountgroup",kwargs={"pk":self.pk})
-        if self.type==AccountTypeEnum.BASIC:
+        elif self.type==AccountTypeEnum.BASIC:
             return reverse("accounting:basicaccount",kwargs={"pk":self.pk})
-        if self.type==AccountTypeEnum.MOEIN:
+        elif self.type==AccountTypeEnum.MOEIN:
             return reverse("accounting:moeinaccount",kwargs={"pk":self.pk})
-        if self.type==AccountTypeEnum.MOEIN_2:
+        elif self.type==AccountTypeEnum.MOEIN_2:
             return reverse("accounting:moeinaccount",kwargs={"pk":self.pk})
-        if self.type==AccountTypeEnum.TAFSILI:
+        elif self.type==AccountTypeEnum.TAFSILI:
             return reverse("accounting:tafsiliaccount",kwargs={"pk":self.pk})
+        return reverse("accounting:tafsiliaccount",kwargs={"pk":self.pk})
     @property
     def parent(self):
         if self.type==AccountTypeEnum.GROUP:
@@ -97,7 +99,17 @@ class Account(models.Model,LinkHelper):
                 if moein_account.basic_account is not None:
                     return moein_account.basic_account
         
-        if self.type==AccountTypeEnum.TAFSILI:
+        
+        if self.type==AccountTypeEnum.MOEIN_2:
+            moein_account=MoeinAccount.objects.filter(pk=self.pk).first()
+            if moein_account is not None:
+                if moein_account.moein_account is not None:
+                    return moein_account.moein_account
+                if moein_account.basic_account is not None:
+                    return moein_account.basic_account
+        
+
+        else :
             tafsili_account=TafsiliAccount.objects.filter(pk=self.pk).first()
             if tafsili_account is not None:
                 if tafsili_account.tafsili_account is not None:
@@ -207,9 +219,10 @@ class Account(models.Model,LinkHelper):
         if len(Account.objects.filter(code=self.code).exclude(pk=self.pk))>0:
             result=FAILED
             message="کد تکراری"
-        from utility.num import filter_number
-        self.pure_code=filter_number(self.code)
-        super(Account,self).save()
+        if result==SUCCEED:
+            from utility.num import filter_number
+            self.pure_code=filter_number(self.code)
+            super(Account,self).save()
         return self,result,message
 
     @property
@@ -218,20 +231,20 @@ class Account(models.Model,LinkHelper):
         if self.type==AccountTypeEnum.GROUP:
             childs=BasicAccount.objects.filter(account_group_id=self.pk)
             return childs
-        if self.type==AccountTypeEnum.BASIC:
+        elif self.type==AccountTypeEnum.BASIC:
             childs=MoeinAccount.objects.filter(basic_account_id=self.pk)
             return childs
-        if self.type==AccountTypeEnum.MOEIN:
+        elif self.type==AccountTypeEnum.MOEIN:
             childs1=MoeinAccount.objects.filter(moein_account_id=self.pk)
             childs2=TafsiliAccount.objects.filter(moein_account_id=self.pk)
             if len(childs1)>0:
                 childs=childs1
             if len(childs2)>0:
                 childs=childs2 
-        if self.type==AccountTypeEnum.MOEIN_2:
+        elif self.type==AccountTypeEnum.MOEIN_2:
             childs=TafsiliAccount.objects.filter(moein_account_id=self.pk)
             return childs
-        if self.type==AccountTypeEnum.TAFSILI:
+        else:
             childs=TafsiliAccount.objects.filter(tafsili_account_id=self.pk)
             return childs
         return childs 
@@ -328,7 +341,7 @@ class MoeinAccount(Account):
 
 class TafsiliAccount(Account):
     tafsili_account=models.ForeignKey("tafsiliaccount", verbose_name=_("parent"), on_delete=models.SET_NULL,blank=True,null=True)
-    moein_account=models.ForeignKey("moeinaccount", verbose_name=_("moein account"), on_delete=models.CASCADE)
+    moein_account=models.ForeignKey("moeinaccount", verbose_name=_("moein account"), on_delete=models.CASCADE,blank=True,null=True)
     
     mobile=models.CharField(_("mobile"),null=True,blank=True, max_length=50)
     tel=models.CharField(_("tel"),null=True,blank=True, max_length=50)
@@ -350,7 +363,19 @@ class TafsiliAccount(Account):
      
 
     def save(self):
-        self.type=AccountTypeEnum.TAFSILI
+        if self.moein_account is not None:
+            self.type=AccountTypeEnum.TAFSILI
+        elif self.tafsili_account.type==AccountTypeEnum.TAFSILI:
+            self.type=AccountTypeEnum.TAFSILI_2
+        elif self.tafsili_account.type==AccountTypeEnum.TAFSILI_2:
+            self.type=AccountTypeEnum.TAFSILI_3
+        elif self.tafsili_account.type==AccountTypeEnum.TAFSILI_3:
+            self.type=AccountTypeEnum.TAFSILI_4
+        elif self.tafsili_account.type==AccountTypeEnum.TAFSILI_4:
+            self.type=AccountTypeEnum.TAFSILI_5
+        elif self.tafsili_account.type==AccountTypeEnum.TAFSILI_5:
+            self.type=AccountTypeEnum.TAFSILI_6 
+
         return super(TafsiliAccount,self).save()
         
 class FinancialDocument(LinkHelper,models.Model):

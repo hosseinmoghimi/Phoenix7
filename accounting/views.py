@@ -130,7 +130,9 @@ class TafsiliAccountView(View):
         tafsili_account_s=json.dumps(TafsiliAccountSerializer(tafsili_account).data)
         context['tafsili_account_s']=tafsili_account_s
         
-
+        CAN_ADD_TAFSILI_ACCOUNT=True
+        if CAN_ADD_TAFSILI_ACCOUNT :
+            context['add_tafsili_account_form']=AddTafsiliAccountForm()
         return render(request,TEMPLATE_ROOT+"tafsili-account.html",context)
 
 class AccountView(View):

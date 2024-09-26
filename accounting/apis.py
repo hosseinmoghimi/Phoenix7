@@ -170,6 +170,27 @@ class AddTafsiliAccountApi(APIView):
         return JsonResponse(context)
 
 
+class SetAccountPriorityApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            log=222
+            set_account_priority_form=SetAccountPriorityForm(request.POST)
+            if set_account_priority_form.is_valid():
+                log=333
+                cd=set_account_priority_form.cleaned_data
+                priority,message,result=AccountRepo(request=request).set_priority(**cd)
+                if priority is not None:
+                    context['priority']=priority
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
 
 
 class InitALLAccountsApi(APIView):

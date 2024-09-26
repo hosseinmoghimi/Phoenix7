@@ -16,6 +16,10 @@ class AddAccountGroupForm(forms.Form):
     title=forms.CharField(max_length=100, required=True)
     code=forms.CharField(max_length=100, required=True)
     color=forms.CharField(max_length=100, required=False)
+class SetAccountPriorityForm(forms.Form):
+    account_id=forms.IntegerField(required=True)
+    priority=forms.IntegerField(required=True)
+
 
 
 class AddEventForm(forms.Form):

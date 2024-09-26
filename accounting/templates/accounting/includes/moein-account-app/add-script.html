@@ -39,6 +39,14 @@
                         if (typeof moein_accounts_app != "undefined") {
                             moein_accounts_app.moein_accounts.push(data.moein_account)
                         }
+
+
+                        if (typeof account_childs_app != "undefined") {
+                                account_childs_app.accounts.push(data.moein_account)
+                            }
+
+                      
+
                         add_moein_account_app.message={
                             color:"success",
                             title:"تبریک",

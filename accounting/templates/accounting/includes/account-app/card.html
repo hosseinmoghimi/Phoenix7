@@ -9,6 +9,8 @@
     </div>
     <div class="card-body">
 
+
+
         {% include "accounting/includes/account-app/media-simple.html" %}
 
 
@@ -40,6 +42,9 @@
         <div class="text-center text-{{account.balance|to_amount_color}} farsi">
             {{account.balance|to_price}}
         </div>
+
+{% include "accounting/includes/account-app/priority-template.html" %}
+
     </div>
 
 

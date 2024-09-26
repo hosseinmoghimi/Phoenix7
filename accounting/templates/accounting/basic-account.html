@@ -40,7 +40,9 @@
 
 {% block script %}
 
+{% include "accounting/includes/account-app/script.html" %}
 {% if add_moein_account_form %}
+
 {% include "accounting/includes/moein-account-app/add-script.html" %}
 
 {% endif %}

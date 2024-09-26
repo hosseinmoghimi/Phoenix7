@@ -1,5 +1,5 @@
 {% load to_price %}
-<div class="card">
+<div class="card" id="account-childs-app">
     <div class="card-header">
         <h5>
             زیر مجموعه ها
@@ -8,11 +8,11 @@
     <div class="card-body">
         <table class="table table-striped">
             <thead>
-               
+
                 <th>
                     حساب
                 </th>
-               
+
                 <th>
                     بدهکار
                 </th>
@@ -29,7 +29,7 @@
                 {% for account in account.childs %}
 
                 <tr>
-                   
+
                     <td>
                         <a class="text-{{account.color}}" href="{{account.get_absolute_url}}">
                             <div>
@@ -38,17 +38,17 @@
 
                                 <span class="badge badge-{{account.color}}">
 
-                                    {{account.type}}   
+                                    {{account.type}}
                                 </span>
                             </div>
                             <div class="small text-muted">
 
-                                  {{account.full_title}}
+                                {{account.full_title}}
                             </div>
                         </a>
 
                     </td>
-                    
+
 
                     <td>
                         {{account.bedehkar|to_price}}
@@ -66,6 +66,51 @@
                 </tr>
                 {% endfor %}
 
+                <tr v-for="account in accounts">
+                    <td>
+                        <a :class="'text-'+account.color" :href="account.get_absolute_url">
+                            <div>
+                                <span v-text="account.name">
+
+                                </span>
+
+                                <span :class="'badge badge-'+account.color">
+                                    <span v-text="account.type">
+
+                                    </span>
+
+                                </span>
+                            </div>
+                            <div class="small text-muted">
+                                <span v-text="account.full_title">
+
+                                </span>
+                                
+                            </div>
+                        </a>
+
+                    </td>
+
+
+                    <td>
+                         
+                        0 
+                        {{CURRENCY}}
+
+                    </td>
+                    <td>
+                        
+
+                        0 
+                        {{CURRENCY}}
+                    </td>
+
+                    <td>
+                        0 
+                        {{CURRENCY}}
+                         
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
