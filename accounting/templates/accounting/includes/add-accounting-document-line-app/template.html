@@ -5,14 +5,20 @@
         </h5>
     </div>
     <div class="card-body">
-        <div>
-            <form @submit.prevent="add_accounting_document_line()">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="">حساب</label>
-                            <input class="form-control" v-model="account_code" @input="select_account()" type="text">
-                            <!-- <div class="my-2" v-if="">
+
+        <form @submit.prevent="add_accounting_document_line()">
+            <div class="row rtl">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="">عنوان</label>
+                        <input required class="form-control" v-model="title" type="text">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="">حساب</label>
+                        <input class="form-control" v-model="account_code" @input="select_account()" type="text">
+                        <!-- <div class="my-2" v-if="">
                                 <a :href="account.get_absolute_url">
                                     <div class="media">
                                         <img :src="account.logo" class="rounded" width="48" alt="">
@@ -26,66 +32,57 @@
 
                                 </a>
                             </div> -->
-                            <div class="my-2">
+                        <div class="my-2">
 
-                                {% include "accounting/includes/account-app/media.html" %}
-                            </div>
-                            <select class="form-control" v-model="account_code">
-                                {% for account in accounts_for_adding_accounting_document_line %}
-
-                                <option value="{{account.code}}">
-                                    {{account.code}}
-                                    {{account.full_title}}
-
-                                </option>
-                                {% endfor %}
-                            </select>
-                            <h4 class="text-danger">
-                                <a target="_blank" href="{% url 'accounting:selection' %}">
-                                    <span>
-                                        همه حساب ها
-                                    </span>
-                                </a>
-                            </h4>
+                            {% include "accounting/includes/account-app/media.html" %}
                         </div>
+                       
+                        <h4 class="text-danger">
+                            <a target="_blank" href="{% url 'accounting:selection' %}">
+                                <span>
+                                    همه حساب ها
+                                </span>
+                            </a>
+                        </h4>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="">عنوان</label>
-                            <input class="form-control" v-model="title" type="text">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="">بدهکار</label>
-                            <input class="form-control" v-model="bedehkar" type="number">
-                            <div class="farsi text-right my-2">
-                                <span v-text="to_price(bedehkar)"></span>
-                                {{CURRENCY}}
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="">بستانکار</label>
-                            <input class="form-control" v-model="bestankar" type="number">
-                            <div class="farsi text-right my-2">
-                                <span v-text="to_price(bestankar)"></span>
-                                {{CURRENCY}}
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <button type="submit" class="btn btn-success">
-                            <i class="fa fa-plus"></i>افزودن
-                        </button>
-                    </div>
-
                 </div>
-            </form>
-        </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="">بدهکار</label>
+                        <input class="form-control" v-model="bedehkar" type="number">
+                        <div class="farsi text-right my-2">
+                            <span v-text="to_price(bedehkar)"></span>
+                            {{CURRENCY}}
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">بستانکار</label>
+                        <input class="form-control" v-model="bestankar" type="number">
+                        <div class="farsi text-right my-2">
+                            <span v-text="to_price(bestankar)"></span>
+                            {{CURRENCY}}
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-plus"></i>افزودن
+                    </button>
+                </div>
+
+                <!-- <div class="col-md-12" vb-show="message.show">
+                    <div class="'alert alert-'message.color">
+                        <div vb-html="message.body"></div>
+                    </div>
+                </div> -->
+              
+            </div>
+
+        </form>
     </div>
+</div>
 </div>

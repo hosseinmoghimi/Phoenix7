@@ -50,11 +50,17 @@
                         <label for="bedehkar_code">بدهکار</label>
                         <input type="text" placeholder="" class="form-control" id="bedehkar_code" @input="select_bedehkar()"
                             v-model="bedehkar.code">
-                        <h5 v-if="bedehkar.name" class="my-2">
-                            <a :href="bedehkar.get_absolute_url">
-                                <span :class="'text-'+bedehkar.color" v-text="bedehkar.full_title"></span>
-                            </a>
-                        </h5>
+                            <h5 v-if="bedehkar.name" class="my-2">
+                                <a :href="bedehkar.get_absolute_url">
+                                    <span :class="'text-'+bedehkar.color" v-text="bedehkar.full_title"></span>
+                                </a>
+                            </h5>
+
+                            <h6 v-if="bedehkar.name" class="my-2">
+                                <a :href="bedehkar.get_absolute_url">
+                                    <span :class="'text-'+bedehkar.color" v-text="bedehkar.code"></span>
+                                </a>
+                            </h6>
                     </div>
                 </div>
 
@@ -66,11 +72,22 @@
                         <label for="bestankar_code">بستانکار</label>
                         <input type="text" placeholder="" class="form-control" id="bestankar_code" @input="select_bestankar()"
                             v-model="bestankar.code">
-                        <h5 v-if="bestankar.name" class="my-2">
-                            <a :href="bestankar.get_absolute_url">
-                                <span :class="'text-'+bestankar.color" v-text="bestankar.full_title"></span>
-                            </a>
-                        </h5>
+                            <h5 v-if="bestankar.name" class="my-2">
+                                <a :href="bestankar.get_absolute_url">
+                                    <span :class="'text-'+bestankar.color" v-text="bestankar.full_title"></span>
+                                </a>
+                               
+                                
+    
+                            </h5>
+                            <h6 v-if="bestankar.name" class="my-2">
+                                
+                                
+                                <a :href="bestankar.get_absolute_url"></a>
+                                    <small :class="'text-'+bestankar.color" v-text="bestankar.code"></small>
+                                </a>
+    
+                            </h6>
                     </div>
                 </div>
 
