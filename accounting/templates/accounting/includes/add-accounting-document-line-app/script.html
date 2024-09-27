@@ -43,6 +43,11 @@
                         console.log(data.account)
                         add_accounting_document_line_app.account = data.account
                     }
+
+                    if (data.result === "FAILED") {
+                        
+                        add_accounting_document_line_app.account = {logo:null,name:"",code:0,}
+                    }
                 })
             },
 

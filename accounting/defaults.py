@@ -457,109 +457,149 @@ def init_all_accounts_list():
 
     account_groups=[
         
-        {"name":"دارایی جاری",'color':'success','code':"1",},
-        {"name":"دارایی های غیر جاری",'color':'primary','code':"2" },
-        {"name":"بدهی های جاری	",'color':'danger','code':"3" },
-        {"name":"بدهی های بلند مدت (غیرجاری)",'color':'success','code':"4"  },
-        {"name":"حقوق صاحبان سهام",'color':'success','code':"5" },  
-        {"name":"درآمد ها",'color':'info','code':"6" },
-        {"name":"بهای تمام شده کالای فروش رفته و خدمات ارائه شده",'color':'primary','code':"7" },
-        {"name":"هزینه ها",'color':'danger','code':"8" },
-        {"name":"سایر حسابها",'color':'success','code':"9" },
+        {'code':"1","name":"دارایی جاری",'color':'success',},
+        {'code':"2" ,"name":"دارایی های غیر جاری",'color':'primary'},
+        {'code':"3","name":"بدهی های جاری	",'color':'danger', },
+        {'code':"4" ,"name":"بدهی های بلند مدت (غیرجاری)",'color':'success', },
+        {'code':"5","name":"حقوق صاحبان سهام",'color':'success', },  
+        {'code':"6","name":"درآمد ها",'color':'info', },
+        {'code':"7","name":"بهای تمام شده کالای فروش رفته و خدمات ارائه شده",'color':'primary', },
+        {'code':"8","name":"هزینه ها",'color':'danger', },
+        {'code':"9","name":"سایر حسابها",'color':'success', },
         
     ]   
 
     basic_accounts=[
             #111111111111111111111111111
-            {"name":"موجودی نقد و بانک",'code':"101",'account_group_code':1,'color':'success' },
-            {"name":"سرمایه گذاری کوتاه مدت",'code':"102",'account_group_code':1,'color':'success'  },
-            {"name":"حساب ها و اسناد دریافتنی تجاری",'code':"103",'account_group_code':1,'color':'success' },
-            {"name":"سایر حساب های دریافتنی تجاری",'code':"104",'account_group_code':1,'color':'success'  },
-            {"name":"موجودی مواد و کالا",'code':"105",'account_group_code':1,'color':'success'  },
-            {"name":"جاری شرکا",'code':"106",'account_group_code':1,'color':'success'  },
-            {"name":"سفارشات و پیش پرداختها",'code':"107",'account_group_code':1,'color':'success' },
-            {"name":"سپرده هایمان نزد دیگران",'code':"108",'account_group_code':1,'color':'success'},
-            {"name":"دارایی های نگهداری شده برای فروش",'code':"109",'account_group_code':1,'color':'success'},
+            {'code':"101","name":"موجودی نقد و بانک",'priority':"100",'account_group_code':"1",'color':'success' },
+            {'code':"102","name":"سرمایه گذاری کوتاه مدت",'priority':"100",'account_group_code':"1",'color':'warning'},
+            {'code':"103","name":"حساب ها و اسناد دریافتنی تجاری",'priority':"100",'account_group_code':"1",'color':'success'},
+            {'code':"104","name":"سایر حساب های دریافتنی تجاری",'priority':"100",'account_group_code':"1",'color':'primary'},
+            {'code':"105","name":"موجودی مواد و کالا",'priority':"100",'account_group_code':"1",'color':'success'},
+            {'code':"106","name":"جاری شرکا",'priority':"100",'account_group_code':"1",'color':'success'},
+            {'code':"107","name":"سفارشات و پیش پرداختها",'priority':"100",'account_group_code':"1",'color':'success'},
+            {'code':"108","name":"سپرده هایمان نزد دیگران",'priority':"100",'account_group_code':"1",'color':'success'},
+            {'code':"109","name":"دارایی های نگهداری شده برای فروش",'priority':"100",'account_group_code':"1",'color':'success'},
             #222222222222222222222222
-            {"name":"دارایی های ثابت مشهود",'code':"201",'color':'primary','account_group_code':2 }, 
-            {"name":"استهلاک انباشته دارایی های ثابت مشهود",'code':"202",'color':'primary','account_group_code':2 }, 
-            {"name":"دارایی های در جریان تکمیل",'code':"203",'color':'primary','account_group_code':2 }, 
-            {"name":"دارایی های نامشهود",'code':"204",'color':'primary','account_group_code':2 }, 
-            {"name":"سرمایه گذاری های بلند مدت",'code':"205",'color':'primary','account_group_code':2 },  
+            {'code':"201","name":"دارایی های ثابت مشهود",'color':'primary','priority':"100",'account_group_code':"2"}, 
+            {'code':"202","name":"استهلاک انباشته دارایی های ثابت مشهود",'color':'primary','priority':"100",'account_group_code':"2" }, 
+            {'code':"203","name":"دارایی های در جریان تکمیل",'color':'primary','priority':"100",'account_group_code':"2"}, 
+            {'code':"204","name":"دارایی های نامشهود",'color':'primary','priority':"100",'account_group_code':"2"}, 
+            {'code':"205","name":"سرمایه گذاری های بلند مدت",'color':'primary','priority':"100",'account_group_code':"2" },  
             #3333333333333333333333333
-            {"name":"ﺣﺴﺎب ﻫﺎ و اﺳﻨﺎد ﭘﺮداﺧﺘﻨﯽ ﺗﺠﺎری",'code':"301",'color':'danger','account_group_code':"3" },  
-            {"name":"ﺳﺎﯾﺮ ﺣﺴﺎب ﻫﺎ و اﺳﻨﺎد ﭘﺮداﺧﺘﻨﯽ",'code':"302",'color':'danger','account_group_code':"3" },  
-            {"name":"ﺳﻔﺎرﺷﺎت و ﭘﯿﺶ درﯾﺎﻓﺖ ﻫﺎ",'code':"303",'color':'danger','account_group_code':"3" },  
-            {"name":"ذﺧﯿﺮه ﻣﺎﻟﯿﺎت",'code':"304",'color':'danger','account_group_code':"3" },  
-            {"name":"ﺳﻮد ﺳﻬﺎم ﭘﺮداﺧﺘﻨﯽ",'code':"305",'color':'danger','account_group_code':"3" },  
-            {"name":"ﺳﭙﺮده ﻫﺎی ﭘﺮداﺧﺘﻨﯽ",'code':"306",'color':'danger','account_group_code':"3" },  
-            {"name":"ﺗﺴﻬﯿﻼت و اﻋﺘﺒﺎرات ﻣﺎﻟﯽ درﯾﺎﻓﺘﯽ ﮐﻮﺗﺎه ﻣﺪت",'code':"307",'color':'danger','account_group_code':"3" },  
-            {"name":"ذﺧﺎﯾﺮ",'code':"308",'color':'danger','account_group_code':"3" },  
+            {'code':"301","name":"ﺣﺴﺎب ﻫﺎ و اﺳﻨﺎد ﭘﺮداﺧﺘﻨﯽ ﺗﺠﺎری",'color':'danger','priority':"100",'account_group_code':"3"},  
+            {'code':"302","name":"ﺳﺎﯾﺮ ﺣﺴﺎب ﻫﺎ و اﺳﻨﺎد ﭘﺮداﺧﺘﻨﯽ",'color':'danger','priority':"100",'account_group_code':"3"},  
+            {'code':"303","name":"ﺳﻔﺎرﺷﺎت و ﭘﯿﺶ درﯾﺎﻓﺖ ﻫﺎ",'color':'danger','priority':"100",'account_group_code':"3"},  
+            {'code':"304","name":"ذﺧﯿﺮه ﻣﺎﻟﯿﺎت",'color':'danger','priority':"100",'account_group_code':"3"},  
+            {'code':"305","name":"ﺳﻮد ﺳﻬﺎم ﭘﺮداﺧﺘﻨﯽ",'color':'danger','priority':"100",'account_group_code':"3"},  
+            {'code':"306","name":"ﺳﭙﺮده ﻫﺎی ﭘﺮداﺧﺘﻨﯽ",'color':'danger','priority':"100",'account_group_code':"3"},  
+            {'code':"307","name":"ﺗﺴﻬﯿﻼت و اﻋﺘﺒﺎرات ﻣﺎﻟﯽ درﯾﺎﻓﺘﯽ ﮐﻮﺗﺎه ﻣﺪت",'color':'danger','priority':"100",'account_group_code':"3" },  
+            {'code':"308","name":"ذﺧﺎﯾﺮ",'color':'danger','priority':"100",'account_group_code':"3" },  
             #4444444444444444444444444
-            {"name":"ﺣﺴﺎب ﻫﺎ و اﺳﻨﺎد ﭘﺮداﺧﺘﻨﯽ ﺑﻠﻨﺪ ﻣﺪت ﺗﺠﺎری",'code':"401",'color':'secondary','account_group_code':"4" },  
-            {"name":"ﺳﺎﯾﺮ ﺣﺴﺎب ﻫﺎ و اﺳﻨﺎد ﭘﺮداﺧﺘﻨﯽ ﺑﻠﻨﺪﻣﺪت",'code':"402",'color':'secondary','account_group_code':"4" },  
-            {"name":"ﺗﺴﻬﯿﻼت و اﻋﺘﺒﺎرات ﻣﺎﻟﯽ درﯾﺎﻓﺘﯽ ﺑﻠﻨﺪﻣﺪت",'code':"403",'color':'secondary','account_group_code':"4" },  
-            {"name":"ذﺧﯿﺮه ﻣﺰاﯾﺎی ﭘﺎﯾﺎن ﺧﺪﻣﺖ ﮐﺎرﮐﻨﺎن",'code':"404",'color':'secondary','account_group_code':"4" },  
-            {"name":"درآﻣﺪﻫﺎی اﻧﺘﻘﺎﻟﯽ ﺑﻪ دوره ﻫﺎی آﺗﯽ",'code':"405",'color':'secondary','account_group_code':"4" },  
+            {'code':"401","name":"ﺣﺴﺎب ﻫﺎ و اﺳﻨﺎد ﭘﺮداﺧﺘﻨﯽ ﺑﻠﻨﺪ ﻣﺪت ﺗﺠﺎری",'color':'secondary','priority':"100",'account_group_code':"4" },  
+            {'code':"402","name":"ﺳﺎﯾﺮ ﺣﺴﺎب ﻫﺎ و اﺳﻨﺎد ﭘﺮداﺧﺘﻨﯽ ﺑﻠﻨﺪﻣﺪت",'color':'secondary','priority':"100",'account_group_code':"4" },  
+            {'code':"403","name":"ﺗﺴﻬﯿﻼت و اﻋﺘﺒﺎرات ﻣﺎﻟﯽ درﯾﺎﻓﺘﯽ ﺑﻠﻨﺪﻣﺪت",'color':'secondary','priority':"100",'account_group_code':"4" },  
+            {'code':"404","name":"ذﺧﯿﺮه ﻣﺰاﯾﺎی ﭘﺎﯾﺎن ﺧﺪﻣﺖ ﮐﺎرﮐﻨﺎن",'color':'secondary','priority':"100",'account_group_code':"4" },  
+            {'code':"405","name":"درآﻣﺪﻫﺎی اﻧﺘﻘﺎﻟﯽ ﺑﻪ دوره ﻫﺎی آﺗﯽ",'color':'secondary','priority':"100",'account_group_code':"4" },  
             #5555555555555555555555555
-            {"name":"ﺳﺮﻣﺎﯾﻪ ﭘﺮداﺧﺖ ﺷﺪه",'code':"501",'color':'secondary','account_group_code':"5" },  
-            {"name":"اﻧﺪوﺧﺘﻪ ﻗﺎﻧﻮﻧﯽ",'code':"502",'color':'secondary','account_group_code':"5" },  
-            {"name":"ﺳﺎﯾﺮ اﻧﺪوﺧﺘﻪ ﻫﺎ",'code':"503",'color':'secondary','account_group_code':"5" },  
-            {"name":"ﻣﺎزاد ﺗﺠﺪﯾﺪ ارزﯾﺎﺑﯽ داراﯾﯽ ﻫﺎی ﺛﺎﺑﺖ ﻣﺸﻬﻮد",'code':"504",'color':'secondary','account_group_code':"5" },  
-            {"name":"سود ( زیان ) انباشته",'code':"505",'color':'secondary','account_group_code':"5" },  
+            {'code':"501","name":"ﺳﺮﻣﺎﯾﻪ ﭘﺮداﺧﺖ ﺷﺪه",'color':'secondary','priority':"100",'account_group_code':"5" },  
+            {'code':"502","name":"اﻧﺪوﺧﺘﻪ ﻗﺎﻧﻮﻧﯽ",'color':'secondary','priority':"100",'account_group_code':"5" },  
+            {'code':"503","name":"ﺳﺎﯾﺮ اﻧﺪوﺧﺘﻪ ﻫﺎ",'color':'secondary','priority':"100",'account_group_code':"5" },  
+            {'code':"504","name":"ﻣﺎزاد ﺗﺠﺪﯾﺪ ارزﯾﺎﺑﯽ داراﯾﯽ ﻫﺎی ﺛﺎﺑﺖ ﻣﺸﻬﻮد",'color':'secondary','priority':"100",'account_group_code':"5" },  
+            {'code':"505","name":"سود ( زیان ) انباشته",'color':'secondary','priority':"100",'account_group_code':"5" },  
             #6666666666666666666666666
-            {"name":"فروش",'code':"601",'color':'secondary','account_group_code':"6" },  
-            {"name":"درآﻣﺪ ﺣﺎﺻﻞ از اراﺋﻪ ﺧﺪﻣﺎت",'code':"602",'color':'secondary','account_group_code':"6" },  
-            {"name":"ﺳﺎﯾﺮ درآﻣﺪﻫﺎی ﻋﻤﻠﯿﺎﺗﯽ",'code':"603",'color':'secondary','account_group_code':"6" },  
-            {"name":"ﺳﺎﯾﺮ درآﻣﺪﻫﺎی ﻏﯿﺮ ﻋﻤﻠﯿﺎﺗﯽ",'code':"604",'color':'secondary','account_group_code':"6" },  
+            {'code':"601","name":"فروش", 'color':'secondary','priority':"100",'account_group_code':"6" },  
+            {'code':"602","name":"درآﻣﺪ ﺣﺎﺻﻞ از اراﺋﻪ ﺧﺪﻣﺎت",'color':'secondary','priority':"100",'account_group_code':"6" },  
+            {'code':"603","name":"ﺳﺎﯾﺮ درآﻣﺪﻫﺎی ﻋﻤﻠﯿﺎﺗﯽ",'color':'secondary','priority':"100",'account_group_code':"6" },  
+            {'code':"604","name":"ﺳﺎﯾﺮ درآﻣﺪﻫﺎی ﻏﯿﺮ ﻋﻤﻠﯿﺎﺗﯽ",'color':'secondary','priority':"100",'account_group_code':"6" },  
             #777777777777777777777777
-            {"name":"ﺑﻬﺎی ﺗﻤﺎم ﺷﺪه ﮐﺎﻻی ﻓﺮوش رﻓﺘﻪ داﺧﻠﯽ",'code':"701",'color':'secondary','account_group_code':"7" },  
-            {"name":"ﺑﻬﺎی ﺗﻤﺎم ﺷﺪه ﮐﺎﻻی ﻓﺮوش رﻓﺘﻪ ﺧﺎرﺟﯽ",'code':"702",'color':'secondary','account_group_code':"7" },  
-            {"name":"ﺑﻬﺎی ﺗﻤﺎم ﺷﺪه ﺧﺪﻣﺎت اراﺋﻪ ﺷﺪه",'code':"703",'color':'secondary','account_group_code':"7" },  
+            {'code':"701","name":"ﺑﻬﺎی ﺗﻤﺎم ﺷﺪه ﮐﺎﻻی ﻓﺮوش رﻓﺘﻪ داﺧﻠﯽ",'color':'primary','priority':"100",'account_group_code':"7" },  
+            {'code':"702","name":"ﺑﻬﺎی ﺗﻤﺎم ﺷﺪه ﮐﺎﻻی ﻓﺮوش رﻓﺘﻪ ﺧﺎرﺟﯽ",'color':'primary','priority':"100",'account_group_code':"7" },  
+            {'code':"703","name":"ﺑﻬﺎی ﺗﻤﺎم ﺷﺪه ﺧﺪﻣﺎت اراﺋﻪ ﺷﺪه",'color':'primary','priority':"100",'account_group_code':"7" },  
             #888888888888888888888888
-            {"name":"هزﯾﻨﻪ ﺣﻘﻮق و دﺳﺘﻤﺰد ﮐﺎرﮐﻨﺎن ﻏﯿﺮ ﺗﻮﻟﯿﺪی",'code':"801",'color':'danger','account_group_code':"8" },  
-            {"name":"هزﯾﻨﻪ ﻫﺎی ﻋﻤﻠﯿﺎﺗﯽ",'code':"802",'color':'danger','account_group_code':"8" },  
-            {"name":"سایر هزﯾﻨﻪ ﻫﺎی ﻋﻤﻠﯿﺎﺗﯽ",'code':"803",'color':'danger','account_group_code':"8" },  
-            {"name":"هزینه ﻫﺎی ﻣﺎﻟﯽ",'code':"804",'color':'danger','account_group_code':"8" },  
-            {"name":"هزینه ﻫﺎی ﻏﯿﺮ ﻋﻤﻠﯿﺎﺗﯽ",'code':"805",'color':'danger','account_group_code':"8" },  
+            {'code':"801","name":"هزﯾﻨﻪ ﺣﻘﻮق و دﺳﺘﻤﺰد ﮐﺎرﮐﻨﺎن ﻏﯿﺮ ﺗﻮﻟﯿﺪی",'color':'danger','priority':"100",'account_group_code':"8" },  
+            {'code':"802","name":"هزﯾﻨﻪ ﻫﺎی ﻋﻤﻠﯿﺎﺗﯽ",'color':'danger','priority':"100",'account_group_code':"8" },  
+            {'code':"803","name":"سایر هزﯾﻨﻪ ﻫﺎی ﻋﻤﻠﯿﺎﺗﯽ",'color':'danger','priority':"100",'account_group_code':"8" },  
+            {'code':"804","name":"هزینه ﻫﺎی ﻣﺎﻟﯽ",'color':'danger','priority':"100",'account_group_code':"8" },  
+            {'code':"805","name":"هزینه ﻫﺎی ﻏﯿﺮ ﻋﻤﻠﯿﺎﺗﯽ",'color':'danger','priority':"100",'account_group_code':"8" },  
             #999999999999999999999999
-            {"name":"ﺣﺴﺎب ﻫﺎی اﻧﺘﻈﺎﻣﯽ",'code':"901",'color':'secondary','account_group_code':"9" },  
-            {"name":"طرف ﺣﺴﺎب ﻫﺎی اﻧﺘﻈﺎﻣﯽ",'code':"902",'color':'secondary','account_group_code':"9" },  
-            {"name":"ﺗﺮاز اﻓﺘﺘﺎﺣیه",'code':"903",'color':'secondary','account_group_code':"9" },  
-            {"name":"ﺗﺮاز اختتامیه",'code':"904",'color':'secondary','account_group_code':"9" },  
+            {'code':"901","name":"ﺣﺴﺎب ﻫﺎی اﻧﺘﻈﺎﻣﯽ",'color':'secondary','priority':"100",'account_group_code':"9" },  
+            {'code':"902","name":"طرف ﺣﺴﺎب ﻫﺎی اﻧﺘﻈﺎﻣﯽ",'color':'secondary','priority':"100",'account_group_code':"9" },  
+            {'code':"903","name":"ﺗﺮاز اﻓﺘﺘﺎﺣیه",'color':'secondary','priority':"100",'account_group_code':"9" },  
+            {'code':"904","name":"ﺗﺮاز اختتامیه",'color':'secondary','priority':"100",'account_group_code':"9" },  
 
     ]  
     moein_accounts=[
-        
-            {"name":"صندوق",'code':"1011",'color':'success','basic_account_code':"101" },
-            {"name":"بانک",'code':"1012",'color':'success','basic_account_code':"101" },
-            {"name":"تنخواه",'code':"1013",'color':'success','basic_account_code':"101" },
-            {"name":"وجوه در راه",'code':"1014",'color':'success','basic_account_code':"101" },
+            #101
+            {'code':"10101","name":"صندوق",'color':'success','priority':"100",'basic_account_code':"101" },
+            {'code':"10102","name":"بانک",'color':'success','priority':"100",'basic_account_code':"101" },
+            {'code':"10103","name":"تنخواه",'color':'success','priority':"100",'basic_account_code':"101" },
+            {'code':"10104","name":"وجوه در راه",'color':'success','priority':"100",'basic_account_code':"101" },
             
             
-            
-            {"name":"سهام شرکتهای پذیرفته شده در بورس",'code':"1021",'color':'success','basic_account_code':"102" },
-            {"name":"اوراق مشارکت",'code':"1022",'color':'success','basic_account_code':"102" },
-            {"name":"سرمایه گذاری در سهام شرکتها",'code':"1023",'color':'success','basic_account_code':"102" },
-            {"name":"سپرده های سرمایه گذاری کوتاه مدت",'code':"1024",'color':'success','basic_account_code':"102" },
+            #102
+            {'code':"10201","name":"سهام شرکتهای پذیرفته شده در بورس",'color':'warning','priority':"100",'basic_account_code':"102" },
+            {'code':"10202","name":"اوراق مشارکت",'color':'warning','priority':"100",'basic_account_code':"102" },
+            {'code':"10203","name":"سرمایه گذاری در سهام شرکتها",'color':'warning','priority':"100",'basic_account_code':"102" },
+            {'code':"10204","name":"سپرده های سرمایه گذاری کوتاه مدت",'color':'warning','priority':"100",'basic_account_code':"102" },
+            #103
+            {'code':"10301","name":"اسناد دریافتنی تجاری / شرکت ها",'color':'success','priority':"100",'basic_account_code':"103" },
+            {'code':"10302","name":"اسناد دریافتنی تجاری / اشخاص",'color':'success','priority':"100",'basic_account_code':"103" },
+            {'code':"10303","name":"حسابهای دریافتنی تجاری / شرکت ها",'color':'success','priority':"100",'basic_account_code':"103" },
+            {'code':"10304","name":"حسابهای دریافتنی تجاری / اشخاص",'color':'success','priority':"100",'basic_account_code':"103" },
+            #104
+            {'code':"10401","name":"کارکنان ( وام مساعده )",'color':'primary','priority':"100",'basic_account_code':"104" },
+            {'code':"10402","name":"اسناد دریافتنی",'color':'primary','priority':"100",'basic_account_code':"104" },
+            {'code':"10403","name":"سپرده های موقت",'color':'primary','priority':"100",'basic_account_code':"104" },
+            {'code':"10404","name":"سود سهام دریافتنی",'color':'primary','priority':"100",'basic_account_code':"104" },
+            {'code':"10405","name":"طلب از شرکت گروهها",'color':'primary','priority':"100",'basic_account_code':"104" },
+            {'code':"10406","name":"طلب از سایر اشخاص وابسته",'color':'primary','priority':"100",'basic_account_code':"104" },
+            {'code':"10407","name":"سایر اشخاص",'color':'primary','priority':"100",'basic_account_code':"104" },
+            #105
+            {'code':"10501","name":"کالای ساخته شده",'color':'success','priority':"100",'basic_account_code':"105" },
+            {'code':"10502","name":"کالای در جریان ساخت",'color':'success','priority':"100",'basic_account_code':"105" },
+            {'code':"10503","name":"مواد اولیه و بسته بندی",'color':'success','priority':"100",'basic_account_code':"105" },
+            {'code':"10504","name":"قطعات و لوازم یدکی",'color':'success','priority':"100",'basic_account_code':"105" },
+            {'code':"10505","name":"سایر موجودی ها",'color':'success','priority':"100",'basic_account_code':"105" },
+            {'code':"10506","name":"کالای در راه",'color':'success','priority':"100",'basic_account_code':"105" },
+            #106
+            #107
+
+            #201
+            {'code':"201/01","name":"زمین",'color':'success','priority':"100",'basic_account_code':"201" },
+            {'code':"201/02","name":"ساختمان",'color':'success','priority':"100",'basic_account_code':"201" },
+            {'code':"201/03","name":"تاسیسات",'color':'success','priority':"100",'basic_account_code':"201" },
+            {'code':"201/04","name":"ماشین آلات و تجهیزات ",'color':'success','priority':"100",'basic_account_code':"201" },
+            {'code':"201/05","name":"اثاثه و منصوبات",'color':'success','priority':"100",'basic_account_code':"201" },
+            {'code':"201/06","name":"ابزار آلات",'color':'success','priority':"100",'basic_account_code':"201" },
+            {'code':"201/07","name":"وسایل نقلیه",'color':'success','priority':"100",'basic_account_code':"201" },
+            {'code':"201/08","name":"دارایی ها در دست تکمیل",'color':'success','priority':"100",'basic_account_code':"201" },
+            {'code':"201/09","name":"سفارشات و پیش پرداخت های سرمایه ای ",'color':'success','priority':"100",'basic_account_code':"201" },
+            {'code':"201/10","name":"اقلام سرمایه ای در انبار",'color':'success','priority':"100",'basic_account_code':"201" },
+            #204
+            {'code':"20401","name":"حق امتیاز استفاده از خدمات عمومی",'color':'success','priority':"100",'basic_account_code':"204" },
+            {'code':"20402","name":"سرقفلی محل کسب",'color':'success','priority':"100",'basic_account_code':"204" },
+            {'code':"20403","name":"سایر داراییهای نا مشهود",'color':'success','priority':"100",'basic_account_code':"204" },
+
+            #205
     ]
     moein2_accounts=[
         
-            {"name":"صندوق فروشگاه",'code':"1011/1",'color':'success','moein_account_code':"1011" },
-            {"name":"صندوق دفتر",'code':"1011/2",'color':'success','moein_account_code':"1011" },
+            {"name":"صندوق فروشگاه",'code':"1010101",'color':'success','priority':"100",'moein_account_code':"10101" },
+            {"name":"صندوق دفتر",'code':"1010102",'color':'success','priority':"100",'moein_account_code':"10101" },
 
-            {"name":"بانک ملی",'code':"1012/1",'color':'success','moein_account_code':"1012" },
-            {"name":"بانک رفاه",'code':"1012/2",'color':'success','moein_account_code':"1012" },
-            {"name":"بانک ملت",'code':"1012/3",'color':'success','moein_account_code':"1012" },
-            {"name":"بانک تجارت",'code':"1012/4",'color':'success','moein_account_code':"1012" },
+            {"name":"بانک ملی",'code':"1010201",'color':'success','priority':"100",'moein_account_code':"10102" },
+            {"name":"بانک رفاه",'code':"1010202",'color':'success','priority':"100",'moein_account_code':"10102" },
+            {"name":"بانک ملت",'code':"1010203",'color':'success','priority':"100",'moein_account_code':"10102" },
+            {"name":"بانک تجارت",'code':"1010204",'color':'success','priority':"100",'moein_account_code':"10102" },
     ]
     tafsili_accounts=[
-            {"name":"صندوق بی ضرر",'code':"1011/1/1",'color':'success','moein_account_code':"1011/1" },
-            {"name":"صندوق درست",'code':"1011/1/2",'color':'success','moein_account_code':"1011/1" },
-            {"name":"صندوق شرباف",'code':"1011/1/1",'color':'success','moein_account_code':"1011/2" },
-            {"name":"صندوق معتبر",'code':"1011/1/2",'color':'success','moein_account_code':"1011/2" },
+            {"name":"صندوق بی ضرر",'code':"1011/1/1",'color':'success','priority':"100",'moein_account_code':"1010101" },
+            {"name":"صندوق درست",'code':"1011/1/2",'color':'success','priority':"100",'moein_account_code':"1010101" },
+            {"name":"صندوق شرباف",'code':"1011/1/1",'color':'success','priority':"100",'moein_account_code':"1010102" },
+            {"name":"صندوق معتبر",'code':"1011/1/2",'color':'success','priority':"100",'moein_account_code':"1010102" },
 
-            {"name":"بانک ملی به شماره 0101581354009",'code':"1012/1/1",'color':'success','moein_account_code':"1012/1" },
+            {"name":"بانک ملی به شماره 0101581354009",'code':"1012/1/1",'color':'success','priority':"100",'moein_account_code':"1010201" },
 
 
     ]

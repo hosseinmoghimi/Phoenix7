@@ -292,7 +292,8 @@ class AccountRepo():
 
         for moein_account in moein_accounts:
             basic_account=BasicAccount.objects.filter(code=moein_account["basic_account_code"]).first()
-            if basic_account is not None: 
+            if basic_account is not None:
+                print(moein_account) 
                 new_moein_account=MoeinAccount(name=moein_account["name"],color=moein_account["color"],code=moein_account['code'],basic_account_id=basic_account.id)
             # new_moein_account=MoeinAccount(basic_account=new_basic_account,**moein_account)
                 new_moein_account.save()
