@@ -4,7 +4,7 @@ from .apps import APP_NAME
 from django.utils.translation import gettext as _
 from .enums import *
 from utility.constants import SUCCEED,FAILED
-from utility.currency import to_price_colored
+from utility.currency import to_price_colored,to_price
 from utility.calendar import PersianCalendar
 from django.contrib.auth.models import User,Group
 from phoenix.server_settings import MEDIA_URL,STATIC_URL 

@@ -157,6 +157,9 @@
                                 v-model="accounting_document.id">
 
                         </div>
+                        <div :class="'alert alert-'+message.color">
+                            <div v-html="message.body"></div>
+                        </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group" v-if="accounting_document.id==0">
@@ -168,13 +171,11 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-
+                        <button @click="add()" class="btn btn-success">
+                            <i class="fa fa-plus"></i>افزودن رویداد مالی به سند حسابداری
+                        </button>
                     </div>
-                    <div class="col-md-12 my-2">
-                        <div :class="'alert alert-'+message.color">
-                            <div v-html="message.body"></div>
-                        </div>
-                    </div>
+                    
                 </div>
 
 
@@ -215,6 +216,25 @@
             message: { show: false },
         },
         methods: {
+            add: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    event_id: parseInt("{{event.id}}"),
+                    accounting_document_id:this.accounting_document.id
+                }
+                let url="{% url 'accounting:add_event_to_accounting_document' %}"
+            
+                $.post(url,payload).done(data=>{
+                    console.log(data)
+                        if(data.result==="SUCCEED"){
+                            if(typeof accounting_document_lines_app != "undefined"){
+
+                                accounting_document_lines_app.accounting_document_lines=data.accounting_document_lines
+                            }
+
+                        }
+                })
+            },
             get_accounting_document: function () {
                 console.log(this.accounting_document.id)
                 select_accounting_document_by_id(this.accounting_document.id).done(data => {
@@ -230,6 +250,8 @@
 
                         add_event_to_accounting_document_app.message.show = true
                         add_event_to_accounting_document_app.message.color = "danger"
+
+
                     }
                     if (data.result === "SUCCEED") {
                         add_event_to_accounting_document_app.message.body = `
@@ -240,6 +262,7 @@
                         </p>`
 
 
+                        add_event_to_accounting_document_app.accounting_document = data.accounting_document
                         add_event_to_accounting_document_app.message.show = true
                         add_event_to_accounting_document_app.message.color = "success"
                     }

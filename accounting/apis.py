@@ -222,6 +222,31 @@ class DeleteALLAccountsApi(APIView):
         context['result']=result
         context['log']=log
         return JsonResponse(context)
+class AddEventToAccountingDocumentApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            log=222
+            message="پارامتر های ورودی صحیح نمی باشند."
+            _form=AddEventToAccountingDocumentForm(request.POST)
+            if _form.is_valid():
+                log=333
+                cd=_form.cleaned_data
+                event,message,result=EventRepo(request=request).add_event_to_accounting_document(**cd)
+                accounting_document_lines=event.accountingdocumentline_set.all()
+                if event is not None:
+                    context['event']=EventSerializer(event).data
+                    context['accounting_document_lines']=AccountingDocumentLineSerializer(accounting_document_lines,many=True).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
 
 
 class AddAccountingDocumentLineApi(APIView):

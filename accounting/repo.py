@@ -30,7 +30,7 @@ class EventRepo:
         if "id" in kwargs:
             return self.objects.filter(pk=kwargs['id']).first() 
 
-            
+                     
     def add_event(self,*args, **kwargs):
         event,message,result=(None,"",FAILED)
         if not Permission(request=self.request).is_permitted(APP_NAME,OperationEnum.ADD,"event"):
@@ -42,6 +42,56 @@ class EventRepo:
         #     return event,message,result
 
         event=Event()
+        if 'event_datetime' in kwargs:
+            year=kwargs['event_datetime'][:2]
+            if year=="13" or year=="14":
+                kwargs['event_datetime']=PersianCalendar().to_gregorian(kwargs["event_datetime"])
+            event.event_datetime=kwargs['event_datetime']
+        if 'title' in kwargs:
+            event.title=kwargs['title']
+        if 'bedehkar_id' in kwargs:
+            event.pay_to_id=kwargs['bedehkar_id']
+        if 'bestankar_id' in kwargs:
+            event.pay_from_id=kwargs['bestankar_id']
+        if 'amount' in kwargs:
+            event.amount=kwargs['amount']
+        if 'tel' in kwargs:
+            event.tel=kwargs['tel']
+        if 'mobile' in kwargs:
+            event.mobile=kwargs['mobile']
+       
+        
+        # if 'financial_year_id' in kwargs:
+        #     payment.financial_year_id=kwargs['financial_year_id']
+        # else:
+        #     payment.financial_year_id=FinancialYear.get_by_date(date=payment.transaction_datetime).id
+        event.save()
+        result=SUCCEED
+        message="رویداد مالی جدید با موفقیت اضافه گردید."
+         
+        return event,message,result
+
+
+
+            
+    def add_event_to_accounting_document(self,*args, **kwargs):
+        event,message,result=(None,"",FAILED)
+        if not Permission(request=self.request).is_permitted(APP_NAME,OperationEnum.ADD,"event"):
+        # if not self.request.user.has_perm(APP_NAME+".add_account"):
+            message="دسترسی غیر مجاز"
+            return account,message,result
+        # if len(Account.objects.filter(title=kwargs['title']))>0:
+        #     message="از قبل حسابی با همین عنوان ثبت شده است."
+        #     return event,message,result
+
+        event=self.event(*args,**kwargs)
+        accounting_document=AccountingDocumentRepo(request=self.request).accounting_document(*args,**kwargs)
+        if event is not None and accounting_document is not None:
+            accounting_document_line1,message1,result1=AccountingDocumentLineRepo(request=self.request).add_accounting_document_line(title=event.title,accounting_document_id=accounting_document.id,bestankar=event.amount,account_id=event.pay_from.id,event_id=event.id)
+            accounting_document_line2,message2,result2=AccountingDocumentLineRepo(request=self.request).add_accounting_document_line(title=event.title,accounting_document_id=accounting_document.id,bedehkar=event.amount,account_id=event.pay_to.id,event_id=event.id)
+            leolog(event=event)
+            result=SUCCEED
+            return event,message,result
         if 'event_datetime' in kwargs:
             year=kwargs['event_datetime'][:2]
             if year=="13" or year=="14":
@@ -119,6 +169,8 @@ class AccountingDocumentLineRepo:
 
         if 'title' in kwargs:
             accounting_document_line.title=kwargs['title']
+        if 'event_id' in kwargs:
+            accounting_document_line.event_id=kwargs['event_id']
         if 'accounting_document_id' in kwargs:
             accounting_document_line.accounting_document_id=kwargs['accounting_document_id']
         if 'description' in kwargs:
@@ -133,17 +185,7 @@ class AccountingDocumentLineRepo:
                 accounting_document_line.account=account
         if 'account_id' in kwargs and kwargs['account_id'] is not None:
             accounting_document_line.account_id=kwargs['account_id'] 
-        if 'tel' in kwargs:
-            accounting_document_line.tel=kwargs['tel']
-        if 'color' in kwargs:
-            accounting_document_line.color=kwargs['color']
-        if 'title' in kwargs:
-            accounting_document_line.title=kwargs['title']
-        if 'code' in kwargs:
-            accounting_document_line.code=kwargs['code']
-        if 'parent_id' in kwargs and kwargs["parent_id"]>0:
-            accounting_document_line.parent_id=kwargs['parent_id']
-       
+        
         
         # if 'financial_year_id' in kwargs:
         #     payment.financial_year_id=kwargs['financial_year_id']
@@ -379,6 +421,7 @@ class AccountRepo():
         result=SUCCEED
         message="همه حساب ها حذف شد."
         return result,message
+    
     def set_priority(self,*args, **kwargs):
         result,message,priority=FAILED,"",None
         if not self.request.user.has_perm(APP_NAME+".change_account"):

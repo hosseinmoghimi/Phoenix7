@@ -11,6 +11,10 @@ class AddAccountingDocumentForm(forms.Form):
     title=forms.CharField(max_length=100, required=False)
 
 
+class AddEventToAccountingDocumentForm(forms.Form):
+    accounting_document_id=forms.IntegerField(required=True)
+    event_id=forms.IntegerField(required=True)
+    
 
 class AddAccountGroupForm(forms.Form):
     title=forms.CharField(max_length=100, required=True)
