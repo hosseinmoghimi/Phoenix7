@@ -335,7 +335,8 @@ class EventView(View):
         accounting_document_lines=AccountingDocumentLineRepo(request=request).list(event_id=event.id).order_by('-bedehkar')
         accounting_document_lines_s=json.dumps(AccountingDocumentLineSerializer(accounting_document_lines,many=True).data)
         context["accounting_document_lines_s"]=accounting_document_lines_s
-
+        if len(accounting_document_lines)==0:
+            context['add_event_to_document_form']=AddEventToAccountingDocumentForm()
 
         return render(request,TEMPLATE_ROOT+"event.html",context)
 

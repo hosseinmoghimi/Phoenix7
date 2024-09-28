@@ -87,8 +87,8 @@ class EventRepo:
         event=self.event(*args,**kwargs)
         accounting_document=AccountingDocumentRepo(request=self.request).accounting_document(*args,**kwargs)
         if event is not None and accounting_document is not None:
-            accounting_document_line1,message1,result1=AccountingDocumentLineRepo(request=self.request).add_accounting_document_line(title=event.title,accounting_document_id=accounting_document.id,bestankar=event.amount,account_id=event.pay_from.id,event_id=event.id)
             accounting_document_line2,message2,result2=AccountingDocumentLineRepo(request=self.request).add_accounting_document_line(title=event.title,accounting_document_id=accounting_document.id,bedehkar=event.amount,account_id=event.pay_to.id,event_id=event.id)
+            accounting_document_line1,message1,result1=AccountingDocumentLineRepo(request=self.request).add_accounting_document_line(title=event.title,accounting_document_id=accounting_document.id,bestankar=event.amount,account_id=event.pay_from.id,event_id=event.id)
             leolog(event=event)
             result=SUCCEED
             return event,message,result

@@ -24,71 +24,79 @@
 
 
                 <hr>
+                <div class="row">
+                    <div class="col-6">
 
-
-                <h4>بدهکار</h4>
-                <div class="media">
-                    <a href="{{event.pay_to.get_absolute_url}}">
-                        <img src="{{event.pay_to.logo}}" width="72" alt="">
-                    </a>
-                    <div class="media-body mr-2">
-                        <div>
+                        <h4>بدهکار</h4>
+                        <div class="media">
                             <a href="{{event.pay_to.get_absolute_url}}">
-                                <h4>{{event.pay_to.name}}
-                                </h4>
+                                <img src="{{event.pay_to.logo}}" width="72" alt="">
                             </a>
-                        </div>
-                        <div>
-                            <a href="{{event.pay_to.parent.get_absolute_url}}">
-                                <h6>{{event.pay_to.parent.full_title}}
+                            <div class="media-body mr-2">
+                                <div>
+                                    <a href="{{event.pay_to.get_absolute_url}}">
+                                        <h4>{{event.pay_to.name}}
+                                        </h4>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="{{event.pay_to.parent.get_absolute_url}}">
+                                        <h6>{{event.pay_to.parent.full_title}}
+                                        </h6>
+                                    </a>
+                                </div>
+                                <h6 class="text-{{event.pay_to.color}}">
+                                    <small class="text-muted">
+                                        {{event.pay_to.code}}
+                                    </small>
                                 </h6>
-                            </a>
+                                <h6 class="text-{{event.pay_to.color}}">
+                                    <span class="mr-2">
+                                        {{event.pay_to.balance|to_price_color|safe}}
+                                    </span>
+                                </h6>
+                            </div>
                         </div>
-                        <h6 class="text-{{event.pay_to.color}}">
-                            <small class="text-muted">
-                                {{event.pay_to.code}}
-                            </small>
-                        </h6>
-                        <h6 class="text-{{event.pay_to.color}}">
-                            <span class="mr-2">
-                                {{event.pay_to.balance|to_price_color|safe}}
-                            </span>
-                        </h6>
+
                     </div>
-                </div>
+
+                    <div class="col-6">
 
 
-                <h4>بستانکار</h4>
-                <div class="media">
-                    <a href="{{event.pay_from.get_absolute_url}}">
-                        <img src="{{event.pay_from.logo}}" width="72" alt="">
-                    </a>
-                    <div class="media-body mr-2">
-                        <div>
+                        <h4>بستانکار</h4>
+                        <div class="media">
                             <a href="{{event.pay_from.get_absolute_url}}">
-                                <h4>{{event.pay_from.name}}
-                                </h4>
+                                <img src="{{event.pay_from.logo}}" width="72" alt="">
                             </a>
-                        </div>
-                        <div>
-                            <a href="{{event.pay_from.parent.get_absolute_url}}">
-                                <h6>{{event.pay_from.parent.full_title}}
+                            <div class="media-body mr-2">
+                                <div>
+                                    <a href="{{event.pay_from.get_absolute_url}}">
+                                        <h4>{{event.pay_from.name}}
+                                        </h4>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="{{event.pay_from.parent.get_absolute_url}}">
+                                        <h6>{{event.pay_from.parent.full_title}}
+                                        </h6>
+                                    </a>
+                                </div>
+                                <h6 class="text-{{event.pay_from.color}}">
+                                    <small class="text-muted">
+                                        {{event.pay_from.code}}
+                                    </small>
                                 </h6>
-                            </a>
+                                <h6 class="text-{{event.pay_from.color}}">
+                                    <span class="mr-2">
+                                        {{event.pay_from.balance|to_price_color|safe}}
+                                    </span>
+                                </h6>
+                            </div>
                         </div>
-                        <h6 class="text-{{event.pay_from.color}}">
-                            <small class="text-muted">
-                                {{event.pay_from.code}}
-                            </small>
-                        </h6>
-                        <h6 class="text-{{event.pay_from.color}}">
-                            <span class="mr-2">
-                                {{event.pay_from.balance|to_price_color|safe}}
-                            </span>
-                        </h6>
                     </div>
-                </div>
 
+
+                </div>
 
                 <h5>
 
@@ -134,6 +142,7 @@
 
 
 
+    {% if add_event_to_document_form %}
 
     <div class="col-md-12">
         <div class="card" id="add-event-to-accounting-document-app">
@@ -175,7 +184,7 @@
                             <i class="fa fa-plus"></i>افزودن رویداد مالی به سند حسابداری
                         </button>
                     </div>
-                    
+
                 </div>
 
 
@@ -185,6 +194,7 @@
         </div>
     </div>
 
+    {% endif %}
 
     <div class="col-md-12">
         {% include "accounting/includes/accounting-document-lines-app/template.html" %}
@@ -208,6 +218,8 @@
         },
     })
 </script>
+{% if add_event_to_document_form %}
+
 <script>
     let add_event_to_accounting_document_app = new Vue({
         el: "#add-event-to-accounting-document-app",
@@ -220,19 +232,19 @@
                 let payload = {
                     csrfmiddlewaretoken: csrfmiddlewaretoken,
                     event_id: parseInt("{{event.id}}"),
-                    accounting_document_id:this.accounting_document.id
+                    accounting_document_id: this.accounting_document.id
                 }
-                let url="{% url 'accounting:add_event_to_accounting_document' %}"
-            
-                $.post(url,payload).done(data=>{
+                let url = "{% url 'accounting:add_event_to_accounting_document' %}"
+
+                $.post(url, payload).done(data => {
                     console.log(data)
-                        if(data.result==="SUCCEED"){
-                            if(typeof accounting_document_lines_app != "undefined"){
+                    if (data.result === "SUCCEED") {
+                        if (typeof accounting_document_lines_app != "undefined") {
 
-                                accounting_document_lines_app.accounting_document_lines=data.accounting_document_lines
-                            }
-
+                            accounting_document_lines_app.accounting_document_lines = data.accounting_document_lines
                         }
+
+                    }
                 })
             },
             get_accounting_document: function () {
@@ -271,6 +283,8 @@
         },
     })
 </script>
+{% endif %}
+
 {% include "accounting/includes/accounting-document-lines-app/script.html" %}
 
 {% endblock script %}
