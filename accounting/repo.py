@@ -1,4 +1,4 @@
-from .models import Event,TafsiliAccount,AccountGroup,BasicAccount,BasicAccount,MoeinAccount,AccountingDocument,AccountingDocumentLine,Account
+from .models import Person,Event,TafsiliAccount,AccountGroup,BasicAccount,BasicAccount,MoeinAccount,AccountingDocument,AccountingDocumentLine,Account
 from utility.constants import FAILED,SUCCEED
 from processmanagement.permission import Permission,OperationEnum
 from django.db.models import Q
@@ -8,6 +8,70 @@ from .apps import APP_NAME
 from utility.num import filter_number
 from .defaults import init_all_accounts_list,init_all_accounts_list_1
 from utility.calendar import PersianCalendar
+
+class PersonRepo:
+    def __init__(self,request,*args, **kwargs):
+        self.request=request
+        self.me=None
+        profile=ProfileRepo(request=request).me
+        self.objects=Person.objects
+        # if profile is not None:
+        #     self.me=self.objects.filter(profile=profile).first()
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            objects=objects.filter(title__contains=kwargs['search_for']) 
+        return objects.all()
+    def person(self,*args, **kwargs):
+        if "person_id" in kwargs:
+            return self.objects.filter(pk=kwargs['person_id']).first() 
+        if "pk" in kwargs:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs:
+            return self.objects.filter(pk=kwargs['id']).first() 
+
+                     
+    def add_event(self,*args, **kwargs):
+        event,message,result=(None,"",FAILED)
+        if not Permission(request=self.request).is_permitted(APP_NAME,OperationEnum.ADD,"event"):
+        # if not self.request.user.has_perm(APP_NAME+".add_account"):
+            message="دسترسی غیر مجاز"
+            return account,message,result
+        # if len(Account.objects.filter(title=kwargs['title']))>0:
+        #     message="از قبل حسابی با همین عنوان ثبت شده است."
+        #     return event,message,result
+
+        event=Event()
+        if 'event_datetime' in kwargs:
+            year=kwargs['event_datetime'][:2]
+            if year=="13" or year=="14":
+                kwargs['event_datetime']=PersianCalendar().to_gregorian(kwargs["event_datetime"])
+            event.event_datetime=kwargs['event_datetime']
+        if 'title' in kwargs:
+            event.title=kwargs['title']
+        if 'bedehkar_id' in kwargs:
+            event.pay_to_id=kwargs['bedehkar_id']
+        if 'bestankar_id' in kwargs:
+            event.pay_from_id=kwargs['bestankar_id']
+        if 'amount' in kwargs:
+            event.amount=kwargs['amount']
+        if 'tel' in kwargs:
+            event.tel=kwargs['tel']
+        if 'mobile' in kwargs:
+            event.mobile=kwargs['mobile']
+       
+        
+        # if 'financial_year_id' in kwargs:
+        #     payment.financial_year_id=kwargs['financial_year_id']
+        # else:
+        #     payment.financial_year_id=FinancialYear.get_by_date(date=payment.transaction_datetime).id
+        event.save()
+        result=SUCCEED
+        message="رویداد مالی جدید با موفقیت اضافه گردید."
+         
+        return event,message,result
+
+
 
 class EventRepo:
     def __init__(self,request,*args, **kwargs):

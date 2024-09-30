@@ -2,9 +2,9 @@ from django.shortcuts import render,reverse
 from .apps import APP_NAME
 from processmanagement.permission import Permission,OperationEnum
 from django.views import View
-from .repo import AccountingDocumentLineRepo,TafsiliAccountRepo,AccountGroupRepo,AccountingDocumentRepo,BasicAccountRepo,MoeinAccountRepo,AccountRepo,EventRepo
+from .repo import PersonRepo,AccountingDocumentLineRepo,TafsiliAccountRepo,AccountGroupRepo,AccountingDocumentRepo,BasicAccountRepo,MoeinAccountRepo,AccountRepo,EventRepo
 from .serializers import TafsiliAccountSerializer,AccountGroupSerializer,BasicAccountSerializer,MoeinAccountSerializer,AccountSerializer,EventSerializer,AccountingDocumentSerializer
-from .serializers import AccountGroupBriefSerializer,BasicAccountBriefSerializer,MoeinAccountBriefSerializer,TafsiliAccountBriefSerializer,AccountingDocumentLineSerializer
+from .serializers import PersonSerializer,AccountGroupBriefSerializer,BasicAccountBriefSerializer,MoeinAccountBriefSerializer,TafsiliAccountBriefSerializer,AccountingDocumentLineSerializer
 from .forms import *
 from core.views import CoreContext
 from core.enums import ColorEnum
@@ -386,6 +386,26 @@ class AddAccountingDocumentView(View):
         account_groups_s=json.dumps(AccountGroupSerializer(account_groups,many=True).data)
         context['account_groups_s']=account_groups_s
         return render(request,TEMPLATE_ROOT+"add-accounting-document.html",context)
+
+class PersonsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        persons=PersonRepo(request=request).list(*args, **kwargs)
+        context['persons']=persons
+        persons_s=json.dumps(PersonSerializer(persons,many=True).data)
+        context['persons_s']=persons_s
+        return render(request,TEMPLATE_ROOT+"persons.html",context)
+
+class PersonView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        account_groups=AccountGroupRepo(request=request).list(*args, **kwargs)
+        context['account_groups']=account_groups
+        for account_group in account_groups:
+            account_group.normalize_total()
+        account_groups_s=json.dumps(AccountGroupSerializer(account_groups,many=True).data)
+        context['account_groups_s']=account_groups_s
+        return render(request,TEMPLATE_ROOT+"person.html",context)
 
 class TreeListView(View):
     def get(self,request,*args, **kwargs):

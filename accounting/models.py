@@ -56,7 +56,25 @@ class Account(models.Model,LinkHelper):
     #     if 'description' in kwargs:
     #         self.description=kwargs['description']
     #     return super(Account,self).__init__(self)
-    
+    def get_full_link(self):
+        if self.parent is not None:
+            return self.parent.get_full_link()+""+self.get_link()
+        return self.get_link()
+
+
+    def get_link(self):
+        return f"""
+        <a href="{self.get_absolute_url()}">
+                <h6 class="text-f{self.color}">
+
+                    {self.name}
+                    <span class="badge badge-{self.color}">
+                        {self.type}
+                      </span>
+
+                </h6>
+              </a>
+            """
     def all_sub_accounts_id(self):
         ids=[self.id]
         for child in self.childs:
@@ -555,7 +573,7 @@ class EventPrint(models.Model):
         print_datetime=PersianCalendar().from_gregorian(self.print_datetime)
         return f"{self.event}   @  {print_datetime} "
    
-class Person(models.Model,LinkHelper):
+class Person(Account):
     class_name="person"
     app_name=APP_NAME
     
@@ -572,7 +590,7 @@ class Person(models.Model,LinkHelper):
     @property
     def full_name(self):
         return f"{self.prefix} {self.first_name} {self.last_name}"
-        
+         
 class Thing(Page,LinkHelper):
     
     class Meta:

@@ -1,8 +1,12 @@
-from .models import TafsiliAccount,AccountingDocumentLine,AccountingDocument,Event,AccountGroup,BasicAccount,MoeinAccount,Account
+from .models import Person,TafsiliAccount,AccountingDocumentLine,AccountingDocument,Event,AccountGroup,BasicAccount,MoeinAccount,Account
 from rest_framework import serializers
 
 
 
+class PersonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Person
+        fields = ['id', 'full_name','get_absolute_url','name','code','balance','pure_code']
 
 
 class EventBriefSerializer(serializers.ModelSerializer):
