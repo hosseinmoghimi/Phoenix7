@@ -450,14 +450,11 @@ def init_all_accounts_list_1():
     return account_groups
 
 
-
-
-
 def init_all_accounts_list():
 
     account_groups=[
         
-        {'code':"1","name":"دارایی جاری",'color':'success',},
+        {'code':"10","name":"دارایی جاری",'color':'success',},
         {'code':"2" ,"name":"دارایی های غیر جاری",'color':'primary'},
         {'code':"3","name":"بدهی های جاری	",'color':'danger', },
         {'code':"4" ,"name":"بدهی های بلند مدت (غیرجاری)",'color':'success', },
@@ -471,15 +468,15 @@ def init_all_accounts_list():
 
     basic_accounts=[
             #111111111111111111111111111
-            {'code':"101","name":"موجودی نقد و بانک",'priority':"100",'account_group_code':"1",'color':'success' },
-            {'code':"102","name":"سرمایه گذاری کوتاه مدت",'priority':"100",'account_group_code':"1",'color':'warning'},
-            {'code':"103","name":"حساب ها و اسناد دریافتنی تجاری",'priority':"100",'account_group_code':"1",'color':'success'},
-            {'code':"104","name":"سایر حساب های دریافتنی تجاری",'priority':"100",'account_group_code':"1",'color':'primary'},
-            {'code':"105","name":"موجودی مواد و کالا",'priority':"100",'account_group_code':"1",'color':'success'},
-            {'code':"106","name":"جاری شرکا",'priority':"100",'account_group_code':"1",'color':'success'},
-            {'code':"107","name":"سفارشات و پیش پرداختها",'priority':"100",'account_group_code':"1",'color':'success'},
-            {'code':"108","name":"سپرده هایمان نزد دیگران",'priority':"100",'account_group_code':"1",'color':'success'},
-            {'code':"109","name":"دارایی های نگهداری شده برای فروش",'priority':"100",'account_group_code':"1",'color':'success'},
+            {'code':"101","name":"موجودی نقد و بانک",'priority':"100",'account_group_code':"10",'color':'success' },
+            {'code':"102","name":"سرمایه گذاری کوتاه مدت",'priority':"100",'account_group_code':"10",'color':'warning'},
+            {'code':"103","name":"حساب ها و اسناد دریافتنی تجاری",'priority':"100",'account_group_code':"10",'color':'success'},
+            {'code':"104","name":"سایر حساب های دریافتنی تجاری",'priority':"100",'account_group_code':"10",'color':'primary'},
+            {'code':"105","name":"موجودی مواد و کالا",'priority':"100",'account_group_code':"10",'color':'success'},
+            {'code':"106","name":"جاری شرکا",'priority':"100",'account_group_code':"10",'color':'success'},
+            {'code':"107","name":"سفارشات و پیش پرداختها",'priority':"100",'account_group_code':"10",'color':'success'},
+            {'code':"108","name":"سپرده هایمان نزد دیگران",'priority':"100",'account_group_code':"10",'color':'success'},
+            {'code':"109","name":"دارایی های نگهداری شده برای فروش",'priority':"100",'account_group_code':"10",'color':'success'},
             #222222222222222222222222
             {'code':"201","name":"دارایی های ثابت مشهود",'color':'primary','priority':"100",'account_group_code':"2"}, 
             {'code':"202","name":"استهلاک انباشته دارایی های ثابت مشهود",'color':'primary','priority':"100",'account_group_code':"2" }, 
@@ -582,6 +579,11 @@ def init_all_accounts_list():
             {'code':"20403","name":"سایر داراییهای نا مشهود",'color':'success','priority':"100",'basic_account_code':"204" },
 
             #205
+
+
+            #501
+            {'code':"50101","name":"سرمایه",'color':'success','priority':"100",'basic_account_code':"501" }, 
+
     ]
     moein2_accounts=[
         
@@ -592,6 +594,11 @@ def init_all_accounts_list():
             {"name":"بانک رفاه",'code':"1010202",'color':'success','priority':"100",'moein_account_code':"10102" },
             {"name":"بانک ملت",'code':"1010203",'color':'success','priority':"100",'moein_account_code':"10102" },
             {"name":"بانک تجارت",'code':"1010204",'color':'success','priority':"100",'moein_account_code':"10102" },
+
+            
+            #50101
+            {'code':"5010101","name":"نقدی",'color':'success','priority':"100",'moein_account_code':"50101" },
+            {'code':"5010102","name":"تعهد شده",'color':'success','priority':"100",'moein_account_code':"50101" },
     ]
     tafsili_accounts=[
             {"name":"صندوق بی ضرر",'code':"1011/1/1",'color':'success','priority':"100",'moein_account_code':"1010101" },
@@ -601,6 +608,8 @@ def init_all_accounts_list():
 
             {"name":"بانک ملی به شماره 0101581354009",'code':"1012/1/1",'color':'success','priority':"100",'moein_account_code':"1010201" },
 
+            {"name":"حسین مقیمی",'code':"1000001",'color':'success','priority':"100",'moein_account_code':"5010101" },
+            {"name":"داوود قانع",'code':"1000002",'color':'success','priority':"100",'moein_account_code':"5010101" },
 
     ]
     return account_groups,basic_accounts,moein_accounts,moein2_accounts,tafsili_accounts

@@ -369,11 +369,11 @@ class AccountRepo():
         return account_groups,message,result
  
     def init_all_accounts(self,*args, **kwargs):
-        tafsili_accounts_counter=0 
+        account_group_counter=0
         basic_accounts_counter=0
         moein_accounts_counter=0
         moein2_accounts_counter=0
-        account_group_counter=0
+        tafsili_accounts_counter=0 
         result=SUCCEED
         message=""  
         if not self.request.user.has_perm(APP_NAME+".add_account"):
@@ -399,7 +399,6 @@ class AccountRepo():
         for moein_account in moein_accounts:
             basic_account=BasicAccount.objects.filter(code=moein_account["basic_account_code"]).first()
             if basic_account is not None:
-                print(moein_account) 
                 new_moein_account=MoeinAccount(name=moein_account["name"],color=moein_account["color"],code=moein_account['code'],basic_account_id=basic_account.id)
             # new_moein_account=MoeinAccount(basic_account=new_basic_account,**moein_account)
                 new_moein_account.save()
@@ -424,7 +423,14 @@ class AccountRepo():
             moein_account=MoeinAccount.objects.filter(code=tafsili_account["moein_account_code"]).first()
             if moein_account is not None: 
                 new_tafsili_account=TafsiliAccount(name=tafsili_account["name"],color=tafsili_account["color"],code=tafsili_account['code'],moein_account_id=moein_account.id)
+                if new_tafsili_account.code=="1000001":
+                    print(new_tafsili_account)
+                    print(new_tafsili_account.id)
                 new_tafsili_account,result,message=new_tafsili_account.save()
+                if new_tafsili_account.code=="1000001":
+                    print(new_tafsili_account)
+                    print(new_tafsili_account.id)
+                    print(100*"#")
                 tafsili_accounts_counter+=1 
             else:
                 result=FAILED          
