@@ -423,14 +423,7 @@ class AccountRepo():
             moein_account=MoeinAccount.objects.filter(code=tafsili_account["moein_account_code"]).first()
             if moein_account is not None: 
                 new_tafsili_account=TafsiliAccount(name=tafsili_account["name"],color=tafsili_account["color"],code=tafsili_account['code'],moein_account_id=moein_account.id)
-                if new_tafsili_account.code=="1000001":
-                    print(new_tafsili_account)
-                    print(new_tafsili_account.id)
                 new_tafsili_account,result,message=new_tafsili_account.save()
-                if new_tafsili_account.code=="1000001":
-                    print(new_tafsili_account)
-                    print(new_tafsili_account.id)
-                    print(100*"#")
                 tafsili_accounts_counter+=1 
             else:
                 result=FAILED          
