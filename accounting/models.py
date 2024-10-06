@@ -227,7 +227,7 @@ class Account(models.Model,LinkHelper):
         if not self.logo_origin :
             return f"{STATIC_URL}{APP_NAME}/img/pages/thumbnail/account.png"
         return f"{MEDIA_URL}{self.logo_origin}"
-  
+   #test
     @property
     def balance_colored(self):
         return to_price_colored(self.balance)
