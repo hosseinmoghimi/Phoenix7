@@ -1,0 +1,290 @@
+{% extends "accounting/wide-layout.html" %}
+{% load to_price %}
+{% load static %}
+{% load to_persian_date %}
+
+{% block content %}
+<div class="row rtl">
+    <div class="col-md-12">
+        <div class="card" id="event-app">
+            <div class="card-header">
+                <h5>
+                    رویداد مالی
+                </h5>
+                <h4>
+                    {{event.title}}
+                </h4>
+            </div>
+            <div class="card-body">
+                <h5>
+
+                    {{event.title}}
+                </h5>
+
+
+
+                <hr>
+                <div class="row">
+                    <div class="col-6">
+
+                        <h4>بدهکار</h4>
+                        <div class="media">
+                            <a href="{{event.pay_to.get_absolute_url}}">
+                                <img src="{{event.pay_to.logo}}" width="72" alt="">
+                            </a>
+                            <div class="media-body mr-2">
+                                <div>
+                                    <a href="{{event.pay_to.get_absolute_url}}">
+                                        <h4>{{event.pay_to.name}}
+                                        </h4>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="{{event.pay_to.parent.get_absolute_url}}">
+                                        <h6>{{event.pay_to.parent.full_title}}
+                                        </h6>
+                                    </a>
+                                </div>
+                                <h6 class="text-{{event.pay_to.color}}">
+                                    <small class="text-muted">
+                                        {{event.pay_to.code}}
+                                    </small>
+                                </h6>
+                                <h6 class="text-{{event.pay_to.color}}">
+                                    <span class="mr-2">
+                                        {{event.pay_to.balance|to_price_color|safe}}
+                                    </span>
+                                </h6>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-6">
+
+
+                        <h4>بستانکار</h4>
+                        <div class="media">
+                            <a href="{{event.pay_from.get_absolute_url}}">
+                                <img src="{{event.pay_from.logo}}" width="72" alt="">
+                            </a>
+                            <div class="media-body mr-2">
+                                <div>
+                                    <a href="{{event.pay_from.get_absolute_url}}">
+                                        <h4>{{event.pay_from.name}}
+                                        </h4>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="{{event.pay_from.parent.get_absolute_url}}">
+                                        <h6>{{event.pay_from.parent.full_title}}
+                                        </h6>
+                                    </a>
+                                </div>
+                                <h6 class="text-{{event.pay_from.color}}">
+                                    <small class="text-muted">
+                                        {{event.pay_from.code}}
+                                    </small>
+                                </h6>
+                                <h6 class="text-{{event.pay_from.color}}">
+                                    <span class="mr-2">
+                                        {{event.pay_from.balance|to_price_color|safe}}
+                                    </span>
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <h5>
+
+                    بدهکار
+
+                    <a :href="event.pay_to.get_absolute_url">
+                        <span v-text="event.pay_to.name"></span>
+                        {{event.pay_to.name}}
+                    </a>
+                </h5>
+
+
+                <h5>
+
+                    بستانکار
+
+                    <a :href="event.pay_from.get_absolute_url">
+                        <span v-text="event.pay_from.name"></span>
+                    </a>
+                </h5>
+                <hr>
+                <h5>
+
+                    تاریخ :
+
+                    {{event.event_datetime|to_persian_datetime|safe}}
+                </h5>
+
+
+                <h5>
+
+                    مبلغ :
+
+                    {{event.amount|to_price|safe}}
+                </h5>
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+    {% if add_event_to_document_form %}
+
+    <div class="col-md-12">
+        <div class="card" id="add-event-to-accounting-document-app">
+            <div class="card-header">
+                <h5>
+                    افزودن به سند
+                </h5>
+
+            </div>
+            <div class="card-body">
+
+
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="">
+                                شماره سند
+                            </label>
+                            <input type="number" @input="get_accounting_document()" class="form-control"
+                                v-model="accounting_document.id">
+
+                        </div>
+                        <div :class="'alert alert-'+message.color">
+                            <div v-html="message.body"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" v-if="accounting_document.id==0">
+                            <label for="">
+                                عنوان سند
+                            </label>
+                            <input type="text" class="form-control" v-model="accounting_document.title">
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <button @click="add()" class="btn btn-success">
+                            <i class="fa fa-plus"></i>افزودن رویداد مالی به سند حسابداری
+                        </button>
+                    </div>
+
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+    {% endif %}
+
+    <div class="col-md-12">
+        {% include "accounting/includes/accounting-document-lines-app/template.html" %}
+
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block script %}
+{% include "accounting/includes/accounting-document-app/select-script.html" %}
+<script>
+    let event = JSON.parse("{{event_s|escapejs}}")
+    let event_app = new Vue({
+        el: "#event-app",
+        data: {
+            event: event,
+        },
+        methods: {
+
+        },
+    })
+</script>
+{% if add_event_to_document_form %}
+
+<script>
+    let add_event_to_accounting_document_app = new Vue({
+        el: "#add-event-to-accounting-document-app",
+        data: {
+            accounting_document: { id: 0, title: "" },
+            message: { show: false },
+        },
+        methods: {
+            add: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    event_id: parseInt("{{event.id}}"),
+                    accounting_document_id: this.accounting_document.id
+                }
+                let url = "{% url 'accounting:add_event_to_accounting_document' %}"
+
+                $.post(url, payload).done(data => {
+                    console.log(data)
+                    if (data.result === "SUCCEED") {
+                        if (typeof accounting_document_lines_app != "undefined") {
+
+                            accounting_document_lines_app.accounting_document_lines = data.accounting_document_lines
+                        }
+
+                    }
+                })
+            },
+            get_accounting_document: function () {
+                console.log(this.accounting_document.id)
+                select_accounting_document_by_id(this.accounting_document.id).done(data => {
+                    console.log(data)
+                    console.log(data.result === "SUCCEED")
+                    if (data.result === "FAILED") {
+                        add_event_to_accounting_document_app.message.body = `
+                        <p class="farsi text-right">
+                           ${data.message}
+                            </p>
+                        `
+
+
+                        add_event_to_accounting_document_app.message.show = true
+                        add_event_to_accounting_document_app.message.color = "danger"
+
+
+                    }
+                    if (data.result === "SUCCEED") {
+                        add_event_to_accounting_document_app.message.body = `
+                        <p class="farsi text-right">
+                            <a href="${data.accounting_document.get_absolute_url}">
+                            ${data.accounting_document.title}
+                            </a>
+                        </p>`
+
+
+                        add_event_to_accounting_document_app.accounting_document = data.accounting_document
+                        add_event_to_accounting_document_app.message.show = true
+                        add_event_to_accounting_document_app.message.color = "success"
+                    }
+                })
+            }
+        },
+    })
+</script>
+{% endif %}
+
+{% include "accounting/includes/accounting-document-lines-app/script.html" %}
+
+{% endblock script %}

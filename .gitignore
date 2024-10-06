@@ -11,6 +11,7 @@ _migrate.bat
 _collectstatic.bat
 _activate.bat
 _check.bat
+_createsuperuser.bat
 
 settings_server_apps.py
 settings_server.py
@@ -18,6 +19,7 @@ server_settings.py
 urls_server.py
 server_urls.py
 secret/
+phoenix/apps.py
 
 # C extensions
 *.so

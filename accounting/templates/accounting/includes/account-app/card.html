@@ -7,54 +7,44 @@
             {{account.type}}
         </h6>
     </div>
-
     <div class="card-body">
 
-        {% include "accounting/includes/account-app/media.html" %}
-        <div class="div">
-            <div class="mb-2">
-                <button class="btn btn-{{account.color}}">
-                    {{account.code}}
-                    {{account.name}}
-                </button>
-            </div>
-            <h5>
 
-                {{account.code}}
-            </h5>
-            {% if account.parent_account %}
 
-            <h6>
-                <small class="text-muted">
-                    <a href="{{account.parent_account.get_absolute_url}}">
+        {% include "accounting/includes/account-app/media-simple.html" %}
 
-                        {{account.parent_account.full_title}}
-                    </a>
-                </small>
 
-            </h6>
-            {% endif %}
-            <h5>
-                {{account.name}}
-            </h5>
 
-            <a href="{{account.get_edit_url}}">
+        <div class="farsi text-left">
+
+            <a href="{% url 'accounting:account' pk=account.id %}" title="اکانت" class=" text-info">
+                <i class="fa fa-link text-info">
+                </i>
+                اکانت
+            </a>
+            <a href="{{account.get_absolute_url}}" title="اکانت" class=" text-info">
+                <i class="fa fa-link text-success">
+                </i>
+                اکانت
+            </a>
+            <a target="_blank"  href="{{account.get_edit_url}}" title="ویرایش" class=" text-warning">
                 <i class="fa fa-edit text-warning">
-
                 </i>
+                ویرایش
             </a>
-            <a href="{{account.get_delete_url}}">
+            <a target="_blank"  href="{{account.get_delete_url}}" title="حذف" class=" text-danger">
                 <i class="fa fa-trash text-danger">
-
                 </i>
+                حذف
             </a>
-
         </div>
 
         <div class="text-center text-{{account.balance|to_amount_color}} farsi">
-
             {{account.balance|to_price}}
         </div>
+
+{% include "accounting/includes/account-app/priority-template.html" %}
+
     </div>
 
 

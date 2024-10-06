@@ -3,7 +3,7 @@ from .apps import APP_NAME
 from django.utils.translation import gettext as _
 from utility.models import LinkHelper,ImageHelper
 from tinymce.models import HTMLField
-
+from django.shortcuts import reverse
 class Page(models.Model,LinkHelper):
     class_name="page"
     app_name=APP_NAME

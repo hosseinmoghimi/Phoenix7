@@ -1,0 +1,6 @@
+django
+khayyam
+pillow
+django-tinymce
+djangorestframework
+openpyxl

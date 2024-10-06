@@ -23,22 +23,48 @@
                 </th>
 
 
+                <th>
+                    مانده
+                </th>
+
+
             </tbody>
             <tbody>
                 <tr v-for="account in accounts">
                     <td>
-                        <a href="account.get_absolute_url">
-                            
-                            <span v-text="account.name"></span>
+                        <a :href="account.get_absolute_url" :class="'text-'+account.color">
+                            <div>
+
+                                <span v-text="account.name"></span>
+                               
+                                <span :class="'badge badge-'+account.color" v-text="account.type"></span>
+       
+                                
+                            </div>
+                            <div>
+
+                                <small v-text="account.full_title"></small>
+                            </div>
+
                         </a>
                     </td>
 
                     <td>
-                        <span v-text="account.code"></span>
+
+                        <div>
+                            <span v-text="account.code"></span>
+                        </div>
+                        <div>
+                            <small class="text-muted" v-text="account.pure_code"></small>
+                        </div>
+                    </td>
+                    <td>
+                        <span v-text="account.type"></span>
 
                     </td>
 
                     <td>
+                        <span v-html="to_price(account.balance)"></span>
 
                     </td>
                 </tr>

@@ -1,0 +1,117 @@
+{% load to_price %}
+<div class="card" id="account-childs-app">
+    <div class="card-header">
+        <h5>
+            زیر مجموعه ها
+        </h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+
+                <th>
+                    حساب
+                </th>
+
+                <th>
+                    بدهکار
+                </th>
+
+                <th>
+                    بستانکار
+                </th>
+
+                <th>
+                    مانده
+                </th>
+            </thead>
+            <tbody>
+                {% for account in account.childs %}
+
+                <tr>
+
+                    <td>
+                        <a class="text-{{account.color}}" href="{{account.get_absolute_url}}">
+                            <div>
+
+                                {{account.title}}
+
+                                <span class="badge badge-{{account.color}}">
+
+                                    {{account.type}}
+                                </span>
+                            </div>
+                            <div class="small text-muted">
+
+                                {{account.full_title}}
+                            </div>
+                        </a>
+
+                    </td>
+
+
+                    <td>
+                        {{account.bedehkar|to_price}}
+
+                    </td>
+                    <td>
+                        {{account.bestankar|to_price}}
+
+                    </td>
+
+                    <td>
+                        {{account.balance|to_price}}
+
+                    </td>
+                </tr>
+                {% endfor %}
+
+                <tr v-for="account in accounts">
+                    <td>
+                        <a :class="'text-'+account.color" :href="account.get_absolute_url">
+                            <div>
+                                <span v-text="account.name">
+
+                                </span>
+
+                                <span :class="'badge badge-'+account.color">
+                                    <span v-text="account.type">
+
+                                    </span>
+
+                                </span>
+                            </div>
+                            <div class="small text-muted">
+                                <span v-text="account.full_title">
+
+                                </span>
+                                
+                            </div>
+                        </a>
+
+                    </td>
+
+
+                    <td>
+                         
+                        0 
+                        {{CURRENCY}}
+
+                    </td>
+                    <td>
+                        
+
+                        0 
+                        {{CURRENCY}}
+                    </td>
+
+                    <td>
+                        0 
+                        {{CURRENCY}}
+                         
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

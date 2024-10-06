@@ -35,7 +35,7 @@ from django.http import HttpResponse
 from .calendar import PersianCalendar
 from datetime import datetime
 from openpyxl import load_workbook
-from core.settings import *
+
 import os
 def get_style(size=11,font_name='Calibri',bold=False,locked=True,color='FF000000',start_color='FFFFFF',end_color='FF000000',*args, **kwargs):
     font = Font(name=font_name,
@@ -200,5 +200,4 @@ class ReportSheet:
         # self.title=title
         
         # self.table_headers=table_headers
-    
-    
+ 

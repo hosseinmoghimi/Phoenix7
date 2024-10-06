@@ -3,13 +3,18 @@
     let accounts_table_app = new Vue({
         el:"#accounts-table-app",
         data: {
-            accounts:[],
+            accounts:accounts_table_app_accounts,
             search_for:'',
             waiting:false,
         },
         methods: {
             filter:function(){
-                this.accounts = accounts_table_app_accounts.filter(account=> account.name.indexOf(this.search_for) > -1 || account.code.indexOf(this.search_for) > -1  )
+                this.accounts = accounts_table_app_accounts.filter(account=> account.name.indexOf(this.search_for) > -1 || account.code.indexOf(this.search_for) > -1|| account.pure_code==parseInt(this.search_for)  )
+                if(typeof accounts_list_app != "undefined"){
+                    accounts_list_app.search_for=this.search_for
+                    accounts_list_app.filter()
+                }
+           
             },
             to_price: function (vall) {
                 let color='primary'

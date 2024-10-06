@@ -1,0 +1,90 @@
+{% extends "accounting/layout.html" %}
+{% block content %}
+<div class="row rtl">
+    <div class="col-md-12" id="persons-app">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="text-right my-2">
+                    <input class="form-control" type="text" @input="filter()" v-model="search_for">
+                </div>
+                <div>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <th>
+                                   کد
+                                </th>
+
+                                <th>
+                                    نام
+                                </th>
+                                <th>
+                                    مانده حساب
+                                </th>
+
+                                <th>
+
+                                </th>
+
+                            </thead>
+                            <tbody>
+                                <tr v-for="person in persons">
+                                    <td>
+                                        <a :href="person.get_absolute_url">
+
+                                            <div v-text="person.code"></div>
+                                        </a>
+                                    </td>
+
+                                    <td>
+                                        <a :href="person.get_absolute_url">
+
+                                            <div v-text="person.full_name"></div>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span v-text="to_price(person.balance)"></span>
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    let persons_for_persons_app = JSON.parse("{{persons_s|escapejs}}")
+    let persons_app = new Vue({
+        el: "#persons-app",
+        data: {
+            search_for: "",
+            message: { show: false, },
+            persons: persons_for_persons_app,
+            // persons: [],
+
+        },
+        methods: {
+            filter: function () {
+                console.log(this.search_for)
+                this.persons = persons_for_persons_app.filter(person => person.full_name.indexOf(persons_app.search_for) > -1 || person.code == persons_app.search_for)
+            },
+
+
+            to_price: function (vall) {
+                return to_price(vall, "{{CURRENCY}}")
+            },
+
+        },
+    })
+</script>
+{% endblock script %}

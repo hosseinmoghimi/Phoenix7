@@ -18,9 +18,21 @@
                 </button>
 
                 <button class="btn btn-success" @click="delete_all_accounts">
-                   حذف همه کد ها
+                    حذف همه کد ها
 
                 </button>
+
+                <a target="_blank" class="btn btn-primary farsi" href="{% url 'accounting:tree_chart' %}" target="_blank"> درخت حساب
+                    ها</a>
+
+
+                <a target="_blank" class="btn btn-primary farsi" href="{% url 'accounting:tree_list' %}" target="_blank"> لیست حساب
+                    ها</a>
+
+                <a target="_blank" class="btn btn-primary farsi" href="{% url 'accounting:selection' %}" target="_blank"> انتخاب حساب
+                    ها</a>
+
+
 
                 <div class="mt-2" v-if="message.show">
                     <div :class="'farsi text-right alert alert-'+message.color">
@@ -69,9 +81,9 @@
                             show: true,
                             body: data.message,
                         }
-                        setTimeout(() => {
-                            settings_app.message = { show: false, }
-                        }, 8000);
+                        // setTimeout(() => {
+                        //     settings_app.message = { show: false, }
+                        // }, 8000);
                     }
 
                     else {
@@ -81,9 +93,9 @@
                             show: true,
                             body: data.message,
                         }
-                        setTimeout(() => {
-                            settings_app.message = { show: false, }
-                        }, 8000);
+                        // setTimeout(() => {
+                        //     settings_app.message = { show: false, }
+                        // }, 8000);
                     }
 
                 })
@@ -103,9 +115,9 @@
                             show: true,
                             body: data.message,
                         }
-                        setTimeout(() => {
-                            settings_app.message = { show: false, }
-                        }, 8000);
+                        // setTimeout(() => {
+                        //     settings_app.message = { show: false, }
+                        // }, 8000);
                     }
 
                     else {
@@ -115,9 +127,9 @@
                             show: true,
                             body: data.message,
                         }
-                        setTimeout(() => {
-                            settings_app.message = { show: false, }
-                        }, 8000);
+                        // setTimeout(() => {
+                        //     settings_app.message = { show: false, }
+                        // }, 8000);
                     }
 
                 })

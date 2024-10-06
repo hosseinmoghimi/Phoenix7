@@ -4,18 +4,13 @@
 {% block content %}
 <div class="row rtl">
     
-    <div class="col-md-12">
-
-        <div class="text-center farsi">
-            حساب ها
-        </div>
-
-    </div>
+    
+    
 
 
     {% if SIMPLE_VIEW %}
 
-    <div class="col-md-12">
+    <div class="col-md-6">
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -79,8 +74,8 @@
         </div>
     </div>
     {% else %}
-    <div class="col-md-12">
-        {% include "accounting/includes/account-app/list-card.html" %}
+    <div class="col-md-6">
+        <!-- {qq% include "accounting/includes/account-app/list-card.html" %} -->
 
     </div>
     {% endif %}
@@ -103,7 +98,7 @@
 
 
 {% block script %}
-{% include "accounting/includes/account-app/list-script.html" %}
+<!-- {qq% include "accounting/includes/account-app/list-script.html" %} -->
 
 {% include "accounting/includes/account-app/table-script.html" %}
 

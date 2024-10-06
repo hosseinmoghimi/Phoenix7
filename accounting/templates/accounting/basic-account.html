@@ -1,4 +1,4 @@
-{% extends "accounting/layout.html" %}
+{% extends "accounting/wide-layout.html" %}
 {% load static %}
 {% load to_price %}
 
@@ -8,37 +8,28 @@
         {% include "accounting/includes/account-app/card.html" %}
     </div>
 
+    {% if add_moein_account_form %}
     <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                <h6>
-                    حساب کل
-                </h6>
-            </div>
-            <div class="card-body">
-                <h6>
-                    حساب کل
-                </h6>
-                <h5>
-                    {{basic_account.title}}
-                </h5>
-
-                <h6>
-                    {{basic_account.balance|to_price_color|safe}}
-                </h6>
+        
 
 
-            </div>
-        </div>
-
-
-        {% if add_moein_account_form %}
         {% include "accounting/includes/moein-account-app/add-template.html" %}
-        {% endif %}
-
+        
     </div>
+    {% endif %}
     <div class="col-md-4">
         {% include "accounting/includes/moein-account-app/list-template.html" %}
+
+    </div>
+
+    <div class="col-lg-12">
+
+        {% include "accounting/includes/account-app/childs.html" %}
+
+    </div>
+
+    <div class="col-md-12">
+        {% include "accounting/includes/accounting-document-lines-app/template.html" %}
 
     </div>
 
@@ -49,10 +40,13 @@
 
 {% block script %}
 
+{% include "accounting/includes/account-app/script.html" %}
 {% if add_moein_account_form %}
+
 {% include "accounting/includes/moein-account-app/add-script.html" %}
 
 {% endif %}
 {% include "accounting/includes/moein-account-app/list-script.html" %}
+{% include "accounting/includes/accounting-document-lines-app/script.html" %}
 
 {% endblock script %}

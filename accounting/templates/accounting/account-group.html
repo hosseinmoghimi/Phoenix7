@@ -8,45 +8,34 @@
         {% include "accounting/includes/account-app/card.html" %}
 
     </div>
+    {% if add_basic_account_form %}
     <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h6>
-                    گروه حساب
-                </h6>
-            </div>
-            <div class="card-body">
-                <h6>
-                    گروه حساب
-                </h6>
-                <h5>
-                    {{account_group.title}}
-                </h5>
 
-                <h6>
-                    {{account_group.balance|to_price_color|safe}}
-                </h6>
-                <h6>
-
-                    <a href="{% url 'accounting:account_group_tree_chart' pk=account_group.pk %}">
-                        نمودار درختی
-                    </a>
-                </h6>
-
-            </div>
-        </div>
-        {% if add_basic_account_form %}
         {% include "accounting/includes/basic-account-app/add-template.html" %}
-        {% endif %}
     </div>
+    {% endif %}
     <div class="col-md-6">
         {% include "accounting/includes/basic-account-app/list-template.html" %}
     </div>
+    <div class="col-lg-12">
+
+        {% include "accounting/includes/account-app/childs.html" %}
+
+    </div>
+    <div class="col-md-12">
+        {% include "accounting/includes/accounting-document-lines-app/template.html" %}
+
+    </div>
+
+
 </div>
 {% endblock content %}
 {% block script %}
+{% include "accounting/includes/account-app/script.html" %}
+
 {% if add_basic_account_form %}
 {% include "accounting/includes/basic-account-app/add-script.html" %}
 {% endif %}
+{% include "accounting/includes/accounting-document-lines-app/script.html" %}
 {% include "accounting/includes/basic-account-app/list-script.html" %}
 {% endblock script %}

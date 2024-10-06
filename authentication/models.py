@@ -7,7 +7,7 @@ from phoenix.settings import MEDIA_URL
 IMAGE_FOLDER=APP_NAME+"/images/"
 from utility.models import LinkHelper,ImageHelper
 from phoenix.server_settings import CREATE_PROFILE_ON_USER_ADD
-
+from .enums import PersonPrefixEnum
 
 
 if CREATE_PROFILE_ON_USER_ADD:
@@ -48,6 +48,9 @@ class Profile(models.Model,LinkHelper):
 
     user=models.OneToOneField(settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,null=True,blank=True)
+    prefix=models.CharField(_("پیشوند"),default=PersonPrefixEnum.MR,choices=PersonPrefixEnum.choices, max_length=50)
+    first_name=models.CharField(_("نام"), max_length=50)
+    last_name=models.CharField(_("نام خانوادگی"),null=True,blank=True, max_length=50)
     mobile=models.CharField(_("شماره همراه"),null=True,blank=True, max_length=50)
     bio=models.CharField(_("بیو"),null=True,blank=True, max_length=50)
     address=models.CharField(_("آدرس"),null=True,blank=True, max_length=50)
@@ -57,18 +60,23 @@ class Profile(models.Model,LinkHelper):
     can_login=models.BooleanField(_("لاگین می کند ?"),default=False)
     status=models.CharField(_("وضعیت"),choices=ProfileStatusEnum.choices,default=ProfileStatusEnum.AAA, max_length=50)
     gender=models.CharField(_("جنسیت"),choices=GenderEnum.choices,default=GenderEnum.MALE, max_length=50)
-    
+ 
 
     class Meta:
         verbose_name = _("Profile")
         verbose_name_plural = _("Profiles")
 
     def __str__(self):
-        return f"{self.user.first_name} {self.user.last_name}"
+        return f"{self.first_name} {self.last_name}"
     @property
     def name(self):
-        return f"{self.user.first_name} {self.user.last_name}"
+        return f"{self.first_name} {self.last_name}"
 
     @property
     def image(self):
         return f"{MEDIA_URL}{self.image_origin}"
+    
+    @property
+    def full_name(self):
+        return f"{self.prefix} {self.first_name} {self.last_name}"
+         

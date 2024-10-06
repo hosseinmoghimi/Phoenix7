@@ -27,7 +27,7 @@
                     csrfmiddlewaretoken: csrfmiddlewaretoken,
                     name: this.name,
                     code: this.code,
-                    parent_id: moein_account_id_for_add,
+                    moein_account_id: moein_account_id_for_add,
                     basic_account_id: basic_account_id_for_add,
                 }
                 console.log(payload)
@@ -39,6 +39,14 @@
                         if (typeof moein_accounts_app != "undefined") {
                             moein_accounts_app.moein_accounts.push(data.moein_account)
                         }
+
+
+                        if (typeof account_childs_app != "undefined") {
+                                account_childs_app.accounts.push(data.moein_account)
+                            }
+
+                      
+
                         add_moein_account_app.message={
                             color:"success",
                             title:"تبریک",

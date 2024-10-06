@@ -1,0 +1,43 @@
+{% load to_price %}
+{% load to_amount_color %}
+{% load to_persian_date %}
+<div class="card">
+    <div class="card-header">
+        <h6>
+              
+            {{accounting_document.title}}
+        </h6>
+    </div>
+    <div class="card-body">
+        <h6>
+            عنوان سند حسابداری :
+        </h6>
+         <h5>
+            {{accounting_document.title}}
+             
+         </h5>
+         <h6>شماره :
+         </h6>
+          <h5>
+             {{accounting_document.id}}
+              
+          </h5>
+        <div class="farsi text-left">
+
+            
+            <a href="{{accounting_document.get_edit_url}}" title="ویرایش" class=" text-warning">
+                <i class="fa fa-edit text-warning">
+                </i>
+                ویرایش
+            </a>
+            <a href="{{accounting_document.get_delete_url}}" title="حذف" class=" text-danger">
+                <i class="fa fa-trash text-danger">
+                </i>
+                حذف
+            </a>
+        </div>
+ 
+    </div>
+
+
+</div>

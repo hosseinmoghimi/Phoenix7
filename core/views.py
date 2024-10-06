@@ -4,6 +4,7 @@ from .apps import APP_NAME
 from .repo import PageRepo
 from .forms import *
 from phoenix.settings import ADMIN_URL
+from utility.calendar import PersianCalendar
 from django.http import Http404
 TEMPLATE_ROOT = "core/"
 BASE_LAYOUT='phoenix/layout.html'
@@ -70,7 +71,11 @@ def CoreContext(request, *args, **kwargs):
     context['WIDE_BASE_LAYOUT'] = WIDE_BASE_LAYOUT
     if 'app_name' in kwargs:
         context['app_name']=kwargs['app_name']
-
+    persian_calendar=PersianCalendar()
+    current_datetime=persian_calendar.persian_date
+    current_date=persian_calendar.persian_date[:10]
+    context["current_datetime"]=current_datetime
+    context["current_date"]=current_date
     return context
 
 def PageContext(request, *args, **kwargs):

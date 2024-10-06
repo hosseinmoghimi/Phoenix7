@@ -1,0 +1,21 @@
+<script>
+    let events_app_events = JSON.parse(`{{events_s|escapejs}}`)
+    let events_app = new Vue({
+        el:"#events-app",
+        data: {
+            events: events_app_events,
+            search_for:'',
+            waiting:false,
+
+        },
+        methods: {
+            filter:function(){
+                this.events = events_app_events.filter(event=> event.title.indexOf(this.search_for) > -1 )
+            },
+            to_price: function (vall) {
+                 return  to_price(vall,"{{CURRENCY}}")
+            },
+          
+        }
+    })
+</script>

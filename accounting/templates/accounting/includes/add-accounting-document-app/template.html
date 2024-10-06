@@ -1,0 +1,55 @@
+<div class="card rtl" id="add-accounting-document-app">
+    <div class="card-header">
+        <h4>
+            افزودن سند حسابداری جدید
+
+        </h4>
+    </div>
+    <div class="card-body">
+        <h5>
+
+            <a href="{% url 'accounting:selection' %}" target="_blank"> همه حساب ها</a>
+        </h5>
+
+        <h5>
+
+            <a href="{% url 'accounting:tree_chart' %}" target="_blank"> درخت حساب ها</a>
+        </h5>
+
+        <form @submit.prevent="add_accounting_document()">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+
+                        <label for="title">عنوان سند جدید</label>
+                        <input type="text" class="form-control" placeholder="" id="title" v-model="title">
+                    </div>
+                </div>
+
+
+
+                
+
+
+                
+
+
+ 
+
+                <div class="col-md-12">
+                    <button class="btn btn-success" type="submit">
+                        <i class="fa fa-plus"></i>
+                        افزودن سند حسابداری
+                    </button>
+                </div>
+                <div class="col-md-12 my-2">
+                    <div :class="'alert alert-'+message.color">
+                        <div v-html="message.body"></div>
+                    </div>
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+</div>

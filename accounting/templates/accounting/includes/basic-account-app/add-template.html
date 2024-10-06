@@ -27,6 +27,17 @@
                     </div>
                 </div>
 
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="">رنگ</label>
+                       <select class="form-control" v-model="color">
+                        {% for color in colors %}
+                          <option value="{{color}}" class="text-{{color}}">{{color}}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
             </div>
 
 

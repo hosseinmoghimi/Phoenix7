@@ -30,18 +30,22 @@
                     name: this.name,
                     code: this.code,
                     moein_account_id: moein_account_id_for_add_2,
-                    parent_id: tafsili_account_id_for_add_2,
+                    tafsili_account_id: tafsili_account_id_for_add_2,
                 }
                 let url = "{% url 'accounting:add_tafsili_account' %}"
                 let posting = $.post(url, payload)
                 posting.done(data => {
                     if (data.result === "SUCCEED") {
-                        let tafsili_account=""
-                        if (data.tafsili_account.id){
-                            tafsili_account=`<a href=${data.tafsili_account.get_absolute_url}>${data.tafsili_account.code} - ${data.tafsili_account.name}</a>`
-                            if(typeof tafsili_accounts_app != "undefined"){
+                        let tafsili_account = ""
+                        if (data.tafsili_account.id) {
+                            tafsili_account = `<a href=${data.tafsili_account.get_absolute_url}>${data.tafsili_account.code} - ${data.tafsili_account.name}</a>`
+                            if (typeof tafsili_accounts_app != "undefined") {
                                 tafsili_accounts_app.tafsili_accounts.push(data.tafsili_account)
                                 console.log("11111111111111111111")
+                            }
+
+                            if (typeof account_childs_app != "undefined") {
+                                account_childs_app.accounts.push(data.tafsili_account)
                             }
                         }
                         add_tafsili_account_app.message = {
@@ -59,7 +63,7 @@
                             color: "danger",
                             title: "ناموفق",
                             show: true,
-                            body: data.message  ,
+                            body: data.message,
                         }
                         setTimeout(() => {
                             add_tafsili_account_app.message = { show: false, }

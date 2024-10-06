@@ -1,0 +1,39 @@
+<script>
+    let add_accounting_document_app=new Vue({
+        el:"#add-accounting-document-app",
+        data:{
+            title:"سرمایه گذاری اولیه",
+            accounting_document_datetime:current_datetime,
+            
+            datetime:current_datetime,
+            message:{show:false},
+        },
+        methods:{
+            add_accounting_document:function(){
+                let payload={
+                    csrfmiddlewaretoken:csrfmiddlewaretoken,
+                    
+                    accounting_document_datetime:(this.accounting_document_datetime),
+                    title:(this.title),
+                }
+                console.log(payload)
+                let url="{% url 'accounting:add_accounting_document' %}"
+                let posting=$.post(url,payload)
+                posting.done(data=>{
+                    console.log(data)
+                    if(data.result==="SUCCEED"){
+                        add_accounting_document_app.message={
+                            show:true,
+                            header:"موفقیت آمیز",
+                            body:`<div class="farsi text-right" ><p >${data.message}</p><a target="_blank" href="${data.accounting_document.get_absolute_url}">${data.accounting_document.title}</a></div>`,
+                            color:"success",
+                        }
+                    }
+                })
+            
+            },
+          
+
+        },
+    })
+</script>
