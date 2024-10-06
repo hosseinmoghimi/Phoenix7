@@ -10,6 +10,14 @@ class GenderEnum(TextChoices):
     FEMALE="زن" , _("زن")
 
     
+class PersonPrefixEnum(TextChoices):
+    MR="آقای",_("آقای")
+    MRS="خانم",_("خانم")
+    COMPANY="شرکت",_("شرکت")
+    DR="دکتر",_("دکتر")
+    ENGINEER="مهندس",_("مهندس")
+
+
 class ProfileContactTypeEnum(TextChoices):
     MOBILE="موبایل" , _("موبایل")
     TEL="تلفن" , _("تلفن")

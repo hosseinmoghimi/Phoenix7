@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import TafsiliAccountRepo,MoeinAccountRepo,BasicAccountRepo,AccountRepo,AccountingDocumentLineRepo,EventRepo,AccountingDocumentRepo
+from .repo import PersonRepo,TafsiliAccountRepo,MoeinAccountRepo,BasicAccountRepo,AccountRepo,AccountingDocumentLineRepo,EventRepo,AccountingDocumentRepo
 from django.http import JsonResponse
 from .forms import *
 from .serializers import AccountingDocumentSerializer,TafsiliAccountBriefSerializer,MoeinAccountBriefSerializer,BasicAccountBriefSerializer,AccountingDocumentLineSerializer,AccountSerializer,EventSerializer
@@ -202,8 +202,11 @@ class InitALLAccountsApi(APIView):
         context['result']=FAILED
         if request.method=='POST':
             (result,message)=AccountRepo(request=request).init_all_accounts() 
+            (result2,message2)=PersonRepo(request=request).initial_default_persons() 
         context['message']=message
         context['result']=result
+        context['message2']=message2
+        context['result2']=result2
         context['log']=log
         return JsonResponse(context)
 
@@ -308,7 +311,6 @@ class GetReportApi(APIView):
             if get_report_form.is_valid():
                 log=333
                 cd=get_report_form.cleaned_data
-                leolog(cd=cd)
                 accounting_document_lines=AccountingDocumentLineRepo(request=request).list(**cd)
                 if accounting_document_lines is not None:
                     result=SUCCEED

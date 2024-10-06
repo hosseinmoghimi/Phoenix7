@@ -399,12 +399,11 @@ class PersonsView(View):
 class PersonView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
-        account_groups=AccountGroupRepo(request=request).list(*args, **kwargs)
-        context['account_groups']=account_groups
-        for account_group in account_groups:
-            account_group.normalize_total()
-        account_groups_s=json.dumps(AccountGroupSerializer(account_groups,many=True).data)
-        context['account_groups_s']=account_groups_s
+        person=PersonRepo(request=request).person(*args, **kwargs)
+        context['person']=person
+         
+        person_s=json.dumps(PersonSerializer(person).data)
+        context['person_s']=person_s
         return render(request,TEMPLATE_ROOT+"person.html",context)
 
 class TreeListView(View):

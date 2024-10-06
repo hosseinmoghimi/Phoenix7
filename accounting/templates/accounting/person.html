@@ -1,0 +1,47 @@
+{% extends "accounting/layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row rtl">
+
+    <div class="col-md-3">
+        <h5 class="farsi text-center">
+            {{person.profile.full_name}}
+        </h5>
+    </div>
+
+
+    <div class="col-md-3">
+        {% if perms.accounting.change_person%}
+        <a href="{{person.get_edit_url}}">
+            <i class="fa fa-edit text-warning"></i>
+        </a>
+        {% endif %}
+        {% if perms.accounting.delete_person%}
+
+        <a href="{{person.get_delete_url}}">
+            <i class="fa fa-trash text-danger"></i>
+        </a>
+        {% endif %}
+    </div>
+
+    {% for account in person.accounts.all %}
+    <div class="col-md-12">
+        <a href="{{account.get_absolute_url}}">
+            <h5 class="farsi text-center">
+                {{account.title}}
+            </h5>
+        </a>
+    </div>
+    {% endfor %}
+
+
+
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+
+{% endblock script %}

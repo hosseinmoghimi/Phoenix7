@@ -11,6 +11,7 @@ _migrate.bat
 _collectstatic.bat
 _activate.bat
 _check.bat
+_createsuperuser.bat
 
 settings_server_apps.py
 settings_server.py

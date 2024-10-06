@@ -485,9 +485,9 @@ def init_all_accounts_list():
             {'code':"205","name":"سرمایه گذاری های بلند مدت",'color':'primary','priority':"100",'account_group_code':"2" },  
             #3333333333333333333333333
             {'code':"301","name":"ﺣﺴﺎب ﻫﺎ و اﺳﻨﺎد ﭘﺮداﺧﺘﻨﯽ ﺗﺠﺎری",'color':'danger','priority':"100",'account_group_code':"3"},  
-            {'code':"302","name":"ﺳﺎﯾﺮ ﺣﺴﺎب ﻫﺎ و اﺳﻨﺎد ﭘﺮداﺧﺘﻨﯽ",'color':'danger','priority':"100",'account_group_code':"3"},  
-            {'code':"303","name":"ﺳﻔﺎرﺷﺎت و ﭘﯿﺶ درﯾﺎﻓﺖ ﻫﺎ",'color':'danger','priority':"100",'account_group_code':"3"},  
-            {'code':"304","name":"ذﺧﯿﺮه ﻣﺎﻟﯿﺎت",'color':'danger','priority':"100",'account_group_code':"3"},  
+            {'code':"302","name":"ﺳﺎﯾﺮ ﺣﺴﺎب ﻫﺎ و اﺳﻨﺎد ﭘﺮداﺧﺘﻨﯽ",'color':'secondary','priority':"100",'account_group_code':"3"},  
+            {'code':"303","name":"ﺳﻔﺎرﺷﺎت و ﭘﯿﺶ درﯾﺎﻓﺖ ﻫﺎ",'color':'primary','priority':"100",'account_group_code':"3"},  
+            {'code':"304","name":"ذﺧﯿﺮه ﻣﺎﻟﯿﺎت",'color':'success','priority':"100",'account_group_code':"3"},  
             {'code':"305","name":"ﺳﻮد ﺳﻬﺎم ﭘﺮداﺧﺘﻨﯽ",'color':'danger','priority':"100",'account_group_code':"3"},  
             {'code':"306","name":"ﺳﭙﺮده ﻫﺎی ﭘﺮداﺧﺘﻨﯽ",'color':'danger','priority':"100",'account_group_code':"3"},  
             {'code':"307","name":"ﺗﺴﻬﯿﻼت و اﻋﺘﺒﺎرات ﻣﺎﻟﯽ درﯾﺎﻓﺘﯽ ﮐﻮﺗﺎه ﻣﺪت",'color':'danger','priority':"100",'account_group_code':"3" },  
@@ -581,12 +581,132 @@ def init_all_accounts_list():
             #205
 
 
+
             #501
             {'code':"50101","name":"سرمایه",'color':'success','priority':"100",'basic_account_code':"501" }, 
 
     ]
+
+
+    ################################    301
+    color ="danger"
+    basic_account_code="301"
+    moein_accounts.append({'code':"30101","name":"اسناد پرداختنی تجاری/شرکتهای گروه",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30102","name":"اسناد پرداختنی تجاری/سایر اشخاص وابسته",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30103","name":"اسناد پرداختنی تجاری/سایر اشخاص",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30104","name":"حسابهای پرداختنی تجاری/شرکتهای گروه",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30105","name":"حسابهای پرداختنی تجاری/سایر اشخاص وابسته",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30106","name":"حسابهای پرداختنی تجاری/سایر اشخاص",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+  
+
+    #################################    302
+    color ="secondary"
+    basic_account_code="302"
+    moein_accounts.append({'code':"30201","name":"اسناد پرداختنی غیر تجاری",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30202","name":"شرکتهای گروه",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30203","name":"سایر اشخاص وابسته",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30204","name":"مالیاتهای تکلیفی",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30205","name":"حق بیمه های پرداختنی",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30206","name":"سپرده حسن انجام کار",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30207","name":"ذخیره هزینه های تعلق گرفته پرداخت نشده",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30208","name":"متفرقه (سایر)",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+
+    ##################################    303
+    color ="primary"
+    basic_account_code="303"
+    moein_accounts.append({'code':"30301","name":"پیش دریافت از مشتری",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30302","name":"شرکتهای گروه",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30303","name":"سایر اشخاص وابسته",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30304","name":"سایر مشتریان",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30305","name":"سایر پیش دریافتها",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+
+
+#################################    304
+    color ="success"
+    basic_account_code="304"
+    moein_accounts.append({'code':"30401","name":"به تفکیک دوره",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+  
+
+    #################################    305
+    color ="success"
+    basic_account_code="305"
+    moein_accounts.append({'code':"30501","name":"سود سهام پیشنهادی",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30502","name":"سود سهام پرداختنی",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+  
+    #################################    307
+    color ="success"
+    basic_account_code="307"
+    moein_accounts.append({'code':"30701","name":"بانکها",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30702","name":"شرکتهای گروه",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30703","name":"سایر اشخاص وابسته",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30704","name":"سایر اشخاص",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30705","name":"حصه بلند مدت",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"30706","name":"حصه جاری",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+  
+
+
+    #################################    402
+    color ="success"
+    basic_account_code="402"
+    moein_accounts.append({'code':"40201","name":"اسناد پرداختنی ارزی",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"40202","name":"اسناد پرداختنی ریالی/واگذاری به وزارت امور اقتصادی و دارایی",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"40203","name":" اسناد پرداختنی ریالی/واگذاری به تامین اجتماعی",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"40204","name":"اسناد پرداختنی ریالی/سایر اسناد پرداختنی",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"40205","name":"حسابهای پرداختنی/تجاری ",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"40206","name":"حسابهای پرداختنی/شرکتهای گروه",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"40207","name":"حسابهای پرداختنی/سایر اشخاص وابسته",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+  
+
+    #################################    403
+    color ="secondary"
+    basic_account_code="403"
+    moein_accounts.append({'code':"40301","name":"بانکها",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"40302","name":"شرکتهای گروه",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"40303","name":"سایر اشخاص وابسته",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"40304","name":"سایر اشخاص",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"40305","name":"حصه بلند مدت",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"40306","name":"حصه جاری",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+  
+
+    #################################    701
+    color ="secondary"
+    basic_account_code="701"
+    moein_accounts.append({'code':"70101","name":"مواد مستقیم مصرفی",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"70102","name":"دستمزد مستقیم",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"70103","name":"سربار تولید",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"70104","name":"هزینه های جذب نشده در تولید",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"70105","name":"موجودی کالای در جریان ساخت",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"70106","name":"ضایعات غیر عادی",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"70107","name":"موجودی کالای ساخته شده",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+  
+
+
+    #################################    702
+    color ="primary"
+    basic_account_code="702"
+    moein_accounts.append({'code':"70201","name":"مواد مستقیم مصرفی",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"70202","name":"دستمزد مستقیم",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"70203","name":"سربار تولید",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"70204","name":"هزینه های جذب نشده در تولید",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"70205","name":"موجودی کالای در جریان ساخت",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"70206","name":"ضایعات غیر عادی",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"70207","name":"موجودی کالای ساخته شده",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+  
+
+
+    #################################    703
+    color ="secondary"
+    basic_account_code="703"
+    moein_accounts.append({'code':"70301","name":"مواد مستقیم مصرفی",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"70302","name":"دستمزد مستقیم",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"70303","name":"سربار تولید",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"70304","name":"هزینه های جذب نشده در تولید",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"70305","name":"موجودی کالای در جریان ساخت",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"70306","name":"ضایعات غیر عادی",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+    moein_accounts.append({'code':"70307","name":"موجودی کالای ساخته شده",'color':color,'priority':"100",'basic_account_code':basic_account_code }, )
+  
+
     moein2_accounts=[
-        
             {"name":"صندوق فروشگاه",'code':"1010101",'color':'success','priority':"100",'moein_account_code':"10101" },
             {"name":"صندوق دفتر",'code':"1010102",'color':'success','priority':"100",'moein_account_code':"10101" },
 
@@ -612,5 +732,19 @@ def init_all_accounts_list():
             {"name":"داوود قانع",'code':"1000002",'color':'success','priority':"100",'moein_account_code':"5010101" },
 
     ]
-    return account_groups,basic_accounts,moein_accounts,moein2_accounts,tafsili_accounts
+    return account_groups,basic_accounts,moein_accounts,moein2_accounts,tafsili_accounts,
 
+def initial_all_persons():
+    person_categories=[
+        {"code":"100","name":"کارکنان","account_code":["5010101","5010102",]},
+        {"code":"200","name":"سهام داران","account_code":["5010101","5010102",]},
+        {"code":"300","name":"تامین کنندگان","account_code":"10302"},
+        {"code":"400","name":"پیمانکاران","account_code":"10302"},
+        {"code":"500","name":"مشتریان","account_code":"10302"},
+        {"code":"600","name":"مراکز هزینه","account_code":"10302"},
+    ]
+    persons=[
+        {"code":"10001","first_name":"حسین","last_name":"مقیمی","categories":[1000,10000]},
+        {"code":"10002","first_name":"داوود","last_name":"قانع","categories":[10000]},
+    ]
+    return person_categories,persons

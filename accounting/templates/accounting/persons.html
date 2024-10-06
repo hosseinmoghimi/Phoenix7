@@ -13,6 +13,10 @@
                         <table class="table table-striped">
                             <thead>
                                 <th>
+                                   کد
+                                </th>
+
+                                <th>
                                     نام
                                 </th>
                                 <th>
@@ -29,8 +33,14 @@
                                     <td>
                                         <a :href="person.get_absolute_url">
 
-                                            <div v-text="person.name"></div>
                                             <div v-text="person.code"></div>
+                                        </a>
+                                    </td>
+
+                                    <td>
+                                        <a :href="person.get_absolute_url">
+
+                                            <div v-text="person.full_name"></div>
                                         </a>
                                     </td>
                                     <td>
@@ -59,7 +69,8 @@
         data: {
             search_for: "",
             message: { show: false, },
-            persons: [],
+            persons: persons_for_persons_app,
+            // persons: [],
 
         },
         methods: {

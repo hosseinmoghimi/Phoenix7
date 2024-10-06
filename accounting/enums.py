@@ -16,13 +16,13 @@ class AccountTypeEnum(TextChoices):
     TAFSILI_6="تفصیلی سطح شش",_("تفصیلی سطح شش")
     BASIC="کل",_("کل")
 
+class PersonType(TextChoices):
+    BESTANKAR="بستانکار",_("بستانکار")
+    ONLY_BESTANKAR="فقط بستانکار",_("فقط بستانکار")
+    BEDEHKAR="بدهکار",_("بدهکار")
+    ONLY_BEDEHKAR="فقط بدهکار",_("فقط بدهکار")
+    FREE="بدون کنترل",_("بدون کنترل")
 
-class PersonPrefixEnum(TextChoices):
-    MR="آقای",_("آقای")
-    MRS="خانم",_("خانم")
-    COMPANY="شرکت",_("شرکت")
-    DR="دکتر",_("دکتر")
-    ENGINEER="مهندس",_("مهندس")
 
 class UnitNameEnum(TextChoices):
     ADAD="عدد",_("عدد")

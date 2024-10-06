@@ -8,6 +8,10 @@ from utility.currency import to_price_colored,to_price
 from utility.calendar import PersianCalendar
 from django.contrib.auth.models import User,Group
 from phoenix.server_settings import MEDIA_URL,STATIC_URL 
+from utility.log import leolog
+
+NO_DUPLICATED_ACCOUNT_NAME=False
+NO_DUPLICATED_ACCOUNT_CODE=True
 
 IMAGE_FOLDER=APP_NAME+"/images/"
 ACCOUNT_NAME_SEPERATOR=" - "
@@ -231,10 +235,10 @@ class Account(models.Model,LinkHelper):
     def save(self):
         result=SUCCEED
         message="موفقیت آمیز"
-        if len(Account.objects.filter(name=self.name).exclude(pk=self.pk))>0:
+        if NO_DUPLICATED_ACCOUNT_NAME and len(Account.objects.filter(name=self.name).exclude(pk=self.pk))>0:
             result=FAILED
             message="نام تکراری"
-        if len(Account.objects.filter(code=self.code).exclude(pk=self.pk))>0:
+        if NO_DUPLICATED_ACCOUNT_CODE and len(Account.objects.filter(code=self.code).exclude(pk=self.pk))>0:
             result=FAILED
             message="کد تکراری"
         if result==SUCCEED:
@@ -561,10 +565,12 @@ class Event(Page):
         #     AccountingDocumentLineBedehkar.save()
         #     AccountingDocumentLineBedehkar.account.normalize_balance()
 
-class EventPrint(models.Model):
+class EventPrint(models.Model,LinkHelper):
     event=models.ForeignKey("event", verbose_name=_("تراکنش"), on_delete=models.CASCADE)
     print_datetime=models.DateTimeField(_("تاریخ چاپ"),null=True,blank=True, auto_now=False, auto_now_add=True)
 
+    class_name="eventprint"
+    app_name=APP_NAME
     class Meta:
         verbose_name = _("EventPrint")
         verbose_name_plural = _("EventPrints")
@@ -573,24 +579,77 @@ class EventPrint(models.Model):
         print_datetime=PersianCalendar().from_gregorian(self.print_datetime)
         return f"{self.event}   @  {print_datetime} "
    
-class Person(Account):
+class Person(models.Model,LinkHelper):
+    code=models.CharField(_("code"), max_length=50)
+    profile=models.ForeignKey("authentication.profile", verbose_name=_("profile"), on_delete=models.CASCADE)
+    accounts=models.ManyToManyField("account",blank=True, verbose_name=_("accounts"))
+    categories=models.ManyToManyField("personcategory",blank=True, verbose_name=_("categories"))
+    type=models.CharField(_("ماهیت"),choices=PersonType.choices, max_length=50)
     class_name="person"
     app_name=APP_NAME
-    
-    prefix=models.CharField(_("prefix"),choices=PersonPrefixEnum.choices, max_length=50)
-    first_name=models.CharField(_("first_name"), max_length=50)
-    last_name=models.CharField(_("last_name"), max_length=50)
+
     class Meta:
         verbose_name = _("شخص")
         verbose_name_plural = _("اشخاص")
 
     def __str__(self):
-        return self.full_name 
-
+        return self.profile.full_name 
     @property
     def full_name(self):
-        return f"{self.prefix} {self.first_name} {self.last_name}"
-         
+        return self.profile.full_name
+
+    @property
+    def balance(self):
+        balance= 0
+        for account in self.accounts.all():
+            balance+=account.balance
+        return balance
+
+
+    def save(self,*args, **kwargs):
+        super(Person,self).save()
+        # self.accounts.all().delete()
+        # for category in self.categories.all():
+        #     account=category.account
+        #     moein_account=MoeinAccount.objects.filter(pk=account.pk).first()
+        #     if moein_account is not None:
+        #         leolog(moein_account=moein_account,code=self.code)
+        #         new_account=TafsiliAccount(moein_account=moein_account,name=self.profile.name+ " - "+category.name,code=self.code+category.code)
+        #         new_account.save()
+
+        #         leolog(new_account=new_account,step=1)
+        #         self.accounts.add(new_account.id) 
+
+                
+        #     tafsili_account=TafsiliAccount.objects.filter(pk=account.pk).first()
+        #     if tafsili_account is not None:
+                
+        #         leolog(tafsili_account=tafsili_account,code=self.code)
+        #         new_account=TafsiliAccount(tafsili_account=tafsili_account,name=self.profile.name+ " - "+category.name,code=self.code+category.code)
+        #         new_account.save()
+        #         leolog(new_account=new_account,step=2)
+        #         self.accounts.add(new_account.id) 
+
+        # super(Person,self).save()    
+
+class PersonCategory(models.Model):
+    code=models.CharField(_("code"), max_length=50)
+    name=models.CharField(_("name"), max_length=50)
+    account=models.ForeignKey("account", verbose_name=_("account"), on_delete=models.CASCADE)
+    class_name="personcategory"
+    app_name=APP_NAME
+    
+
+    class Meta:
+        verbose_name = _("PersonCategory")
+        verbose_name_plural = _("PersonCategorys")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("PersonCategory_detail", kwargs={"pk": self.pk})
+   
 class Thing(Page,LinkHelper):
     
     class Meta:

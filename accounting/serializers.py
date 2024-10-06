@@ -6,7 +6,7 @@ from rest_framework import serializers
 class PersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
-        fields = ['id', 'full_name','get_absolute_url','name','code','balance','pure_code']
+        fields = ['id', 'get_absolute_url','full_name','code','balance']
 
 
 class EventBriefSerializer(serializers.ModelSerializer):
